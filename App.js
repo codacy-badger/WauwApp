@@ -1,6 +1,6 @@
 import React from "react";
 import * as firebase from "firebase";
-import Navigation from "./app/navigations/Navigation";
+import Navigation from "./components/navigations/Navigation";
 
 // Initialize Firebase
 //TODO: Inciar sesión en Google Firebase con la cuenta que Andrea creó y obtener los siguientes datos
