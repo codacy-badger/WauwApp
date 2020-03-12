@@ -5,7 +5,8 @@ const HomeScreenStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: () => ({
-      title: "Home"
+      title: "Home",
+      headerTitleAlign: "center"
     })
   }
 });
