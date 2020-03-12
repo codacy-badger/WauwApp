@@ -9,35 +9,35 @@ const ServicesScreenStacks = createStackNavigator({
   Services: {
     screen: ServicesScreen,
     navigationOptions: () => ({
-      title: "Choose a Service",
+      title: "Elige un Servicio",
       headerTitleAlign: "center"
     })
   },
   SearchWalks: {
     screen: SearchWalksScreen,
     navigationOptions: () => ({
-      title: "Search Walks",
+      title: "Buscar Paseos",
       headerTitleAlign: "center"
     })
   },
   SearchAccommodations: {
     screen: SearchAccommodationsScreen,
     navigationOptions: () => ({
-      title: "Search Accommodations",
+      title: "Buscar Alojamientos",
       headerTitleAlign: "center"
     })
   },
   CreateWalk: {
     screen: CreateWalkScreen,
     navigationOptions: () => ({
-      title: "Create Walk",
+      title: "Crear Paseo",
       headerTitleAlign: "center"
     })
   },
   CreateAccommodation: {
     screen: CreateAccommodationScreen,
     navigationOptions: () => ({
-      title: "Create Accommodation",
+      title: "Crear Alojamiento",
       headerTitleAlign: "center"
     })
   }

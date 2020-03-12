@@ -5,7 +5,7 @@ const NotificationsScreenStack = createStackNavigator({
   Notifications: {
     screen: NotificationsScreen,
     navigationOptions: () => ({
-      title: "Notifications",
+      title: "Notificaciones",
       headerTitleAlign: "center"
     })
   }
