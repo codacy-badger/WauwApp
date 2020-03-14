@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import {db} from "../population/config.js";
+import { Button } from "react-native-elements";
 
 export default function InfoUser(props) {
     const { userInfo } = props;
@@ -51,7 +52,7 @@ export default function InfoUser(props) {
                 <Text style={styles.userWauwPoints}>Wauw Points: {userInfo.wauwPoints}</Text>
             </View>
 
-            <View >
+            <View>
                 <Text style={styles.titleDescription}>Descripción</Text>
                 <Text style={styles.userDescription}>{userInfo.description}</Text>
             </View>
