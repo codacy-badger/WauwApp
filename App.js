@@ -7,23 +7,12 @@ import LoadingScreen from './components/screens/LoadingScreen';
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
 import { AppLoading } from "expo";
-import Navigation from "./components/navigations/Navigation";
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
 
-const getFonts = () =>
-  Font.loadAsync({
-    "opensans-regular": require("./assets/fonts/OpenSans-Regular.ttf")
-  });
-export default class App extends React.Component{
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-  if (fontsLoaded) {
+export default class App extends Component {
+
   render(){
     return <AppNavigator/>
-  }
-  } else {
-    return (
-      <AppLoading startAsync={getFonts} onFinish={() => setFontsLoaded(true)} />
-    );
   }
 }
 
