@@ -1,10 +1,8 @@
 import React from "react";
-import { View, Text } from "react-native";
+import UserGuest from "../account/UserGuest";
 
 export default function Profile() {
   return (
-    <View>
-      <Text> Página del Perfil</Text>
-    </View>
+    <UserGuest></UserGuest>
   );
 }
