@@ -101,7 +101,8 @@ export default class LoginScreen extends Component {
                   description: "",
                   wauwPoints: 0,
                   price: 5,
-                  petNumber: 0
+                  petNumber: 0,
+                  email: result.user.email
                 });
                 console.log("Usuario añadido con éxito");
 
