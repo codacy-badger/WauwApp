@@ -4,9 +4,7 @@ import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 
 function CreateAccommodation(props) {
-  //const worker = await firebase.auth().currentUser;
   const { id,date, info, pending, owner,quantity,type,worker, setIsVisibleModal, setReloadData, navigation } = props;
-  
 
 
 
@@ -20,11 +18,15 @@ function CreateAccommodation(props) {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
-  
+  const all= () => {
+    addRequest();
+    navigation.navigate("Home");
+
+  }
 
 
   const addRequest = () => {
-      ()=>navigation.navigate("Home");
+      
       setError(null);
       setIsLoading(true);
       let requestData = {
@@ -44,6 +46,7 @@ function CreateAccommodation(props) {
           setIsLoading(false);
           setReloadData(false);
           setIsVisibleModal(false);
+          
         })
         .catch(() => {
           setError("Ha ocurrido un error");
@@ -98,7 +101,7 @@ function CreateAccommodation(props) {
               />
             <Button 
             title= 'Crear'
-            onPress= {addRequest}
+            onPress= {all}
             loading={isLoading}
             /> 
             </View>
