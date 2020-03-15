@@ -43,7 +43,7 @@ export default function InfoUser(props) {
 
       <View>
         <Text style={styles.userWauwPoints}>
-          Wauw Points: {userInfo.wauwPoints}
+          Wauw points: {userInfo.wauwPoints}
         </Text>
       </View>
 
@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    backgroundColor: "#f2f2f2",
     paddingTop: 30,
     paddingBottom: 30,
-    backgroundColor: "#443099",
-    borderRadius: 25
+    backgroundColor: "#282C34",
+    borderRadius: 10,
+    marginTop: 15
   },
   userInfoAvatar: {
     marginRight: 20
@@ -79,29 +79,32 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     paddingLeft: 30,
     paddingBottom: 15,
-    backgroundColor: "#43B581",
     borderRadius: 25,
-    color: 'white'
+    color: 'black'
   },
   titleDescription: {
-    paddingLeft: 30,
-    paddingBottom: 5,
+    paddingLeft: 120,
+    paddingBottom: 10,
     fontSize: 20,
-    backgroundColor: "#43B581",
     borderRadius: 25,
-    color: 'white',
+    color: 'black',
     paddingTop: 10
   },
   userWauwPoints: {
-    paddingLeft: 30,
+    paddingLeft: 120,
     paddingTop: 10,
     paddingBottom: 10,
     fontSize: 15,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    backgroundColor: "#443099",
+    borderRadius: 10,
+    color: "white",
+    marginBottom: 15,
+    marginTop: 5
   },
   descriptionGlobal: {
-    backgroundColor: "#43B581",
-    borderRadius: 25
+    borderRadius: 25,
+    backgroundColor: "white"
   },
   emailStyle: {
     color: 'white'

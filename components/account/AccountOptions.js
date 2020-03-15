@@ -84,7 +84,7 @@ export default function AccountOptions(props) {
   };
 
   return (
-    <View>
+    <View style={styles.menuItems}>
       {menuOptions.map((menu, index) => (
         <ListItem
           key={index}
@@ -118,5 +118,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#e3e3e3",
     borderRadius: 25,
+    marginTop: 5,
+    marginBottom: 5
+  },
+  menuItems: {
+      marginTop: 10
   }
 });
