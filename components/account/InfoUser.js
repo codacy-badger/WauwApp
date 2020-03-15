@@ -31,13 +31,13 @@ export default function InfoUser(props) {
           containerStyle={styles.userInfoAvatar}
           source={{
             uri:
-              "https://cdn4.iconfinder.com/data/icons/rounded-set-1/512/User-512.png"
+              "https://i.imgur.com/vEKMHsV.jpg"
           }}
         />
 
         <View>
           <Text style={styles.displayName}> {userInfo.name} </Text>
-          <Text>{userInfo.surname}</Text>
+          <Text style={styles.emailStyle}>{userInfo.surname}</Text>
         </View>
       </View>
 
@@ -47,7 +47,7 @@ export default function InfoUser(props) {
         </Text>
       </View>
 
-      <View>
+      <View style={styles.descriptionGlobal}>
         <Text style={styles.titleDescription}>Descripción</Text>
         <Text style={styles.userDescription}>{userInfo.description}</Text>
       </View>
@@ -63,26 +63,34 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     paddingTop: 30,
     paddingBottom: 30,
-    backgroundColor: "#c3c3c3",
-    borderRadius: 25,
+    backgroundColor: "#443099",
+    borderRadius: 25
   },
   userInfoAvatar: {
     marginRight: 20
   },
   displayName: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: 'white'
   },
   userDescription: {
     alignItems: "center",
     justifyContent: "center",
     paddingRight: 30,
     paddingLeft: 30,
-    paddingBottom: 15
+    paddingBottom: 15,
+    backgroundColor: "#43B581",
+    borderRadius: 25,
+    color: 'white'
   },
   titleDescription: {
     paddingLeft: 30,
     paddingBottom: 5,
-    fontSize: 20
+    fontSize: 20,
+    backgroundColor: "#43B581",
+    borderRadius: 25,
+    color: 'white',
+    paddingTop: 10
   },
   userWauwPoints: {
     paddingLeft: 30,
@@ -90,5 +98,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontSize: 15,
     fontWeight: "bold"
+  },
+  descriptionGlobal: {
+    backgroundColor: "#43B581",
+    borderRadius: 25
+  },
+  emailStyle: {
+    color: 'white'
   }
 });
