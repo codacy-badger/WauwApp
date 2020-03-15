@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { StyleSheet, View, Button} from 'react-native';
 import InfoUser from './InfoUser';
 import { users } from '../population/config';
+import AccountOptions from './AccountOptions';
+
 
 export default function UserGuest() {
     const [userInfo, setUserInfo] = useState({});
@@ -15,8 +17,16 @@ export default function UserGuest() {
     }, []);
 
     return (
-        <View>
+        <View style={styles.viewUserInfo}>
             <InfoUser userInfo={users[0]}/>
+            <AccountOptions></AccountOptions>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    viewUserInfo: {
+      minHeight: "100%",
+      backgroundColor: "#f2f2f2"
+    }
+  });
