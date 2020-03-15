@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { withNavigation } from "react-navigation";
+import { globalStyles } from "../styles/global";
 
 function Services(props) {
   const { navigation } = props;
@@ -15,15 +16,15 @@ function Services(props) {
             activeOpacity={0.5}
           >
             <Image
-              source={require("../images/search-walks.png")}
+              source={require("../../assets/images/search-walks.png")}
               style={styles.ImageIconStyle}
             />
           </TouchableOpacity>
 
           <Button
-            buttonStyle={styles.btnStyle}
-            containerStyle={styles.btnContainer}
+            buttonStyle={globalStyles.btnStyle}
             title="Buscar Paseos"
+            titleStyle={globalStyles.btnTextStyle}
             onPress={() => navigation.navigate("SearchWalks")}
           />
         </View>
@@ -33,51 +34,51 @@ function Services(props) {
             activeOpacity={0.5}
           >
             <Image
-              source={require("../images/search-accommodations.png")}
+              source={require("../../assets/images/search-accommodations.png")}
               style={styles.ImageIconStyle}
             />
           </TouchableOpacity>
           <Button
-            buttonStyle={styles.btnStyle}
-            containerStyle={styles.btnContainer}
+            buttonStyle={globalStyles.btnStyle}
             title="Buscar alojamientos"
+            titleStyle={globalStyles.btnTextStyle}
             onPress={() => navigation.navigate("SearchAccommodations")}
           />
         </View>
       </View>
 
       <View style={styles.row}>
-        <View style={styles.column}>
+        {/* <View style={styles.column}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("CreateWalk")}
+            onPress={() => navigation.navigate("ChangeAvailability")}
             activeOpacity={0.5}
           >
             <Image
-              source={require("../images/create-walk.png")}
+              source={require("../../assets/images/create-walk.png")}
               style={styles.ImageIconStyle}
             />
           </TouchableOpacity>
           <Button
-            buttonStyle={styles.btnStyle}
-            containerStyle={styles.btnContainer}
-            title="Crear un paseo"
-            onPress={() => navigation.navigate("CreateWalk")}
+            buttonStyle={globalStyles.btnStyle}
+            title="Cambiar disponibilidad"
+            titleStyle={globalStyles.btnTextStyle}
+            onPress={() => navigation.navigate("ChangeAvailability")}
           />
-        </View>
+        </View> */}
         <View style={styles.column}>
           <TouchableOpacity
             onPress={() => navigation.navigate("CreateAccommodation")}
             activeOpacity={0.5}
           >
             <Image
-              source={require("../images/create-accommodation.png")}
+              source={require("../../assets/images/create-accommodation.png")}
               style={styles.ImageIconStyle}
             />
           </TouchableOpacity>
           <Button
-            buttonStyle={styles.btnStyle}
-            containerStyle={styles.btnContainer}
+            buttonStyle={globalStyles.btnStyle}
             title="Crear alojamientos"
+            titleStyle={globalStyles.btnTextStyle}
             onPress={() => navigation.navigate("CreateAccommodation")}
           />
         </View>
@@ -89,41 +90,27 @@ function Services(props) {
 export default withNavigation(Services);
 
 const styles = StyleSheet.create({
-  btnStyle: {
-    backgroundColor: "#4cd0e1",
-    width: 150,
-    height: 55,
-    borderRadius: 30,
-    margin: 5,
-    marginBottom: 5
-  },
-  btnContainer: {
-    backgroundColor: "#4cd0e1"
-  },
   container: {
     flex: 1,
     justifyContent: "space-between",
-    padding: 10
+    paddingVertical: 70
   },
   row: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10
+    justifyContent: "space-between"
   },
   column: {
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20
+    justifyContent: "space-between"
   },
   ImageIconStyle: {
-    padding: 20,
     margin: 15,
-    height: 100,
-    width: 120,
+    height: 90,
+    width: 110,
     resizeMode: "stretch"
   }
 });
