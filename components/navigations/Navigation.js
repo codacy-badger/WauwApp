@@ -19,16 +19,10 @@ const NavigationStacks = createBottomTabNavigator(
           <Icon
             type="material-community"
             name="home"
-            size={35}
+            size={31}
             color={tintColor}
           />
-        ),
-        tabBarOptions: {
-          activeBackgroundColor: "#f7ba7c",
-          activeTintColor: "#ffffff",
-          showLabel: false,
-          showIcon: true
-        }
+        )
       })
     },
     Notifications: {
@@ -39,7 +33,7 @@ const NavigationStacks = createBottomTabNavigator(
           <Icon
             type="material-community"
             name="bell"
-            size={35}
+            size={31}
             color={tintColor}
           />
         )
@@ -53,7 +47,7 @@ const NavigationStacks = createBottomTabNavigator(
           <Icon
             type="material-community"
             name="dog-service"
-            size={35}
+            size={31}
             color={tintColor}
           />
         )
@@ -67,7 +61,7 @@ const NavigationStacks = createBottomTabNavigator(
           <Icon
             type="material-community"
             name="account"
-            size={35}
+            size={31}
             color={tintColor}
           />
         )
@@ -81,12 +75,7 @@ const NavigationStacks = createBottomTabNavigator(
       showLabel: false,
       showIcon: true,
       inactiveTintColor: "#6c7075",
-      activeTintColor: "#ffffff",
-      activeBackgroundColor: "#4cd0e1",
-      labelStyle: {
-        fontSize: 13,
-        fontWeight: "bold"
-      }
+      activeTintColor: "#443099"
     }
   }
 );

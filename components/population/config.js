@@ -27,3 +27,9 @@ export var walkers = [];
 db.ref().child('walkers').orderByChild('id').on('value', snap => {
   walkers = snap.val();
 });
+
+// Get all wauwers
+export let wauwers = [];
+db.ref().child('wauwers').orderByChild('id').on('child_added', snap => {
+  wauwers = snap.val();
+});
