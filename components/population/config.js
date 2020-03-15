@@ -35,7 +35,7 @@ db.ref()
   });
 
 // //Get all requests
-export const requests = [];
+export let requests = [];
 db.ref("requests")
   .orderByChild("date")
   .on("value", function(snap) {
