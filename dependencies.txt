@@ -17,3 +17,7 @@ npm i react-native-gesture-handler
 expo install react-native-gesture-handler
 npm install react-native-reanimated
 expo install react-native-reanimated
+
+
+//Formulario
+npm install Formik
