@@ -6,12 +6,13 @@ import AccountOptions from './AccountOptions';
 
 
 export default function UserGuest() {
-    const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({});
 
-    //console.log(users[0].name);
+  //console.log(users[0].name);
 
-    useEffect(() => {
-        (async () => {
+  //   useEffect(() => {
+  //     (async () => {})();
+  //   }, []);
 
         })();
     }, []);
