@@ -42,8 +42,8 @@ export default function ChangeDescriptionForm(props) {
             defaultValue={desc && desc}
             onChange={v => setNewDesc(v.nativeEvent.text)}
             rightIcon={{
-              type: "lead-pencil",
-              name: "account-circle-outline",
+              type: "material-community",
+              name: "lead-pencil",
               color: "#c2c2c2"
             }}
             errorMessage={error}

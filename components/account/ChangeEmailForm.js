@@ -42,8 +42,8 @@ export default function ChangeEmailForm(props) {
           defaultValue={email && email}
           onChange={v => setNewEmail(v.nativeEvent.text)}
           rightIcon={{
-            type: "at",
-            name: "account-circle-outline",
+            type: "material-community",
+            name: "at",
             color: "#c2c2c2"
           }}
           errorMessage={error}

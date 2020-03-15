@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     paddingTop: 30,
     paddingBottom: 30,
-    backgroundColor: "#4cd0e1"
+    backgroundColor: "#c3c3c3",
+    borderRadius: 25,
   },
   userInfoAvatar: {
     marginRight: 20

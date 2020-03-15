@@ -116,6 +116,7 @@ export default function AccountOptions(props) {
 const styles = StyleSheet.create({
   menuItem: {
     borderBottomWidth: 1,
-    borderBottomColor: "#e3e3e3"
+    borderBottomColor: "#e3e3e3",
+    borderRadius: 25,
   }
 });
