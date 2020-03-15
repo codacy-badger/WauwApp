@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 30,
     paddingBottom: 30,
-    backgroundColor: "#282C34",
-    borderRadius: 10,
+    backgroundColor: "white",
+    borderRadius: 25,
     marginTop: 15
   },
   userInfoAvatar: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   displayName: {
     fontWeight: "bold",
-    color: 'white'
+    color: 'black'
   },
   userDescription: {
     alignItems: "center",
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   titleDescription: {
-    paddingLeft: 120,
+    paddingLeft: 127,
     paddingBottom: 10,
     fontSize: 20,
     borderRadius: 25,
@@ -91,22 +91,24 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   userWauwPoints: {
-    paddingLeft: 120,
+    paddingLeft: 40,
     paddingTop: 10,
     paddingBottom: 10,
     fontSize: 15,
     fontWeight: "bold",
     backgroundColor: "#443099",
-    borderRadius: 10,
+    borderRadius: 25,
     color: "white",
     marginBottom: 15,
-    marginTop: 5
+    marginTop: 15,
+    marginLeft: 80,
+    marginRight: 80
   },
   descriptionGlobal: {
     borderRadius: 25,
     backgroundColor: "white"
   },
   emailStyle: {
-    color: 'white'
+    color: 'black'
   }
 });

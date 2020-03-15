@@ -5,7 +5,7 @@ const ProfileScreenStacks = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
     navigationOptions: () => ({
-      title: "Mi cuenta",
+      title: "Mi perfil",
       headerTitleAlign: "center"
     })
   }

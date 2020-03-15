@@ -27,10 +27,3 @@ export var walkers = [];
 db.ref().child('walkers').orderByChild('id').on('value', snap => {
   walkers = snap.val();
 });
-
-export const users = [];
-db.ref("wauwers").orderByChild("id").on("value", function(snap){
-  snap.forEach(function(child){
-      users.push(child.val());
-  });
-});

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Button } from "react-native";
 import InfoUser from "./InfoUser";
-import { users } from "../population/config";
+import { users } from "./QueriesProfile";
 import AccountOptions from "./AccountOptions";
 
 export default function UserGuest() {
