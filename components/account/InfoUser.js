@@ -4,10 +4,11 @@ import { Avatar } from "react-native-elements";
 import { db } from "../population/config.js";
 
 export default function InfoUser(props) {
-  const { userInfo } = props;
+  const { userInfo, setReloadData } = props;
 
   changeAvatar = () => {
     console.log("Estás cambiando el avatar...");
+    setReloadData(false);
   };
 
   const actualizaNombre = () => {

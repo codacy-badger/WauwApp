@@ -4,7 +4,7 @@ const changeAvatar = () => {
   console.log("Estás cambiando el avatar...");
 };
 
-export async function updateName(id, name) {
+export function updateName(id, name) {
   let userData = {
     name: name
   };
@@ -13,20 +13,20 @@ export async function updateName(id, name) {
     .update(userData);
 }
 
-const updateSurname = surName => {
+export function updateSurname(surName) {
   let userData = {
     surName: surName
   };
   db.ref("wauwers")
     .child(userInfo.id)
     .update(userData);
-};
+}
 
-const updateDescription = desc => {
+export function updateDescription(desc) {
   let userData = {
     description: desc
   };
   db.ref("wauwers")
     .child(userInfo.id)
     .update(userData);
-};
+}
