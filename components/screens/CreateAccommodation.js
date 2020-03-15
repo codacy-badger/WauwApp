@@ -6,21 +6,23 @@ import { db } from "../population/config.js";
 export default function CreateAccommodation(props) {
   //const worker = await firebase.auth().currentUser;
 
-  const [newDate, setNewDate] = useState(null);
-  const newPending = useState('true');
-  const [newInfo, setNewInfo] = useState(null);
-  const newOwner = useState(null);  
-  const [newQuantity, setNewQuantity] = useState(null);
-  const newType = useState('accommodation');
-  const newWorker = useState('worker3');
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const { id,date, info, pending, owner,quantity,type,worker, setIsVisibleModal, setReloadData } = props;
 
+  const [newDate, setNewDate] = useState(null);
+  const newPending = 'true';
+  const [newInfo, setNewInfo] = useState(null);
+  const newOwner = '';  
+  const [newQuantity, setNewQuantity] = useState(null);
+  const newType = 'accommodation';
+  const newWorker = ' ';
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  
 
 
   const addRequest = () => {
-    setError(null);
+      setError(null);
       setIsLoading(true);
       let requestData = {
         date: newDate,
@@ -32,9 +34,9 @@ export default function CreateAccommodation(props) {
         worker: newWorker,
 
       };
+      console.log(requestData)
       db.ref("requests")
-        .child(id)
-        .set(requestData)
+        .push(requestData)
         .then(() => {
           setIsLoading(false);
           setReloadData(false);
@@ -48,21 +50,10 @@ export default function CreateAccommodation(props) {
   };
   
 
-
   return (
-    <View >
+    <View style={styles.view} >
       <Text> Crea tu alojamiento </Text>
-      <Formik
-        
-          onSubmit={(values) => {
-            console.log(values)
-            addRequest()
-            
-          }}>
-           
-
-          {(props) =>(
-            <View style={styles.container}>
+            <View >
               <Text>Fecha</Text>
               <TextInput
               placeholder="dd/MM/aaaa"
@@ -90,6 +81,7 @@ export default function CreateAccommodation(props) {
               />
               <Text>Precio total</Text>
               <TextInput
+              keyboardType= 'numeric'
               containerStyle={styles.input}
               defaultValue={quantity && quantity}
               onChange={v => setNewQuantity(v.nativeEvent.text)}
@@ -102,24 +94,30 @@ export default function CreateAccommodation(props) {
               />
             <Button 
             title= 'Crear'
-            onPress= {props.handleSubmit}
+            onPress= {addRequest}
             loading={isLoading}
             /> 
             </View>
-          )}
-
-      </Formik>
+          
     </View>
   );
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    
+  view: {
+    alignItems: "center",
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  input: {
+    marginBottom: 10
+  },
+  btnContainer: {
+    marginTop: 20,
+    width: "95%"
+  },
+  btn: {
+    backgroundColor: "#00a680"
   }
-  
-
 });
