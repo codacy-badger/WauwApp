@@ -26,7 +26,7 @@ export default function SearchWalks() {
       wauwers.push(snap.val());
     });
   }
-  console.log(wauwers);
+  
   return (
    <View>
       <ListWauwers wauwerList = {wauwers}/>
