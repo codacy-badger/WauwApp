@@ -2,13 +2,36 @@ import React, { useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
+import {DateTimePicker} from '@react-native-community/datetimepicker';
 
 function CreateAccommodation(props) {
-  const { id,date, info, pending, owner,quantity,type,worker, setIsVisibleModal, setReloadData, navigation } = props;
+  const [date, setDate] = useState(new Date(1598051730000));
+  const { id, info, pending, owner, quantity, type, worker, setIsVisibleModal, setReloadData, navigation } = props;
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const showMode = currentMode => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
 
 
 
-  const [newDate, setNewDate] = useState(null);
+  const [newDate, setNewDate] = useState(new Date());
   const newPending = 'true';
   const [newInfo, setNewInfo] = useState(null);
   const newOwner = '';  
@@ -55,25 +78,32 @@ function CreateAccommodation(props) {
         
     
   };
-  
-
+ 
   return (
     <View style={styles.view} >
       <Text> Crea tu alojamiento </Text>
             <View >
               <Text>Fecha</Text>
-              <TextInput
-              placeholder="dd/MM/aaaa"
-              containerStyle={styles.input}
-              defaultValue={date && date}
-              onChange={v => setNewDate(v.nativeEvent.text)}
-              rightIcon={{
-                type: "material-community",
-                name: "account-circle-outline",
-                color: "#c2c2c2"
-              }}
-              errorMessage={error}
-              />
+              <View>
+                  <View>
+                    <Button onPress={showDatepicker} title="Show date picker!" />
+                  </View>
+                  <View>
+                    <Button onPress={showTimepicker} title="Show time picker!" />
+                  </View>
+                  {show && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      timeZoneOffsetInMinutes={0}
+                      value={date}
+                      mode={mode}
+                      is24Hour={true}
+                      display="default"
+                      onChange={onChange}
+                    />
+                  )}
+              </View>
+
               <Text>Información de alojamiento</Text>
               <TextInput
               containerStyle={styles.input}
@@ -111,6 +141,7 @@ function CreateAccommodation(props) {
 }
 
 export default withNavigation(CreateAccommodation);
+  
 
 const styles = StyleSheet.create({
   view: {
