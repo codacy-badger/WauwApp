@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { db } from "../population/config.js";
+import { withNavigation } from "react-navigation";
 
-export default function CreateAccommodation(props) {
+function CreateAccommodation(props) {
   //const worker = await firebase.auth().currentUser;
+  const { id,date, info, pending, owner,quantity,type,worker, setIsVisibleModal, setReloadData, navigation } = props;
+  
 
-  const { id,date, info, pending, owner,quantity,type,worker, setIsVisibleModal, setReloadData } = props;
+
 
   const [newDate, setNewDate] = useState(null);
   const newPending = 'true';
@@ -21,6 +24,7 @@ export default function CreateAccommodation(props) {
 
 
   const addRequest = () => {
+      ()=>navigation.navigate("Home");
       setError(null);
       setIsLoading(true);
       let requestData = {
@@ -45,6 +49,7 @@ export default function CreateAccommodation(props) {
           setError("Ha ocurrido un error");
           setIsLoading(false);
         });
+        
     
   };
   
@@ -66,7 +71,7 @@ export default function CreateAccommodation(props) {
               }}
               errorMessage={error}
               />
-              <Text>Informacion de alojamiento</Text>
+              <Text>Información de alojamiento</Text>
               <TextInput
               containerStyle={styles.input}
               defaultValue={info && info}
@@ -102,6 +107,7 @@ export default function CreateAccommodation(props) {
   );
 }
 
+export default withNavigation(CreateAccommodation);
 
 const styles = StyleSheet.create({
   view: {

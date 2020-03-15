@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, TextInput, Button, View, Image} from 'react-native';
 
 
+
 export default function createRequest( props ){
     const { id, avgScore, description, dni, name, paypalURL, petNumber, photo, price,
     surname, wauwPoint} = props;
