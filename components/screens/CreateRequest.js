@@ -2,38 +2,67 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, TextInput, Button, View, Image} from 'react-native';
 
 
-export default function createRequest( {navigation} ){
-  const [person, setPerson] = useState(
-    {name: 'Helena', age: '30', date: '21/01/2020', pet: '1',
-    place:'Reina Mercedes, 20', message:'Hola Helena, me interesa tu servicio. Un saludo'}
-  );
+export default function createRequest( props ){
+    const { id, avgScore, description, dni, name, paypalURL, petNumber, photo, price,
+    surname, wauwPoint} = props;
    
- 
+    const [newDate, setNewDate] = useState(null);
+    const newPending = 'true';
+    const [newInfo, setNewInfo] = useState(null);
+    const newOwner = '';  
+    const [newQuantity, setNewQuantity] = useState(null);
+    const newType = 'walk';
+    const newWorker = ' ';
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const clickHandler = () => {
-        navigation.navigate('notificationRequest');
 
-  }
+    const addRequest = () => {
+        setError(null);
+        setIsLoading(true);
+        let requestData = {
+          date: newDate,
+          info: newInfo,
+          pending: newPending,
+          owner: newOwner,
+          quantity: newQuantity,
+          type: newType,
+          worker: newWorker,
+  
+        };
+        console.log(requestData)
+        db.ref("requests")
+          .push(requestData)
+          .then(() => {
+            setIsLoading(false);
+            setReloadData(false);
+            setIsVisibleModal(false);
+          })
+          .catch(() => {
+            setError("Ha ocurrido un error");
+            setIsLoading(false);
+          });
+      
+    };
 
     return(
-       <View >
-        <Image source={require('../assets/direc.jpg')} style={{width: '100%', height: 150}}/>
-        <Text>{'\n'}</Text>
-    <Text style ={styles.text}>{'Event Date\n'}<Text style ={styles.data}>{person.date}</Text></Text>
-         <Text style ={styles.text}>{'Event Place\n'}<Text style ={styles.data}>{person.place}</Text> </Text>
-         <Text style ={styles.text}>{'Dog number \n'} <Text style ={styles.data}>{person.pet}</Text> </Text>
-         <Text style ={styles.text}>{'Message \n'}<Text style ={styles.data}>{person.message}</Text></Text>
+        <View >
+            <Text style ={styles.text}>{'Nombre Paseador\n'}<Text style ={styles.data}>{name}</Text></Text>
+            <Text style ={styles.text}>{'Fecha\n'}<Text style ={styles.data}>{date}</Text> </Text>
+            <Text style ={styles.text}>{'Información \n'} <Text style ={styles.data}>{info}</Text> </Text>
+            <Text style ={styles.text}>{'Precio paseo \n'}<Text style ={styles.data}>{quantity}</Text></Text>
+         
+        <View style={styles.buttonContainer}>
         
-       <View style={styles.buttonContainer}>
-       
-        <Button title= 'send request' onPress= {clickHandler} color='#0de' />
+            <Button title= 'Crear Solicitud' onPress= {addRequest} color='#0de' />
+         
+        </View>
+        </View>
+ 
+ 
         
-       </View>
-       </View>
-
-
-       
-       ) 
+        );
+ 
 }
 
 const styles = StyleSheet.create({
@@ -53,5 +82,20 @@ const styles = StyleSheet.create({
       marginTop:40,
      
       
+  },
+  view: {
+    alignItems: "center",
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  input: {
+    marginBottom: 10
+  },
+  btnContainer: {
+    marginTop: 20,
+    width: "95%"
+  },
+  btn: {
+    backgroundColor: "#00a680"
   }
   });

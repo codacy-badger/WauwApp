@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
-import {Formik} from "formik";
 import { db } from "../population/config.js";
 
 export default function CreateAccommodation(props) {
@@ -13,7 +12,7 @@ export default function CreateAccommodation(props) {
   const [newInfo, setNewInfo] = useState(null);
   const newOwner = '';  
   const [newQuantity, setNewQuantity] = useState(null);
-  const newType = 'accommodation';
+  const newType = 'sitter';
   const newWorker = ' ';
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
