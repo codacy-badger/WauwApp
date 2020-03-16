@@ -58,7 +58,7 @@ export default function AccountOptions(props) {
         setRenderComponent(
           <ChangeEmailForm
             id={userInfo.id}
-            email={userInfo.surname}
+            email={userInfo.email}
             setIsVisibleModal={setIsVisibleModal}
             setReloadData={setReloadData}
           />
