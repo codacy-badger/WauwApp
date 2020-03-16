@@ -18,6 +18,7 @@ console.warn = message => {
 export default class App extends React.Component{
   render(){
     return <AppNavigator/>
+
   }
 }
 

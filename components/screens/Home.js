@@ -37,6 +37,7 @@ function Home(props) {
      <Image style={{flex:1,height:null, width:null, resizeMode:'cover',
      borderRadius: 5, borderWidth: 1, borderColor: '#dddddd'}}
       source={require("../images/dog.jpg")} />
+
     </View>
 
     <View style={{width:width-40, height:200, 
