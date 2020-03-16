@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
-import {DateTimePicker} from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 function CreateAccommodation(props) {
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
   const { id, info, pending, owner, quantity, type, worker, setIsVisibleModal, setReloadData, navigation } = props;
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
