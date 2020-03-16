@@ -1,43 +1,168 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { requests } from "../population/config.js";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Button,
+  Alert
+} from "react-native";
+import { db } from "../population/config";
+import Loading from "../Loading";
+import Toast from "react-native-easy-toast";
 
 export default function ListRequests(props) {
-  const { reqList } = props;
+  const { toastRef } = props;
+  const [requestsList, setRequestsList] = useState([]);
+  const [reloadRequests, setReloadRequests] = useState(false);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+
+  useEffect(() => {
+    db.ref("pruebasRequests").on("value", snap => {
+      const requests = [];
+      snap.forEach(child => {
+        requests.push(child.val());
+      });
+      setRequestsList(requests);
+    });
+    setReloadRequests(false);
+    setIsVisibleLoading(false);
+  }, [reloadRequests]);
 
   return (
     <View>
-      {props ? (
+      {requestsList ? (
         <FlatList
-          data={props}
-          renderItem={({ request }) => (
+          data={requestsList}
+          renderItem={request => (
             <Request
-              id={request.id}
-              owner={request.owner}
-              worker={request.worker}
-              info={request.info}
+              req={request}
+              setReloadRequests={setReloadRequests}
+              setIsVisibleLoading={setIsVisibleLoading}
+              toastRef={toastRef}
             />
           )}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={request => request.id}
         />
       ) : (
         <View>
           <Text>No requests</Text>
         </View>
       )}
+      <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
     </View>
   );
 }
 function Request(props) {
-  // const { requ } = props;
-  // const { id, owner, worker, info } = requ.item.requ;
-  // console.log(id);
+  const { req, setReloadRequests, setIsVisibleLoading, toastRef } = props;
+
+  console.log("Empieza");
+  console.log(req.item.type);
+  console.log("Termina");
+
+  const itemClicked = () => {
+    Alert.alert(
+      "Aceptar o Rechazar solicitud",
+      "",
+      [
+        {
+          text: "Más tarde"
+        },
+        {
+          text: "Aceptar",
+          onPress: updateRequest,
+          style: "cancel"
+        },
+        {
+          text: "Rechazar",
+          onPress: confirmDeleteRequest,
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const confirmDeleteRequest = () => {
+    Alert.alert(
+      "Rechazar solicitud",
+      "¿Estás seguro?",
+      [
+        {
+          text: "Si",
+          onPress: deleteRequest
+        },
+        {
+          text: "No",
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const updateRequest = () => {
+    let userData = {
+      pending: false
+    };
+    db.ref("pruebasRequests")
+      .child(req.item.id)
+      .update(userData)
+      .then(() => {
+        // setIsLoading(false);
+        //setReloadRequests(false);
+        // setIsVisibleModal(false);
+      })
+      .catch(() => {
+        //setError("Ha ocurrido un error");
+        //setIsLoading(false);
+      });
+  };
+
+  const deleteRequest = () => {
+    setIsVisibleLoading(true);
+    db.ref("pruebasRequests")
+      .child(req.item.id)
+      .remove()
+      .then(() => {
+        setReloadRequests(true);
+        toastRef.current.show("Solicitud rechazada");
+      })
+      .catch(() => {
+        toastRef.current.show("Error. Inténtelo de nuevo.");
+      });
+  };
+  //<Button title="ACEPTAR" onPress={updateRequest} />
+  //<Button title="RECHAZAR" onPress={confirmDeleteRequest} />
 
   return (
-    <TouchableOpacity>
-      <View>
-        <Text>Prueba de texto</Text>
+    <TouchableOpacity onPress={itemClicked}>
+      <View style={styles.request}>
+        <View style={styles.requestContent}>
+          <Text>Propietario: {req.item.owner}</Text>
+          <Text>Trabajador: {req.item.worker}</Text>
+          <Text>Info: {req.item.info.substr(0, 20)}...</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  request: {
+    borderRadius: 6,
+    elevation: 3,
+    backgroundColor: "#fff",
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "#333",
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    marginHorizontal: 4,
+    marginVertical: 6
+  },
+  requestContent: {
+    marginHorizontal: 18,
+    marginVertical: 10
+  }
+});

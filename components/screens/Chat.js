@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { View } from "react-native";
-import { requests } from "../population/config.js";
 import ListRequest from "./ListRequests";
+import Testeo from "../request/Testeo";
+import Toast from "react-native-easy-toast";
 
 export default function Chat() {
-  console.log(requests);
-
+  const toastRef = useRef();
   return (
     <View>
-      <ListRequest reqList={requests} />
+      <ListRequest toastRef={toastRef} />
+      <Toast ref={toastRef} position="center" opacity={0.7} />
     </View>
   );
 }

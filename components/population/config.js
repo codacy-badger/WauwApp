@@ -34,12 +34,21 @@ db.ref()
     walkers = snap.val();
   });
 
-// //Get all requests
+//Get all requests
 export let requests = [];
-db.ref("requests")
-  .orderByChild("date")
+db.ref("pruebasRequests")
+  .orderByChild("pending")
+  .equalTo(true)
   .on("value", function(snap) {
     snap.forEach(function(child) {
       requests.push(child.val());
     });
   });
+
+// export let requests = [];
+// db.ref()
+//   .child("requests")
+//   .orderByChild("date")
+//   .on("child_added", snap => {
+//     requests.push(snap.val());
+//   });

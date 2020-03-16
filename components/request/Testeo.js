@@ -4,9 +4,9 @@ import { db } from "../population/config";
 
 export default function Testeo(props) {
   const subeRequest = () => {
-    let id = db.ref("requests").push().key;
+    let id = db.ref("pruebasRequests").push().key;
     let date = new Date();
-    db.ref("requests/" + id).set({
+    db.ref("pruebasRequests/" + id).set({
       date:
         date.getUTCDate() +
         "/" +
@@ -23,17 +23,13 @@ export default function Testeo(props) {
     });
   };
 
-  //const {owner, worker, info} = props;
-  const { req } = props;
-
   return (
     <View style={styles.request}>
       <View style={styles.requestContent}>
         <Text>Request de: Propietario random</Text>
         <Text>Request hacia: Paseador random</Text>
         <Text>Mascota: Pitbull</Text>
-        <Button title="ACCEPT" onPress={subeRequest} />
-        <Button title="DECLINE" onPress={subeRequest} />
+        <Button title="CREAR REQUEST" onPress={subeRequest} />
       </View>
     </View>
   );
