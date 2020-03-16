@@ -107,7 +107,6 @@ function CreateAccommodation(props) {
                     />
                   )}
               </View>
-
               <Text>Información de alojamiento</Text>
               <TextInput
               containerStyle={styles.input}
@@ -138,16 +137,16 @@ function CreateAccommodation(props) {
             onPress= {all}
             loading={isLoading}
             /> 
-            </View>
-          
+            </View>  
     </View>
   );
 }
 
 export default withNavigation(CreateAccommodation);
-  
 
-const styles = StyleSheet.create({
+const styles =
+      
+      StyleSheet.create({
   view: {
     alignItems: "center",
     paddingTop: 10,

@@ -4,8 +4,7 @@ import { StyleSheet, Text, TextInput, Button, View, Image} from 'react-native';
 
 
 export default function createRequest( props ){
-    const { id, avgScore, description, dni, name, paypalURL, petNumber, photo, price,
-    surname, wauwPoint, price, email} = props;
+    const { id, avgScore, description, dni, name, paypalURL, petNumber, photo, price, surname, wauwPoint, price, email } = props;
    
     const [newDate, setNewDate] = useState(null);
     const newPending = 'true';
