@@ -22,15 +22,6 @@ export default function AccountOptions(props) {
       onPress: () => selectedComponent("name")
     },
     {
-      title: "Cambiar email",
-      iconType: "material-community",
-      iconNameLeft: "at",
-      iconColorLeft: "#ccc",
-      iconNameRight: "chevron-right",
-      iconColorRight: "#ccc",
-      onPress: () => selectedComponent("email")
-    },
-    {
       title: "Cambiar descripción",
       iconType: "material-community",
       iconNameLeft: "lead-pencil",
@@ -48,17 +39,6 @@ export default function AccountOptions(props) {
           <ChangeNameForm
             id={userInfo.id}
             name={userInfo.name}
-            setIsVisibleModal={setIsVisibleModal}
-            setReloadData={setReloadData}
-          />
-        );
-        setIsVisibleModal(true);
-        break;
-      case "email":
-        setRenderComponent(
-          <ChangeEmailForm
-            id={userInfo.id}
-            email={userInfo.email}
             setIsVisibleModal={setIsVisibleModal}
             setReloadData={setReloadData}
           />
@@ -121,6 +101,6 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   menuItems: {
-      marginTop: 10
+    marginTop: 10
   }
 });
