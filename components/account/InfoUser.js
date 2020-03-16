@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
-import { db } from "../population/config.js";
 
 export default function InfoUser(props) {
   const { userInfo, setReloadData } = props;
@@ -11,14 +10,14 @@ export default function InfoUser(props) {
     setReloadData(false);
   };
 
-  const actualizaNombre = () => {
-    var userData = {
-      avgScore: 668
-    };
-    db.ref("wauwers")
-      .child(userInfo.id)
-      .update(userData);
-  };
+  //const actualizaNombre = () => {
+  //  var userData = {
+  //    avgScore: 668
+  //  };
+  //  db.ref("wauwers")
+  //    .child(userInfo.id)
+  //    .update(userData);
+  //};
 
   return (
     <View>

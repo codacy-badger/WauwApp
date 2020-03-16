@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   input: {
-    height: 30,
     marginBottom: 10
   },
   btnContainer: {
