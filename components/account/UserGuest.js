@@ -14,10 +14,7 @@ export default function UserGuest() {
   //const toastRef = useRef();
 
   useEffect(() => {
-    (async () => {
-      const user = await firebase.auth().currentUser;
-      setUserInfo(user.providerData[0]);
-    })();
+    console.log('SE CAMBIÓ');
     setReloadData(false);
   }, [reloadData]);
 

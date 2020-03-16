@@ -12,7 +12,7 @@ export default function ChangeNameForm(props) {
   const updateName = () => {
     setError(null);
     if (!newName) {
-      setError("Nuevo nombre requerido.");
+      setError("El nombre debe ser diferente.");
     } else {
       setIsLoading(true);
       let userData = {
@@ -23,7 +23,7 @@ export default function ChangeNameForm(props) {
         .update(userData)
         .then(() => {
           setIsLoading(false);
-          setReloadData(false);
+          setReloadData(true);
           setIsVisibleModal(false);
         })
         .catch(() => {
