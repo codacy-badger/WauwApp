@@ -71,13 +71,12 @@ function SearchWalks(props) {
 
 function Wauwer(wauwerIn) {
   const { wauwer, navigation } = wauwerIn;
-  console.log(wauwer);
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("CreateRequest", {
-            wauwer: wauwer.wauwer
+            wauwer: wauwer
           })
         }
       >
