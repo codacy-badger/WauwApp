@@ -31,13 +31,13 @@ export default function InfoUser(props) {
           containerStyle={styles.userInfoAvatar}
           source={{
             uri:
-              "https://i.imgur.com/vEKMHsV.jpg"
+              userInfo.photo
           }}
         />
 
         <View>
           <Text style={styles.displayName}> {userInfo.name} </Text>
-          <Text style={styles.emailStyle}>{userInfo.surname}</Text>
+          <Text style={styles.emailStyle}>{userInfo.email}</Text>
         </View>
       </View>
 
@@ -63,8 +63,9 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
     backgroundColor: "white",
-    borderRadius: 25,
-    marginTop: 15
+    borderRadius: 20,
+    marginTop: 15,
+    backgroundColor: "#bae1ff"
   },
   userInfoAvatar: {
     marginRight: 20
@@ -109,6 +110,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   emailStyle: {
-    color: 'black'
+    color: 'black',
+    marginLeft: 4,
+    marginTop: 2
   }
 });
