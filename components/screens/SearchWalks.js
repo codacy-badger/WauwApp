@@ -15,9 +15,8 @@ export default function SearchWalks() {
   db.ref()
   .child('availability_wauwers')
   .on('child_added', snap => {
-    usersIdAvailables.push(snap.val().idWauwer);
+    usersIdAvailables.push(snap.val().wauwerId);
   });
-
   var wauwersId = Array.from(new Set(usersIdAvailables));
   var wauwers = [];
   for (let i = 0; i < wauwersId.length; i++) {
@@ -26,7 +25,6 @@ export default function SearchWalks() {
       wauwers.push(snap.val());
     });
   }
-  
   return (
    <View>
       <ListWauwers wauwerList = {wauwers}/>
