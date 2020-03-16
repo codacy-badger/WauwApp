@@ -19,7 +19,6 @@ console.warn = message => {
 //   "your-ios-client-id";
 
 export default class LoginScreen extends Component {
-  
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
       var providerData = firebaseUser.providerData;
@@ -38,7 +37,7 @@ export default class LoginScreen extends Component {
   };
 
   onSignIn = googleUser => {
-    console.log('Google Auth Response', googleUser);
+    //console.log('Google Auth Response', googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
     var unsubscribe = firebase.auth().onAuthStateChanged(
       function(firebaseUser) {
@@ -111,11 +110,6 @@ export default class LoginScreen extends Component {
                 firebase
                   .database()
                   .ref("/users/" + result.user.uid)
-              console.log('user signed in ');
-              if (result.additionalUserInfo.isNewUser) {
-                firebase
-                  .database()
-                  .ref('/users/' + result.user.uid)
                   .set({
                     gmail: result.user.email,
                     profile_picture: result.additionalUserInfo.profile.picture,
@@ -132,14 +126,6 @@ export default class LoginScreen extends Component {
                 firebase
                   .database()
                   .ref("/users/" + result.user.uid)
-                  })
-                  .then(function(snapshot) {
-                    // console.log('Snapshot', snapshot);
-                  });
-              } else {
-                firebase
-                  .database()
-                  .ref('/users/' + result.user.uid)
                   .update({
                     last_logged_in: Date.now()
                   });
