@@ -1,3 +1,20 @@
 npm install
 npm audit fix
 npm install --save firebase
+
+// Navegación
+npm install react-native-elements
+npm install react-native-screens
+expo install react-native-screens
+npm install --save @react-native-community/masked-view
+expo install @react-native-community/masked-view
+npm install react-native-safe-area-context
+expo install react-native-safe-area-context
+npm install react-navigation
+npm install react-navigation-stack
+npm install react-navigation-tabs
+npm i react-native-gesture-handler
+expo install react-native-gesture-handler
+npm install react-native-reanimated
+expo install react-native-reanimated
+expo install expo-google-app-auth

@@ -1,31 +1,39 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import * as firebase from 'firebase';
+import { StyleSheet, Text, View } from 'react-native'; 
+import {  createAppContainer, createSwitchNavigator } from 'react-navigation';
+import LoginScreen from './components/screens/LoginScreen';
+import DashboardScreen from './components/screens/DashboardScreen';
+import LoadingScreen from './components/screens/LoadingScreen';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
 
-// Initialize Firebase
-//TODO: Inciar sesión en Google Firebase con la cuenta que Andrea creó y obtener los siguientes datos
-const firebaseConfig = {
-  apiKey: "<YOUR-API-KEY>",
-  authDomain: "<YOUR-AUTH-DOMAIN>",
-  databaseURL: "<YOUR-DATABASE-URL>",
-  storageBucket: "<YOUR-STORAGE-BUCKET>"
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
 };
 
-firebase.initializeApp(firebaseConfig);
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+export default class App extends React.Component{
+  render(){
+    return <AppNavigator/>
+  }
 }
+
+const AppSwitchNavigator = createSwitchNavigator({
+  LoadingScreen:LoadingScreen,
+  LoginScreen:LoginScreen,
+  DashboardScreen:DashboardScreen
+})
+
+const AppNavigator = createAppContainer(AppSwitchNavigator);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
