@@ -5,7 +5,7 @@ import { withNavigation } from "react-navigation";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 function CreateAccommodation(props) {
-  const [date, setDate] = useState(new Date());
+  const [newDate, setDate] = useState(new Date());
   const { id, info, pending, owner, quantity, type, worker, setIsVisibleModal, setReloadData, navigation } = props;
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -14,11 +14,14 @@ function CreateAccommodation(props) {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
+    console.log(currentDate);
+
   };
 
   const showMode = currentMode => {
     setShow(true);
     setMode(currentMode);
+    
   };
 
   const showDatepicker = () => {
@@ -31,7 +34,6 @@ function CreateAccommodation(props) {
 
 
 
-  const [newDate, setNewDate] = useState(new Date());
   const newPending = 'true';
   const [newInfo, setNewInfo] = useState(null);
   const newOwner = '';  
@@ -42,11 +44,13 @@ function CreateAccommodation(props) {
   const [isLoading, setIsLoading] = useState(false);
   
   const all= () => {
+    
     addRequest();
     navigation.navigate("Home");
 
   }
 
+ 
 
   const addRequest = () => {
       
@@ -95,7 +99,7 @@ function CreateAccommodation(props) {
                     <DateTimePicker
                       testID="dateTimePicker"
                       timeZoneOffsetInMinutes={0}
-                      value={date}
+                      value={newDate}
                       mode={mode}
                       is24Hour={true}
                       display="default"
