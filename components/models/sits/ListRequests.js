@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card, Image } from "react-native-elements";
+import { db } from '../../population/config';
+
 
 export default function ListRequests(props){
     const {requestList}  = props;
@@ -35,18 +37,21 @@ export default function ListRequests(props){
             }
 }
 
+
+
+
+
 function Request(request){
+
+    const {wauwer} = db.ref('wauwers').orderByChild('id').equalTo(request.request.worker).on('child_added', snap => {wauwer = snap.val();});
+    console.log(wauwer);
+
     return (
         <View style={styles.separacion}>
-        <TouchableOpacity
-        onPress={() =>
-            navigation.navigate("Request", {
-              request: request.request
-            })
-          }
-        >
+        <TouchableOpacity>
                 <View style={styles.tarjeta}>
                     <View style={styles.row}>
+                   
                         <View style={styles.column_left}>
                             <Text> {request.request.info} </Text>
                         </View>
