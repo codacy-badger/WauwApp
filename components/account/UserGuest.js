@@ -3,32 +3,25 @@ import { StyleSheet, View, Button } from "react-native";
 import InfoUser from "./InfoUser";
 import AccountOptions from "./AccountOptions";
 import * as firebase from "firebase";
-import { db } from '../population/config'
+import { db } from "../population/config";
+import { email } from "./QueriesProfile";
 
 export default function UserGuest() {
   const [userInfo, setUserInfo] = useState([]);
   const [reloadData, setReloadData] = useState(false);
   //const [isLoading, setIsLoading] = useState(false);
   //const toastRef = useRef();
+  //console.log(email);
 
   useEffect(() => {
-    let email = '';
-
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        email = user.email;
-      }
-    });
-
-    db.ref("wauwers").orderByChild("id").startAt(email).on("value", function(snap){
-      const users = [];
-      snap.forEach(function(child){
-          users.push(child.val());
+    db.ref("wauwers")
+      .orderByChild("email")
+      .equalTo(email)
+      .on("value", function(snap) {
+        snap.forEach(function(child) {
+          setUserInfo(child.val());
+        });
       });
-
-      setUserInfo(users[0]);
-    });
-
     setReloadData(false);
   }, [reloadData]);
 
