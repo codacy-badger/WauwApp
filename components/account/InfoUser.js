@@ -59,39 +59,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    paddingTop: 30,
-    paddingBottom: 30,
+    paddingTop: 15,
+    paddingBottom: 15,
     backgroundColor: "white",
     borderRadius: 20,
-    marginTop: 15,
-    backgroundColor: "#bae1ff"
+    backgroundColor: "#00a680"
   },
   userInfoAvatar: {
     marginRight: 20
   },
   displayName: {
     fontWeight: "bold",
-    color: 'black'
+    color: 'white'
   },
   userDescription: {
     alignItems: "center",
     justifyContent: "center",
-    paddingRight: 30,
-    paddingLeft: 30,
+    paddingRight: 20,
+    paddingLeft: 20,
     paddingBottom: 15,
     borderRadius: 25,
     color: 'black'
   },
   titleDescription: {
-    paddingLeft: 127,
+    paddingLeft: 109,
     paddingBottom: 10,
-    fontSize: 20,
+    fontSize: 19,
     borderRadius: 25,
-    color: 'black',
+    color: '#443099',
     paddingTop: 10
   },
   userWauwPoints: {
-    paddingLeft: 40,
+    paddingLeft: 28,
     paddingTop: 10,
     paddingBottom: 10,
     fontSize: 15,
@@ -109,8 +108,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   emailStyle: {
-    color: 'black',
+    color: 'white',
     marginLeft: 4,
-    marginTop: 2
+    marginTop: 2,
+    fontWeight: "bold"
   }
 });

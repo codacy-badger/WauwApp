@@ -13,7 +13,7 @@ export default function AccountOptions(props) {
 
   const menuOptions = [
     {
-      title: "Cambiar nombre y apellidos",
+      title: "Cambiar nombre",
       iconType: "material-community",
       iconNameLeft: "account-circle",
       iconColorLeft: "#ccc",
