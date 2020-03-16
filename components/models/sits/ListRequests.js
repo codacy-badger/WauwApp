@@ -3,8 +3,8 @@ import { View, Text, FlatList, TouchableOpacity, SafeAreaView, StyleSheet } from
 import { ScrollView } from "react-native-gesture-handler";
 import { Card, Image } from "react-native-elements";
 
-export default function ListWauwers(props){
-    const {wauwerList}  = props;
+export default function ListRequests(props){
+    const {requestList}  = props;
     const [loading, setLoading] = useState(false);
     if (loading){
         return (
@@ -16,13 +16,13 @@ export default function ListWauwers(props){
     return (
         <SafeAreaView>
             <ScrollView>
-            { wauwerList ? (
+            { requestList ? (
                 <FlatList
-                data = {wauwerList}
-                renderItem= {  wauwer  => (
-                    <Wauwer wauwer = {wauwer.item} />
+                data = {requestList}
+                renderItem= {  request  => (
+                    <Request request = {request.item} />
                 )}
-                keyExtractor= { (wauwer) => {wauwer.id}}
+                keyExtractor= { (request) => {request.id}}
                 />
             ) : (
                 <View>
@@ -35,28 +35,23 @@ export default function ListWauwers(props){
             }
 }
 
-function Wauwer(wauwer){
+function Request(request){
     return (
         <View style={styles.separacion}>
         <TouchableOpacity
         onPress={() =>
-            navigation.navigate("Wauwer", {
-              wauwer: wauwer.wauwer
+            navigation.navigate("Request", {
+              request: request.request
             })
           }
         >
                 <View style={styles.tarjeta}>
                     <View style={styles.row}>
-                        <Image
-                            style={{width: 50, height: 50}}
-                            source={{uri: wauwer.wauwer.photo}}
-                        />
                         <View style={styles.column_left}>
-                            <Text> {wauwer.wauwer.name} </Text>
-                            <Text> {wauwer.wauwer.avgScore} </Text>
+                            <Text> {request.request.info} </Text>
                         </View>
                         <View style={styles.column_right}>
-                            <Text> {wauwer.wauwer.price} €</Text>
+                            <Text> {request.request.quantity} €</Text>
                         </View>
                     </View>
                 </View> 
@@ -96,7 +91,7 @@ const styles = StyleSheet.create({
     },
     tarjeta: {        
         elevation: 1, 
-        //backgroundColor: "#123",
+        backgroundColor: "#fff",
         borderRadius: 25,
         borderStyle: "solid"
     },
