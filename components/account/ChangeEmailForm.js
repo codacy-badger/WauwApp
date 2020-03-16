@@ -16,7 +16,7 @@ export default function ChangeEmailForm(props) {
     } else {
       setIsLoading(true);
       let userData = {
-        surname: newEmail
+        email: newEmail
       };
       db.ref("wauwers")
         .child(id)

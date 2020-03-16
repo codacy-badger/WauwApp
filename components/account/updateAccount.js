@@ -13,9 +13,9 @@ export function updateName(id, name) {
     .update(userData);
 }
 
-export function updateSurname(surName) {
+export function updateEmail(email) {
   let userData = {
-    surName: surName
+    email: email
   };
   db.ref("wauwers")
     .child(userInfo.id)
