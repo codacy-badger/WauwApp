@@ -8,8 +8,5 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 30,
     margin: 5,
     marginBottom: 5
-  },
-  btnTextStyle: {
-    fontFamily: "opensans-regular"
   }
 });

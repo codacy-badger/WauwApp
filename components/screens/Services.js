@@ -24,7 +24,6 @@ function Services(props) {
           <Button
             buttonStyle={globalStyles.btnStyle}
             title="Buscar Paseos"
-            titleStyle={globalStyles.btnTextStyle}
             onPress={() => navigation.navigate("SearchWalks")}
           />
         </View>
@@ -41,7 +40,6 @@ function Services(props) {
           <Button
             buttonStyle={globalStyles.btnStyle}
             title="Buscar alojamientos"
-            titleStyle={globalStyles.btnTextStyle}
             onPress={() => navigation.navigate("SearchAccommodations")}
           />
         </View>
@@ -61,7 +59,6 @@ function Services(props) {
           <Button
             buttonStyle={globalStyles.btnStyle}
             title="Cambiar disponibilidad"
-            titleStyle={globalStyles.btnTextStyle}
             onPress={() => navigation.navigate("ChangeAvailability")}
           />
         </View> */}
@@ -78,7 +75,6 @@ function Services(props) {
           <Button
             buttonStyle={globalStyles.btnStyle}
             title="Crear alojamientos"
-            titleStyle={globalStyles.btnTextStyle}
             onPress={() => navigation.navigate("CreateAccommodation")}
           />
         </View>
