@@ -53,10 +53,11 @@ function CreateAccommodation(props) {
  
 
   const addRequest = () => {
-      
+      let id= db.ref("requests").push().key;
       setError(null);
       setIsLoading(true);
       let requestData = {
+        id: id,
         date: newDate,
         info: newInfo,
         pending: newPending,
@@ -67,8 +68,8 @@ function CreateAccommodation(props) {
 
       };
       console.log(requestData)
-      db.ref("requests")
-        .push(requestData)
+      db.ref("request/" + id)
+        .set(requestData)
         .then(() => {
           setIsLoading(false);
           setReloadData(false);
