@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Button } from "react-native";
 import InfoUser from "./InfoUser";
-import { users } from "./QueriesProfile";
 import AccountOptions from "./AccountOptions";
 import * as firebase from "firebase";
 import { db } from '../population/config'
-import { reload } from "expo/build/Updates/Updates";
 
 export default function UserGuest() {
-  const [userInfo, setUserInfo] = useState(users[0]);
+  const [userInfo, setUserInfo] = useState([]);
   const [reloadData, setReloadData] = useState(false);
   //const [isLoading, setIsLoading] = useState(false);
   //const toastRef = useRef();
 
   useEffect(() => {
-    console.log('SE CAMBIÓ');
+    let email = '';
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        email = user.email;
+      }
+    });
+
+    db.ref("wauwers").orderByChild("id").startAt(email).on("value", function(snap){
+      const users = [];
+      snap.forEach(function(child){
+          users.push(child.val());
+      });
+
+      setUserInfo(users[0]);
+    });
+
     setReloadData(false);
   }, [reloadData]);
 
