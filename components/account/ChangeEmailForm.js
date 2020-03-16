@@ -12,7 +12,7 @@ export default function ChangeEmailForm(props) {
   const updateEmail = () => {
     setError(null);
     if (!newEmail) {
-      setError("Nuevo Email requerido.");
+      setError("Debes introducir un nuevo email.");
     } else {
       setIsLoading(true);
       let userData = {
@@ -23,7 +23,7 @@ export default function ChangeEmailForm(props) {
         .update(userData)
         .then(() => {
           setIsLoading(false);
-          setReloadData(false);
+          setReloadData(true);
           setIsVisibleModal(false);
         })
         .catch(() => {

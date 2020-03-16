@@ -16,7 +16,7 @@ export default function AccountOptions(props) {
       title: "Cambiar nombre y apellidos",
       iconType: "material-community",
       iconNameLeft: "account-circle",
-      iconColorLeft: "@ccc",
+      iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
       onPress: () => selectedComponent("name")
@@ -25,7 +25,7 @@ export default function AccountOptions(props) {
       title: "Cambiar email",
       iconType: "material-community",
       iconNameLeft: "at",
-      iconColorLeft: "@ccc",
+      iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
       onPress: () => selectedComponent("email")
@@ -34,7 +34,7 @@ export default function AccountOptions(props) {
       title: "Cambiar descripción",
       iconType: "material-community",
       iconNameLeft: "lead-pencil",
-      iconColorLeft: "@ccc",
+      iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
       onPress: () => selectedComponent("description")

@@ -12,7 +12,7 @@ export default function ChangeDescriptionForm(props) {
   const updateDescription = () => {
     setError(null);
     if (!newDesc) {
-      setError("Nuevo Email requerido.");
+      setError("La descripción no puede ser la misma.");
     } else {
       setIsLoading(true);
       let userData = {
@@ -23,7 +23,7 @@ export default function ChangeDescriptionForm(props) {
         .update(userData)
         .then(() => {
           setIsLoading(false);
-          setReloadData(false);
+          setReloadData(true);
           setIsVisibleModal(false);
         })
         .catch(() => {
