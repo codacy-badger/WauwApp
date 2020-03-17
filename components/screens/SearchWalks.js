@@ -5,7 +5,8 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  ActivityIndicator
 } from "react-native";
 import { Button, Avatar, Rating, Card, Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
@@ -14,11 +15,6 @@ import { withNavigation } from "react-navigation";
 
 function SearchWalks(props) {
   const { navigation } = props;
-  // QUERY --------------------------------------------------------------------
-  /* var wauwers = [];
-  db.ref().child('wauwers').orderByKey().on('child_added', (snap) => {
-    wauwers.push(snap.val());
-  }); */
 
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +23,6 @@ function SearchWalks(props) {
     .child("availability_wauwers")
     .on("child_added", snap => {
       usersIdAvailables.push(snap.val().wauwerId);
-      
     });
   var wauwersId = Array.from(new Set(usersIdAvailables));
   var wauwers = [];
@@ -36,16 +31,13 @@ function SearchWalks(props) {
       .child("wauwers/" + wauwersId[i])
       .on("value", snap => {
         wauwers.push(snap.val());
-      
       });
-      
   }
- 
 
   if (loading) {
     return (
-      <View>
-        <Text> Cargando... </Text>
+      <View style={styles.loading}>
+        <ActivityIndicator size="150%" color="#443099" />
       </View>
     );
   } else {
@@ -71,7 +63,6 @@ function SearchWalks(props) {
       </SafeAreaView>
     );
   }
-  return <View></View>;
 }
 
 function Wauwer(wauwerIn) {
@@ -147,5 +138,11 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     paddingBottom: 5
+  },
+  loading: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
   }
 });

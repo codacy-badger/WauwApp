@@ -1,9 +1,10 @@
 import { createStackNavigator } from "react-navigation-stack";
 import ServicesScreen from "../screens/Services";
-import SearchWalksScreenStack from "./SearchWalksStack";
 import SearchAccommodationsScreen from "../screens/SearchAccommodations";
 import ChangeAvailabilityScreen from "../screens/ChangeAvailability";
 import CreateAccommodationScreen from "../screens/CreateAccommodation";
+import SearchWalksScreen from "../screens/SearchWalks";
+import CreateRequestScreen from "../screens/CreateRequest";
 
 const ServicesScreenStacks = createStackNavigator({
   Services: {
@@ -14,7 +15,7 @@ const ServicesScreenStacks = createStackNavigator({
     })
   },
   SearchWalks: {
-    screen: SearchWalksScreenStack,
+    screen: SearchWalksScreen,
     navigationOptions: () => ({
       title: "Buscar Paseos",
       headerTitleAlign: "center"
@@ -31,6 +32,13 @@ const ServicesScreenStacks = createStackNavigator({
     screen: ChangeAvailabilityScreen,
     navigationOptions: () => ({
       title: "Cambiar Disponibilidad",
+      headerTitleAlign: "center"
+    })
+  },
+  CreateRequest: {
+    screen: CreateRequestScreen,
+    navigationOptions: () => ({
+      title: "Crear Solicitud",
       headerTitleAlign: "center"
     })
   },
