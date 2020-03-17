@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {StyleSheet, View, Text } from "react-native";
-import ListRequests from '../models/sits/ListRequests';
+import ListAccommodations from '../models/sits/ListAccommodations';
 import { db } from '../population/config';
 import { FlatList } from "react-native-gesture-handler";
 
@@ -25,7 +25,7 @@ export default function SearchAccommodations() {
   
 
   return (
-    <ListRequests requestList={requestsForSits}/>
+    <ListAccommodations requestList={requestsForSits}/>
   );
 
   
