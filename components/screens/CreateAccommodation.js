@@ -86,7 +86,7 @@ function CreateAccommodation(props) {
 
       };
       
-    if (newInfo === null || newQuantity === null) {
+    if (newInfo === null || newQuantity === null || newDate <= new Date()) {
       let errores = '';
       if (newInfo === null){
         errores = errores.concat("Debe escribir la información sobre el alojamiento.\n");
