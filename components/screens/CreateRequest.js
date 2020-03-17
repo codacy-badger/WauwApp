@@ -1,45 +1,43 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, Button, View, Image } from "react-native";
+import { db } from "../population/config.js";
+import { withNavigation } from "react-navigation";
 
-export default function createRequest(props) {
-  console.log(props);
-  const {userInfo} = props;
-  const {
-    id,
-    avgScore,
-    description,
-    dni,
-    name,
-    paypalURL,
-    petNumber,
-    photo,
-    surname,
-    wauwPoint,
-    price,
-    email
-  }= '';
 
-  //const {date, info, pending, owner, quantity, type, worker};
-  const newDate = '';
+
+function createRequest(props) {
+  const {navigation} = props;
+
+
+  const newDescription= navigation.state.params.wauwer.description;
+  const newPrice =navigation.state.params.wauwer.price;
+  const newDate = '   ';
   const newPending = "true";
-  //const [newInfo, setNewInfo] = useState(null);
   const newOwner = " ";
- //const [newQuantity, setNewQuantity] = useState(null);
   const newType = "walk";
   const newWorker = " ";
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const all= () => {
+    
+    addRequest();
+    navigation.navigate("Home");
+
+  }
+
 
   const addRequest = () => {
     let id= db.ref("requests").push().key;
     setError(null);
     setIsLoading(true);
     let requestData = {
+      id: id,
       date: newDate,
-      info: description,
+      info: newDescription,
       pending: newPending,
       owner: newOwner,
-      quantity: price,
+      quantity: newPrice,
       type: newType,
       worker: newWorker
     };
@@ -61,26 +59,29 @@ export default function createRequest(props) {
     <View>
       <Text style={styles.text}>
         {"Nombre Paseador\n"}
-        <Text style={styles.data}>{userInfo.navigation.state.params.wauwer.name}</Text>
+        <Text style={styles.data}>{navigation.state.params.wauwer.name}</Text>
       </Text>
       <Text style={styles.text}>
         {"Fecha\n"}
         <Text style={styles.data}>{newDate}</Text>{" "}
       </Text>
       <Text style={styles.text}>
-        {"Información \n"} <Text style={styles.data}>{description}</Text>{" "}
+        {"Información \n"} <Text style={styles.data}>{newDescription}</Text>{" "}
       </Text>
       <Text style={styles.text}>
         {"Precio paseo \n"}
-        <Text style={styles.data}>{price}</Text>
+        <Text style={styles.data}>{newPrice}</Text>
       </Text>
 
       <View style={styles.buttonContainer}>
-        <Button title="Crear Solicitud" onPress={addRequest} color="#0de" />
+        <Button title="Crear Solicitud" onPress={all} color="#0de" />
       </View>
     </View>
   );
 }
+
+
+export default withNavigation(createRequest);
 
 const styles = StyleSheet.create({
   text: {
