@@ -50,11 +50,11 @@ function CreateAccommodation(props) {
 
   const newPending = 'true';
   const [newInfo, setNewInfo] = useState(null);
-  const[newWorker, setNewWorker] = useState([]);
+  const [newWorker, setNewWorker] = useState([]);
   const [newQuantity, setNewQuantity] = useState(null);
   const newType = 'sitter';
   const newOwner = ' ';
-  const [error, setError]= useState(null);
+  const [error, setError] = useState("El formulario no debe tener campos vacíos.");
   const [isLoading, setIsLoading] = useState(false);
   
 
@@ -83,11 +83,11 @@ function CreateAccommodation(props) {
         worker: newWorker,
 
       };
-      setError(null);
+      
     if (newInfo == null || newQuantity == null) {
       console.log(newInfo);
       console.log(newQuantity);
-      setError("El formulario no debe tener campos vacíos.");
+      //setError("El formulario no debe tener campos vacíos.");
       console.log(error);
     } else {
       setIsLoading(true);
