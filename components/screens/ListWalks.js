@@ -12,7 +12,7 @@ import { db } from "../population/config";
 import Loading from "../Loading";
 import Toast from "react-native-easy-toast";
 
-export default function ListRequests(props) {
+export default function ListWalks(props) {
   const { toastRef } = props;
   const [requestsList, setRequestsList] = useState([]);
   const [reloadRequests, setReloadRequests] = useState(false);
@@ -109,11 +109,13 @@ function Request(props) {
       .child(req.item.id)
       .update(userData)
       .then(() => {
+        toastRef.current.show("Solicitud aceptada con éxito");
         // setIsLoading(false);
         //setReloadRequests(false);
         // setIsVisibleModal(false);
       })
       .catch(() => {
+        toastRef.current.show("Error. Inténtelo de nuevo.");
         //setError("Ha ocurrido un error");
         //setIsLoading(false);
       });
@@ -140,8 +142,8 @@ function Request(props) {
       <View style={styles.request}>
         <View style={styles.requestContent}>
           <Text>Propietario: {req.item.owner.name}</Text>
-          <Text>Trabajador: {req.item.info}</Text>
-          <Text>Info: {req.item.info.substr(0, 20)}...</Text>
+          <Text>Trabajador: {req.item.worker.name}</Text>
+          <Text>Info: {req.item.info.substr(0, 30)}...</Text>
         </View>
       </View>
     </TouchableOpacity>
