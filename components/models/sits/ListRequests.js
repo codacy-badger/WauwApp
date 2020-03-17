@@ -43,14 +43,15 @@ export default function ListRequests(props){
 
 function Request(request){
 
-    const {wauwer} = db.ref('wauwers').orderByChild('id').equalTo(request.request.worker).on('child_added', snap => {wauwer = snap.val();});
-    console.log(wauwer);
-
     return (
         <View style={styles.separacion}>
         <TouchableOpacity>
                 <View style={styles.tarjeta}>
                     <View style={styles.row}>
+                    <Image
+                        style={{width: 50, height: 50}}
+                        source={{uri: request.request.worker.photo}}
+                    />
                    
                         <View style={styles.column_left}>
                             <Text> {request.request.info} </Text>
