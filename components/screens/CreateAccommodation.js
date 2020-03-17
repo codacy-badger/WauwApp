@@ -4,6 +4,9 @@ import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+
+
+
 function CreateAccommodation(props) {
   const [newDate, setDate] = useState(new Date());
   const { id, info, pending, owner, quantity, type, worker, setIsVisibleModal, setReloadData, navigation } = props;
@@ -32,11 +35,22 @@ function CreateAccommodation(props) {
     showMode('time');
   };
 
+  useEffect(() => {
+    db.ref("wauwers")
+      .orderByChild("email")
+      .equalTo(email)
+      .on("value", function(snap) {
+        snap.forEach(function(child) {
+          setNewOwner(child.val());
+        });
+      });
+    setReloadData(false);
+  }, [reloadData]);
 
 
   const newPending = 'true';
   const [newInfo, setNewInfo] = useState(null);
-  const newOwner = '';  
+  const[newOwner, setNewOwner] = useState([]);
   const [newQuantity, setNewQuantity] = useState(null);
   const newType = 'sitter';
   const newWorker = ' ';

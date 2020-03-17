@@ -1,23 +1,40 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { StyleSheet, Text, TextInput, Button, View, Image } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
+import { email } from "../account/QueriesProfile";
+
 
 
 
 function createRequest(props) {
   const {navigation} = props;
-
+  
 
   const newDescription= navigation.state.params.wauwer.description;
   const newPrice =navigation.state.params.wauwer.price;
-  const newDate = '   ';
+  const newDate = '';
   const newPending = "true";
-  const newOwner = " ";
+  const[newOwner, setNewOwner] = useState([]);
   const newType = "walk";
-  const newWorker = " ";
+  const newWorker = navigation.state.params.wauwer;
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [reloadData, setReloadData] = useState(false);
+
+
+  useEffect(() => {
+    db.ref("wauwers")
+      .orderByChild("email")
+      .equalTo(email)
+      .on("value", function(snap) {
+        snap.forEach(function(child) {
+          setNewOwner(child.val());
+        });
+      });
+    setReloadData(false);
+  }, [reloadData]);
+
 
   const all= () => {
     

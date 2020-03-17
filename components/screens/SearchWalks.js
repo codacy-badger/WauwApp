@@ -20,11 +20,14 @@ function SearchWalks(props) {
     wauwers.push(snap.val());
   }); */
 
+  const [loading, setLoading] = useState(false);
+
   var usersIdAvailables = [];
   db.ref()
     .child("availability_wauwers")
     .on("child_added", snap => {
       usersIdAvailables.push(snap.val().wauwerId);
+      
     });
   var wauwersId = Array.from(new Set(usersIdAvailables));
   var wauwers = [];
@@ -33,9 +36,11 @@ function SearchWalks(props) {
       .child("wauwers/" + wauwersId[i])
       .on("value", snap => {
         wauwers.push(snap.val());
+      
       });
+      
   }
-  const [loading, setLoading] = useState(false);
+ 
 
   if (loading) {
     return (
