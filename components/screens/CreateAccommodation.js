@@ -106,22 +106,32 @@ function CreateAccommodation(props) {
         errores = errores.concat("La fecha debe ser posterior a la actual.\n");
       }
       Alert.alert("Advertencia", errores.toString());
-    } else {
-      setIsLoading(true);
-      db.ref("request/" + id)
-        .set(requestData)
-        .then(() => {
-          setIsLoading(false);
-          setReloadData(true);
-          setIsVisibleModal(false);
-        })
-        .catch(() => {
-          setError("Ha ocurrido un error");
-          setIsLoading(false);
-        });
-        Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
-        navigation.navigate("Services");
+    }else {
+      
+      let errores = '';
+      if (!Number.isNaN(newQuantity) && newQuantity < 10){
+        errores = errores.concat("El precio mínimo es 10.\n");
+        if (newDate <= new Date()){
+          errores = errores.concat("La fecha debe ser posterior a la actual.\n");
+        }
+        Alert.alert("Advertencia", errores.toString());
+      }else{
+        setIsLoading(true);
+        db.ref("request/" + id)
+          .set(requestData)
+          .then(() => {
+            setIsLoading(false);
+            setReloadData(true);
+            setIsVisibleModal(false);
+          })
+          .catch(() => {
+            setError("Ha ocurrido un error");
+            setIsLoading(false);
+          });
+          Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
+          navigation.navigate("Services");
       }
+    }
   };
  
   return (
