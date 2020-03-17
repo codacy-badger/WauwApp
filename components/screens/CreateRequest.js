@@ -1,87 +1,119 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, TextInput, Button, View, Image} from 'react-native';
+import React, { useState , useEffect} from "react";
+import { StyleSheet, Text, TextInput, Button, View, Image } from "react-native";
+import { db } from "../population/config.js";
+import { withNavigation } from "react-navigation";
+import { email } from "../account/QueriesProfile";
 
 
 
-export default function createRequest( props ){
-    const { id, avgScore, description, dni, name, paypalURL, petNumber, photo, price, surname, wauwPoint, price, email } = props;
-   
-    const [newDate, setNewDate] = useState(null);
-    const newPending = 'true';
-    const [newInfo, setNewInfo] = useState(null);
-    const newOwner = '';  
-    const [newQuantity, setNewQuantity] = useState(null);
-    const newType = 'walk';
-    const newWorker = ' ';
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
-
-    const addRequest = () => {
-        setError(null);
-        setIsLoading(true);
-        let requestData = {
-          date: newDate,
-          info: newInfo,
-          pending: newPending,
-          owner: newOwner,
-          quantity: newQuantity,
-          type: newType,
-          worker: newWorker,
+function createRequest(props) {
+  const {navigation} = props;
   
-        };
-        console.log(requestData)
-        db.ref("requests")
-          .push(requestData)
-          .then(() => {
-            setIsLoading(false);
-            setReloadData(false);
-            setIsVisibleModal(false);
-          })
-          .catch(() => {
-            setError("Ha ocurrido un error");
-            setIsLoading(false);
-          });
-      
-    };
 
-    return(
-        <View >
-            <Text style ={styles.text}>{'Nombre Paseador\n'}<Text style ={styles.data}>{name}</Text></Text>
-            <Text style ={styles.text}>{'Fecha\n'}<Text style ={styles.data}>{date}</Text> </Text>
-            <Text style ={styles.text}>{'Información \n'} <Text style ={styles.data}>{info}</Text> </Text>
-            <Text style ={styles.text}>{'Precio paseo \n'}<Text style ={styles.data}>{quantity}</Text></Text>
-         
-        <View style={styles.buttonContainer}>
-        
-            <Button title= 'Crear Solicitud' onPress= {addRequest} color='#0de' />
-         
-        </View>
-        </View>
- 
- 
-        
-        );
- 
+  const newDescription= navigation.state.params.wauwer.description;
+  const newPrice =navigation.state.params.wauwer.price;
+  const newDate = '';
+  const newPending = "true";
+  const[newOwner, setNewOwner] = useState([]);
+  const newType = "walk";
+  const newWorker = navigation.state.params.wauwer;
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [reloadData, setReloadData] = useState(false);
+
+
+  useEffect(() => {
+    db.ref("wauwers")
+      .orderByChild("email")
+      .equalTo(email)
+      .on("value", function(snap) {
+        snap.forEach(function(child) {
+          setNewOwner(child.val());
+        });
+      });
+    setReloadData(false);
+  }, [reloadData]);
+
+
+  const all= () => {
+    
+    addRequest();
+    navigation.navigate("Home");
+
+  }
+
+
+  const addRequest = () => {
+    let id= db.ref("requests").push().key;
+    setError(null);
+    setIsLoading(true);
+    let requestData = {
+      id: id,
+      date: newDate,
+      info: newDescription,
+      pending: newPending,
+      owner: newOwner,
+      quantity: newPrice,
+      type: newType,
+      worker: newWorker
+    };
+    console.log(requestData);
+    db.ref("request/" + id)
+      .set(requestData)
+      .then(() => {
+        setIsLoading(false);
+        setReloadData(false);
+        setIsVisibleModal(false);
+      })
+      .catch(() => {
+        setError("Ha ocurrido un error");
+        setIsLoading(false);
+      });
+  };
+
+  return (
+    <View>
+      <Text style={styles.text}>
+        {"Nombre Paseador\n"}
+        <Text style={styles.data}>{navigation.state.params.wauwer.name}</Text>
+      </Text>
+      <Text style={styles.text}>
+        {"Fecha\n"}
+        <Text style={styles.data}>{newDate}</Text>{" "}
+      </Text>
+      <Text style={styles.text}>
+        {"Información \n"} <Text style={styles.data}>{newDescription}</Text>{" "}
+      </Text>
+      <Text style={styles.text}>
+        {"Precio paseo \n"}
+        <Text style={styles.data}>{newPrice}</Text>
+      </Text>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Crear Solicitud" onPress={all} color="#0de" />
+      </View>
+    </View>
+  );
 }
 
-const styles = StyleSheet.create({
-    text: {
-      paddingHorizontal: 8,
-      paddingVertical: 6,
-      borderTopWidth:1,
-      borderTopColor: '#ddd',
 
-    },
-    data: {
-      paddingHorizontal: 8,
-      paddingVertical: 9,
-      color:'grey'      
-    },
-    buttonContainer:{
-      marginTop:40,
-     
-      
+export default withNavigation(createRequest);
+
+const styles = StyleSheet.create({
+  text: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderTopWidth: 1,
+    borderTopColor: "#ddd"
+  },
+  data: {
+    paddingHorizontal: 8,
+    paddingVertical: 9,
+    color: "grey"
+  },
+  buttonContainer: {
+    marginTop: 40
   },
   view: {
     alignItems: "center",
@@ -98,4 +130,4 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: "#00a680"
   }
-  });
+});
