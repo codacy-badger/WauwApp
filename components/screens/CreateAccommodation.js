@@ -19,7 +19,6 @@ function CreateAccommodation(props) {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    console.log(currentDate);
 
   };
 
@@ -33,9 +32,8 @@ function CreateAccommodation(props) {
     showMode('date');
   };
 
-  const showTimepicker = () => {
-    showMode('time');
-  };
+
+
 
   useEffect(() => {
     db.ref("wauwers")
@@ -56,9 +54,13 @@ function CreateAccommodation(props) {
   const [newQuantity, setNewQuantity] = useState(null);
   const newType = 'sitter';
   const newOwner = ' ';
-  const [error, setError] = useState(null);
+  const [error, setError]= useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
+
+
+
+
   const all= () => {
     
     addRequest();
@@ -66,11 +68,9 @@ function CreateAccommodation(props) {
 
   }
 
- 
 
   const addRequest = () => {
       let id= db.ref("requests").push().key;
-      setError(null);
       setIsLoading(true);
       let requestData = {
         id: id,
@@ -83,12 +83,20 @@ function CreateAccommodation(props) {
         worker: newWorker,
 
       };
-      console.log(requestData)
+      setError(null);
+    if (newInfo == null || newQuantity == null) {
+      console.log(newInfo);
+      console.log(newQuantity);
+      setError("El formulario no debe tener campos vacíos.");
+      console.log(error);
+    } else {
+      setIsLoading(true);
+      console.log('Entra')
       db.ref("request/" + id)
         .set(requestData)
         .then(() => {
           setIsLoading(false);
-          setReloadData(false);
+          setReloadData(true);
           setIsVisibleModal(false);
           
         })
@@ -96,7 +104,7 @@ function CreateAccommodation(props) {
           setError("Ha ocurrido un error");
           setIsLoading(false);
         });
-        
+      }
     
   };
  
@@ -107,11 +115,9 @@ function CreateAccommodation(props) {
               <Text>Fecha</Text>
               <View>
                   <View>
-                    <Button onPress={showDatepicker} title="Show date picker!" />
+                    <Button onPress={showDatepicker} title="Fecha de entrada" />
                   </View>
-                  <View>
-                    <Button onPress={showTimepicker} title="Show time picker!" />
-                  </View>
+                  
                   {show && (
                     <DateTimePicker
                       testID="dateTimePicker"
