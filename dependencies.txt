@@ -18,3 +18,5 @@ expo install react-native-gesture-handler
 npm install react-native-reanimated
 expo install react-native-reanimated
 expo install expo-google-app-auth
+npm install react-native-datepicker --save
+npm i react-native-easy-toast

@@ -1,5 +1,5 @@
 import React from "react";
-import Navigation from '../navigations/Navigation'
+import { View, Text } from "react-native";
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
 
@@ -11,6 +11,12 @@ console.warn = message => {
   }
 };
 
-export default function Dashboard() {
-  return <Navigation />;
+export default function Prueba(props) {
+  const { req } = props;
+
+  return (
+    <View>
+      <Text>Esto es una prueba. {req}</Text>
+    </View>
+  );
 }

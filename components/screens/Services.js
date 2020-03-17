@@ -2,6 +2,17 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { withNavigation } from "react-navigation";
+import { globalStyles } from "../styles/global";
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
 
 function Services(props) {
   const { navigation } = props;
@@ -15,14 +26,14 @@ function Services(props) {
             activeOpacity={0.5}
           >
             <Image
-              source={require("../images/search-walks.png")}
+              source={require("../../assets/images/search-walks.png")}
               style={styles.ImageIconStyle}
             />
           </TouchableOpacity>
 
           <Button
-            buttonStyle={styles.btnStyle}
-            containerStyle={styles.btnContainer}
+            buttonStyle={globalStyles.btnStyle}
+            titleStyle={globalStyles.btnTextStyle}
             title="Buscar Paseos"
             onPress={() => navigation.navigate("SearchWalks")}
           />
@@ -33,13 +44,13 @@ function Services(props) {
             activeOpacity={0.5}
           >
             <Image
-              source={require("../images/search-accommodations.png")}
+              source={require("../../assets/images/search-accommodations.png")}
               style={styles.ImageIconStyle}
             />
           </TouchableOpacity>
           <Button
-            buttonStyle={styles.btnStyle}
-            containerStyle={styles.btnContainer}
+            buttonStyle={globalStyles.btnStyle}
+            titleStyle={globalStyles.btnTextStyle}
             title="Buscar alojamientos"
             onPress={() => navigation.navigate("SearchAccommodations")}
           />
@@ -47,36 +58,36 @@ function Services(props) {
       </View>
 
       <View style={styles.row}>
-        <View style={styles.column}>
+        {/* <View style={styles.column}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("CreateWalk")}
+            onPress={() => navigation.navigate("ChangeAvailability")}
             activeOpacity={0.5}
           >
             <Image
-              source={require("../images/create-walk.png")}
+              source={require("../../assets/images/create-walk.png")}
               style={styles.ImageIconStyle}
             />
           </TouchableOpacity>
           <Button
-            buttonStyle={styles.btnStyle}
-            containerStyle={styles.btnContainer}
-            title="Crear un paseo"
-            onPress={() => navigation.navigate("CreateWalk")}
+            buttonStyle={globalStyles.btnStyle}
+            titleStyle={globalStyles.btnTextStyle}
+            title="Cambiar disponibilidad"
+            onPress={() => navigation.navigate("ChangeAvailability")}
           />
-        </View>
+        </View> */}
         <View style={styles.column}>
           <TouchableOpacity
             onPress={() => navigation.navigate("CreateAccommodation")}
             activeOpacity={0.5}
           >
             <Image
-              source={require("../images/create-accommodation.png")}
+              source={require("../../assets/images/create-accommodation.png")}
               style={styles.ImageIconStyle}
             />
           </TouchableOpacity>
           <Button
-            buttonStyle={styles.btnStyle}
-            containerStyle={styles.btnContainer}
+            buttonStyle={globalStyles.btnStyle}
+            titleStyle={globalStyles.btnTextStyle}
             title="Crear alojamientos"
             onPress={() => navigation.navigate("CreateAccommodation")}
           />
@@ -89,41 +100,27 @@ function Services(props) {
 export default withNavigation(Services);
 
 const styles = StyleSheet.create({
-  btnStyle: {
-    backgroundColor: "#4cd0e1",
-    width: 150,
-    height: 55,
-    borderRadius: 30,
-    margin: 5,
-    marginBottom: 5
-  },
-  btnContainer: {
-    backgroundColor: "#4cd0e1"
-  },
   container: {
     flex: 1,
     justifyContent: "space-between",
-    padding: 10
+    paddingVertical: 70
   },
   row: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10
+    justifyContent: "space-between"
   },
   column: {
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20
+    justifyContent: "space-between"
   },
   ImageIconStyle: {
-    padding: 20,
     margin: 15,
-    height: 100,
-    width: 120,
+    height: 90,
+    width: 110,
     resizeMode: "stretch"
   }
 });
