@@ -3,11 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  TextInput,
-  ScrollView,
-  FlatList,
-  TouchableOpacity
+  Button
 } from "react-native";
 import { db } from "./config";
 
