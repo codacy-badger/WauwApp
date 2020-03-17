@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -54,23 +54,25 @@ function CreateAccommodation(props) {
   const [newQuantity, setNewQuantity] = useState(null);
   const newType = 'sitter';
   const newOwner = ' ';
-  const [error, setError] = useState("El formulario no debe tener campos vacíos.");
+  //const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
 
 
 
 
+  //TODO: modificar para borrar el historial de la navegación
   const all= () => {
     
     addRequest();
-    navigation.navigate("Home");
+    
+    
 
   }
 
 
   const addRequest = () => {
-      let id= db.ref("requests").push().key;
+      let id= db.ref("request").push().key;
       setIsLoading(true);
       let requestData = {
         id: id,
@@ -84,28 +86,39 @@ function CreateAccommodation(props) {
 
       };
       
-    if (newInfo == null || newQuantity == null) {
-      console.log(newInfo);
-      console.log(newQuantity);
+    if (newInfo === null || newQuantity === null) {
+      let errores = '';
+      if (newInfo === null){
+        errores = errores.concat("Debe escribir la información sobre el alojamiento.\n");
+      }
+      if (newQuantity === null){
+        errores = errores.concat("Debe escribir el precio para el alojamiento.\n");
+      }
+      /* if (){
+        errores = errores.concat("Debe ser una cantidad entre 5 y 100, sin €.\n");
+      } */
       //setError("El formulario no debe tener campos vacíos.");
-      console.log(error);
+      if (newDate <= new Date()){
+        //setError("La fecha debe ser posterior a la actual.");
+        errores = errores.concat("La fecha debe ser posterior a la actual.\n");
+      }
+      Alert.alert("Advertencia", errores.toString());
     } else {
       setIsLoading(true);
-      console.log('Entra')
       db.ref("request/" + id)
         .set(requestData)
         .then(() => {
           setIsLoading(false);
           setReloadData(true);
           setIsVisibleModal(false);
-          
         })
         .catch(() => {
           setError("Ha ocurrido un error");
           setIsLoading(false);
         });
+        Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
+        navigation.navigate("Services");
       }
-    
   };
  
   return (
@@ -140,7 +153,7 @@ function CreateAccommodation(props) {
                 name: "account-circle-outline",
                 color: "#c2c2c2"
               }}
-              errorMessage={error}
+              //errorMessage={error}
               />
               <Text>Precio total</Text>
               <TextInput
@@ -153,7 +166,7 @@ function CreateAccommodation(props) {
                 name: "account-circle-outline",
                 color: "#c2c2c2"
               }}
-              errorMessage={error}
+              //errorMessage={error}
               />
             <Button 
             title= 'Crear'
