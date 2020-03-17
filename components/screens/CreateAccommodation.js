@@ -94,6 +94,9 @@ function CreateAccommodation(props) {
       if (newQuantity === null){
         errores = errores.concat("Debe escribir el precio para el alojamiento.\n");
       }
+      if (!Number.isNaN(newQuantity) && newQuantity < 10){
+        errores = errores.concat("El precio mínimo es 10.\n");
+      }
       /* if (){
         errores = errores.concat("Debe ser una cantidad entre 5 y 100, sin €.\n");
       } */
@@ -145,28 +148,18 @@ function CreateAccommodation(props) {
               </View>
               <Text>Información de alojamiento</Text>
               <TextInput
+              placeholder="Introduce aquí la información"
               containerStyle={styles.input}
-              defaultValue={info && info}
               onChange={v => setNewInfo(v.nativeEvent.text)}
-              rightIcon={{
-                type: "material-community",
-                name: "account-circle-outline",
-                color: "#c2c2c2"
-              }}
-              //errorMessage={error}
               />
               <Text>Precio total</Text>
               <TextInput
+              placeholder="10.00"
               keyboardType= 'numeric'
               containerStyle={styles.input}
-              defaultValue={quantity && quantity}
+              
               onChange={v => setNewQuantity(v.nativeEvent.text)}
-              rightIcon={{
-                type: "material-community",
-                name: "account-circle-outline",
-                color: "#c2c2c2"
-              }}
-              //errorMessage={error}
+              
               />
             <Button 
             title= 'Crear'
