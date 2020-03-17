@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -19,7 +19,6 @@ function CreateAccommodation(props) {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    console.log(currentDate);
 
   };
 
@@ -33,9 +32,8 @@ function CreateAccommodation(props) {
     showMode('date');
   };
 
-  const showTimepicker = () => {
-    showMode('time');
-  };
+
+
 
   useEffect(() => {
     db.ref("wauwers")
@@ -52,25 +50,29 @@ function CreateAccommodation(props) {
 
   const newPending = 'true';
   const [newInfo, setNewInfo] = useState(null);
-  const[newWorker, setNewWorker] = useState([]);
+  const [newWorker, setNewWorker] = useState([]);
   const [newQuantity, setNewQuantity] = useState(null);
   const newType = 'sitter';
   const newOwner = ' ';
-  const [error, setError] = useState(null);
+  //const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
+
+
+
+
+  //TODO: modificar para borrar el historial de la navegación
   const all= () => {
     
     addRequest();
-    navigation.navigate("Home");
+    
+    
 
   }
 
- 
 
   const addRequest = () => {
-      let id= db.ref("requests").push().key;
-      setError(null);
+      let id= db.ref("request").push().key;
       setIsLoading(true);
       let requestData = {
         id: id,
@@ -83,21 +85,53 @@ function CreateAccommodation(props) {
         worker: newWorker,
 
       };
-      console.log(requestData)
-      db.ref("request/" + id)
-        .set(requestData)
-        .then(() => {
-          setIsLoading(false);
-          setReloadData(false);
-          setIsVisibleModal(false);
-          
-        })
-        .catch(() => {
-          setError("Ha ocurrido un error");
-          setIsLoading(false);
-        });
-        
-    
+      
+    if (newInfo === null || newQuantity === null) {
+      let errores = '';
+      if (newInfo === null){
+        errores = errores.concat("Debe escribir la información sobre el alojamiento.\n");
+      }
+      if (newQuantity === null){
+        errores = errores.concat("Debe escribir el precio para el alojamiento.\n");
+      }
+      if (!Number.isNaN(newQuantity) && newQuantity < 10){
+        errores = errores.concat("El precio mínimo es 10.\n");
+      }
+      /* if (){
+        errores = errores.concat("Debe ser una cantidad entre 5 y 100, sin €.\n");
+      } */
+      //setError("El formulario no debe tener campos vacíos.");
+      if (newDate <= new Date()){
+        //setError("La fecha debe ser posterior a la actual.");
+        errores = errores.concat("La fecha debe ser posterior a la actual.\n");
+      }
+      Alert.alert("Advertencia", errores.toString());
+    }else {
+      
+      let errores = '';
+      if (!Number.isNaN(newQuantity) && newQuantity < 10){
+        errores = errores.concat("El precio mínimo es 10.\n");
+        if (newDate <= new Date()){
+          errores = errores.concat("La fecha debe ser posterior a la actual.\n");
+        }
+        Alert.alert("Advertencia", errores.toString());
+      }else{
+        setIsLoading(true);
+        db.ref("request/" + id)
+          .set(requestData)
+          .then(() => {
+            setIsLoading(false);
+            setReloadData(true);
+            setIsVisibleModal(false);
+          })
+          .catch(() => {
+            setError("Ha ocurrido un error");
+            setIsLoading(false);
+          });
+          Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
+          navigation.navigate("Services");
+      }
+    }
   };
  
   return (
@@ -107,11 +141,9 @@ function CreateAccommodation(props) {
               <Text>Fecha</Text>
               <View>
                   <View>
-                    <Button onPress={showDatepicker} title="Show date picker!" />
+                    <Button onPress={showDatepicker} title="Fecha de entrada" />
                   </View>
-                  <View>
-                    <Button onPress={showTimepicker} title="Show time picker!" />
-                  </View>
+                  
                   {show && (
                     <DateTimePicker
                       testID="dateTimePicker"
@@ -126,28 +158,18 @@ function CreateAccommodation(props) {
               </View>
               <Text>Información de alojamiento</Text>
               <TextInput
+              placeholder="Introduce aquí la información"
               containerStyle={styles.input}
-              defaultValue={info && info}
               onChange={v => setNewInfo(v.nativeEvent.text)}
-              rightIcon={{
-                type: "material-community",
-                name: "account-circle-outline",
-                color: "#c2c2c2"
-              }}
-              errorMessage={error}
               />
               <Text>Precio total</Text>
               <TextInput
+              placeholder="10.00"
               keyboardType= 'numeric'
               containerStyle={styles.input}
-              defaultValue={quantity && quantity}
+              
               onChange={v => setNewQuantity(v.nativeEvent.text)}
-              rightIcon={{
-                type: "material-community",
-                name: "account-circle-outline",
-                color: "#c2c2c2"
-              }}
-              errorMessage={error}
+              
               />
             <Button 
             title= 'Crear'

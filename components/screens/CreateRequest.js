@@ -58,7 +58,6 @@ function createRequest(props) {
       type: newType,
       worker: newWorker
     };
-    console.log(requestData);
     db.ref("request/" + id)
       .set(requestData)
       .then(() => {
