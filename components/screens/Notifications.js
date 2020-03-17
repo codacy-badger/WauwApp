@@ -1,10 +1,15 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useRef } from "react";
+import { View } from "react-native";
+import ListWalks from "./ListWalks";
+import Testeo from "../request/Testeo";
+import Toast from "react-native-easy-toast";
 
-export default function Notifications() {
+export default function Chat() {
+  const toastRef = useRef();
   return (
     <View>
-      <Text> Página de Notificaciones</Text>
+      <ListWalks toastRef={toastRef} />
+      <Toast ref={toastRef} position="center" opacity={0.7} />
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from "firebase";
 
 var firebaseConfig = {
   apiKey: "AIzaSyCzMdhztBBX0fL49fbaI7Q1Lx99vmvrMbE",
@@ -18,12 +18,40 @@ export var db = app.database();
 // Custom queries
 // Get all owners
 export var owners = [];
-db.ref().child('owners').orderByChild('id').on('value', snap => {
-  owners = snap.val();
-});
+db.ref()
+  .child("owners")
+  .orderByChild("id")
+  .on("value", snap => {
+    owners = snap.val();
+  });
 
 // Get all walkers
 export var walkers = [];
+db.ref()
+  .child("walkers")
+  .orderByChild("id")
+  .on("value", snap => {
+    walkers = snap.val();
+  });
+
+//Get all requests
+export let requests = [];
+db.ref("pruebasRequests")
+  .orderByChild("pending")
+  .equalTo(true)
+  .on("value", function(snap) {
+    snap.forEach(function(child) {
+      requests.push(child.val());
+    });
+  });
+
+// export let requests = [];
+// db.ref()
+//   .child("requests")
+//   .orderByChild("date")
+//   .on("child_added", snap => {
+//     requests.push(snap.val());
+//   });
 db.ref().child('walkers').orderByChild('id').on('value', snap => {
   walkers = snap.val();
 });

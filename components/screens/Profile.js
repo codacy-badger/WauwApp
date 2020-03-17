@@ -1,26 +1,25 @@
 import React from "react";
 import { StyleSheet, View, Text, ScrollView, SafeAreaView } from "react-native";
-import firebase from 'firebase';
+import firebase from "firebase";
 import UserGuest from "../account/UserGuest";
 import { Button } from "react-native-elements";
-
 
 export default function Profile() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-    <ScrollView scrollEventThrottle={16}>
-    <View style={styles.viewStyle}>
-    <UserGuest />
-    </View>
-    <View>
-    <Button
-        buttonStyle={styles.btnStyle}
-        containerStyle={styles.btnContainer}
-        title="Cerrar sesión"
-        onPress={() => firebase.auth().signOut()}
-      />
-    </View>
-    </ScrollView>
+      <ScrollView scrollEventThrottle={16}>
+        <View style={styles.viewStyle}>
+          <UserGuest />
+        </View>
+        <View>
+          <Button
+            buttonStyle={styles.btnStyle}
+            containerStyle={styles.btnContainer}
+            title="Cerrar sesión"
+            onPress={() => firebase.auth().signOut()}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
