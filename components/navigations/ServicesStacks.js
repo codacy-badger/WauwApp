@@ -1,6 +1,6 @@
 import { createStackNavigator } from "react-navigation-stack";
 import ServicesScreen from "../screens/Services";
-import SearchWalksScreenStack from "./SearchWalksStack";
+import SearchWalksScreen from "../screens/SearchWalks";
 import SearchAccommodationsScreen from "../screens/SearchAccommodations";
 import ChangeAvailabilityScreen from "../screens/ChangeAvailability";
 import CreateAccommodationScreen from "../screens/CreateAccommodation";
@@ -14,7 +14,7 @@ const ServicesScreenStacks = createStackNavigator({
     })
   },
   SearchWalks: {
-    screen: SearchWalksScreenStack,
+    screen: SearchWalksScreen,
     navigationOptions: () => ({
       title: "Buscar Paseos",
       headerTitleAlign: "center"
