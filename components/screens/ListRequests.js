@@ -19,13 +19,16 @@ export default function ListRequests(props) {
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
 
   useEffect(() => {
-    db.ref("pruebasRequests").on("value", snap => {
-      const requests = [];
-      snap.forEach(child => {
-        requests.push(child.val());
+    db.ref("request")
+      .orderByChild("type")
+      .equalTo("walk")
+      .on("value", snap => {
+        const requests = [];
+        snap.forEach(child => {
+          requests.push(child.val());
+        });
+        setRequestsList(requests);
       });
-      setRequestsList(requests);
-    });
     setReloadRequests(false);
     setIsVisibleLoading(false);
   }, [reloadRequests]);
@@ -56,10 +59,6 @@ export default function ListRequests(props) {
 }
 function Request(props) {
   const { req, setReloadRequests, setIsVisibleLoading, toastRef } = props;
-
-  console.log("Empieza");
-  console.log(req.item.type);
-  console.log("Termina");
 
   const itemClicked = () => {
     Alert.alert(
@@ -104,9 +103,9 @@ function Request(props) {
 
   const updateRequest = () => {
     let userData = {
-      pending: false
+      pending: "false"
     };
-    db.ref("pruebasRequests")
+    db.ref("request")
       .child(req.item.id)
       .update(userData)
       .then(() => {
@@ -122,7 +121,7 @@ function Request(props) {
 
   const deleteRequest = () => {
     setIsVisibleLoading(true);
-    db.ref("pruebasRequests")
+    db.ref("request")
       .child(req.item.id)
       .remove()
       .then(() => {
@@ -140,8 +139,8 @@ function Request(props) {
     <TouchableOpacity onPress={itemClicked}>
       <View style={styles.request}>
         <View style={styles.requestContent}>
-          <Text>Propietario: {req.item.owner}</Text>
-          <Text>Trabajador: {req.item.worker}</Text>
+          <Text>Propietario: {req.item.owner.name}</Text>
+          <Text>Trabajador: {req.item.info}</Text>
           <Text>Info: {req.item.info.substr(0, 20)}...</Text>
         </View>
       </View>
