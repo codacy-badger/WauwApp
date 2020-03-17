@@ -5,7 +5,7 @@ import { Card, Image } from "react-native-elements";
 import { db } from '../../population/config';
 
 
-export default function ListRequests(props){
+export default function ListAccommodations(props){
     const {requestList}  = props;
     const [loading, setLoading] = useState(false);
     if (loading){
