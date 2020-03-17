@@ -4,9 +4,10 @@ import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
 import HomeScreenStack from "./HomeStack";
-import ChatScreenStack from "./ChatStack";
-import SearchScreenStacks from "./SearchStacks";
+import NotificationsScreenStack from "./NotificationsStack";
+import ServicesScreenStacks from "./ServicesStacks";
 import ProfileScreenStack from "./ProfileStack";
+import { HeaderStyleInterpolators } from "react-navigation-stack";
 
 const NavigationStacks = createBottomTabNavigator(
   {
@@ -17,36 +18,36 @@ const NavigationStacks = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
-            name="home-outline"
-            size={22}
+            name="home"
+            size={31}
             color={tintColor}
           />
         )
       })
     },
-    Chat: {
-      screen: ChatScreenStack,
+    Notifications: {
+      screen: NotificationsScreenStack,
       navigationOptions: () => ({
-        tabBarLabel: "Chat",
+        tabBarLabel: "Notifications",
         tabBarIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
-            name="chat"
-            size={22}
+            name="bell"
+            size={31}
             color={tintColor}
           />
         )
       })
     },
-    Search: {
-      screen: SearchScreenStacks,
+    Services: {
+      screen: ServicesScreenStacks,
       navigationOptions: () => ({
-        tabBarLabel: "Search",
+        tabBarLabel: "Services",
         tabBarIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
-            name="magnify"
-            size={22}
+            name="dog-service"
+            size={31}
             color={tintColor}
           />
         )
@@ -60,7 +61,7 @@ const NavigationStacks = createBottomTabNavigator(
           <Icon
             type="material-community"
             name="account"
-            size={22}
+            size={31}
             color={tintColor}
           />
         )
@@ -69,10 +70,12 @@ const NavigationStacks = createBottomTabNavigator(
   },
   {
     initialRouteName: "Home",
-    order: ["Home", "Chat", "Search", "Profile"],
+    order: ["Home", "Notifications", "Services", "Profile"],
     tabBarOptions: {
-      inactiveTintColor: "#646464",
-      activeTintColor: "#00a680"
+      showLabel: false,
+      showIcon: true,
+      inactiveTintColor: "#6c7075",
+      activeTintColor: "#443099"
     }
   }
 );
