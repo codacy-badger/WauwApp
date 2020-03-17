@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { email } from "../account/QueriesProfile";
 
 
 
 
 function CreateAccommodation(props) {
   const [newDate, setDate] = useState(new Date());
-  const { id, info, pending, owner, quantity, type, worker, setIsVisibleModal, setReloadData, navigation } = props;
+  const { id, info, pending, owner, quantity, type, worker, setIsVisibleModal, navigation } = props;
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [reloadData, setReloadData] = useState(false);
   
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -41,7 +43,7 @@ function CreateAccommodation(props) {
       .equalTo(email)
       .on("value", function(snap) {
         snap.forEach(function(child) {
-          setNewOwner(child.val());
+          setNewWorker(child.val());
         });
       });
     setReloadData(false);
@@ -50,10 +52,10 @@ function CreateAccommodation(props) {
 
   const newPending = 'true';
   const [newInfo, setNewInfo] = useState(null);
-  const[newOwner, setNewOwner] = useState([]);
+  const[newWorker, setNewWorker] = useState([]);
   const [newQuantity, setNewQuantity] = useState(null);
   const newType = 'sitter';
-  const newWorker = ' ';
+  const newOwner = ' ';
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
