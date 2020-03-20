@@ -6,6 +6,7 @@ export const globalStyles = StyleSheet.create({
     width: "75%",
     height: "45%",
     borderRadius: 30,
+    marginTop: 5,
     marginBottom: 5
   },
   btnTextStyle: {
