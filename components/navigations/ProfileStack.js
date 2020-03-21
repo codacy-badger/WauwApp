@@ -3,6 +3,7 @@ import ProfileScreen from "../screens/Profile/Profile";
 import ProfileWalkerFormScreen from "../screens/Profile/ProfileWalkerForm";
 import ProfileAddDogFormScreen from "../screens/Profile/ProfileAddDogForm";
 import ProfileSitterFormScreen from "../screens/Profile/ProfileSitterForm";
+import ProfileLocationFormScreen from "../screens/Profile/ProfileLocationForm";
 
 const ProfileScreenStacks = createStackNavigator({
   Profile: {
@@ -30,6 +31,13 @@ const ProfileScreenStacks = createStackNavigator({
     screen: ProfileAddDogFormScreen,
     navigationOptions: () => ({
       title: "Datos del Perro",
+      headerTitleAlign: "center"
+    })
+  },
+  ProfileLocationForm: {
+    screen: ProfileLocationFormScreen,
+    navigationOptions: () => ({
+      title: "Escoger Localización",
       headerTitleAlign: "center"
     })
   }
