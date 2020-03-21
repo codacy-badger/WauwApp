@@ -4,7 +4,7 @@ import SearchAccommodationsScreen from "../screens/SearchAccommodations";
 import ChangeAvailabilityScreen from "../screens/ChangeAvailability";
 import CreateAccommodationScreen from "../screens/CreateAccommodation";
 import SearchWalksScreen from "../screens/SearchWalks";
-import CreateRequestScreen from "../screens/CreateRequest";
+import CreateRequestScreen from "../screens/CreateRequestWalk";
 
 const ServicesScreenStacks = createStackNavigator({
   Services: {
