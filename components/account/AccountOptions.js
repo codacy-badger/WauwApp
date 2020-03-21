@@ -5,6 +5,7 @@ import Modal from "./Modal";
 import ChangeNameForm from "./ChangeNameForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import ChangeDescriptionForm from "./ChangeDescriptionForm";
+import ChangeLocationForm from "./ChangeLocationForm";
 
 export default function AccountOptions(props) {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
@@ -29,6 +30,15 @@ export default function AccountOptions(props) {
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
       onPress: () => selectedComponent("description")
+    },
+    {
+      title: "Cambiar mi Localización",
+      iconType: "material-community",
+      iconNameLeft: "map-marker",
+      iconColorLeft: "#ccc",
+      iconNameRight: "chevron-right",
+      iconColorRight: "#ccc",
+      onPress: () => selectedComponent("location")
     }
   ];
 
@@ -48,6 +58,15 @@ export default function AccountOptions(props) {
       case "description":
         setRenderComponent(
           <ChangeDescriptionForm
+            id={userInfo.id}
+            desc={userInfo.description}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+          />
+        );
+      case "location":
+        setRenderComponent(
+          <ChangeLocationForm
             id={userInfo.id}
             desc={userInfo.description}
             setIsVisibleModal={setIsVisibleModal}
