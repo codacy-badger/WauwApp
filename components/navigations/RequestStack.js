@@ -2,10 +2,10 @@ import { createStackNavigator } from "react-navigation-stack";
 import { CreateRequestScreen } from "../screens/CreateRequestWalk";
 
 const RequestScreenStacks = createStackNavigator({
-    CreateRequest: {
+    CreateRequestWalk: {
        screen: CreateRequestScreen,
        navigationOptions: ()=> ({
-           title: "Crear Solicitud",
+           title: "Crear Solicitud Paseo",
            headerTitleAlign: "center",
        })
     },
