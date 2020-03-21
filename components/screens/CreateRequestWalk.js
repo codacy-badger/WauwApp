@@ -130,7 +130,7 @@ function createRequestWalk(props) {
 }
 
 
-export default withNavigation(createRequest);
+export default withNavigation(createRequestWalk);
 
 const styles = StyleSheet.create({
   text: {
