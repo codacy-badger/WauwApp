@@ -35,7 +35,7 @@ const ServicesScreenStacks = createStackNavigator({
       headerTitleAlign: "center"
     })
   },
-  CreateRequest: {
+  CreateRequestWalk: {
     screen: CreateRequestScreen,
     navigationOptions: () => ({
       title: "Crear Solicitud",

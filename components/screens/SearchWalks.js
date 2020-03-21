@@ -81,7 +81,7 @@ function Wauwer(wauwerIn) {
     <View style={styles.separacion}>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("CreateRequest", {
+          navigation.navigate("CreateRequestWalk", {
             wauwer: wauwer
           })
         }

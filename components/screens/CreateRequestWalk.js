@@ -16,17 +16,35 @@ console.warn = message => {
 
 
 
-function createRequest(props) {
+function createRequestWalk(props) {
   const {navigation} = props;
   
 
   const newDescription= navigation.state.params.wauwer.description;
   const newPrice =navigation.state.params.wauwer.price;
   const newDate = '';
+  const newPlace = 'aqui iria la ubicacion implementado por Mikha y Carlos';
   const newPending = "true";
   const[newOwner, setNewOwner] = useState([]);
   const newType = "walk";
   const newWorker = navigation.state.params.wauwer;
+  const canceled = false;
+  const newStartTime = " ";
+  const newEndTime = " ";
+
+
+
+  //A completar ALE
+  const newAvailability= "Disponibilidad del paseador";
+  const newPetNumber = "Coger numero de pet que tiene asociado el dueño"
+
+
+
+
+
+ 
+ 
+ 
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [reloadData, setReloadData] = useState(false);
@@ -59,13 +77,19 @@ function createRequest(props) {
     setIsLoading(true);
     let requestData = {
       id: id,
-      date: newDate,
-      info: newDescription,
       pending: newPending,
       owner: newOwner,
-      quantity: newPrice,
+      price: newPrice,
       type: newType,
-      worker: newWorker
+      worker: newWorker,
+      place: newPlace,
+      petNumber:  newPetNumber,
+      isCanceled: canceled,
+      startTime: newStartTime,
+      endTime: newEndTime,
+      availability: newAvailability
+
+
     };
     db.ref("request/" + id)
       .set(requestData)
