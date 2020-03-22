@@ -1,28 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   Text,
   FlatList,
   TouchableOpacity,
-  Button,
   Alert
 } from "react-native";
 import { db } from "../population/config";
 import Loading from "../Loading";
-import Toast from "react-native-easy-toast";
-import { YellowBox } from 'react-native';
-import _ from 'lodash';
+import { YellowBox } from "react-native";
+import _ from "lodash";
+import { email } from "../account/QueriesProfile";
 
-YellowBox.ignoreWarnings(['Setting a timer']);
+YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
 console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
+  if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
 };
 
-export default function ListWalks(props) {
+export default function ListAccomodationRequests(props) {
   const { toastRef } = props;
   const [requestsList, setRequestsList] = useState([]);
   const [reloadRequests, setReloadRequests] = useState(false);
@@ -30,8 +29,8 @@ export default function ListWalks(props) {
 
   useEffect(() => {
     db.ref("request")
-      .orderByChild("type")
-      .equalTo("walk")
+      .orderByChild("worker/email")
+      .equalTo(email)
       .on("value", snap => {
         const requests = [];
         snap.forEach(child => {
@@ -69,6 +68,22 @@ export default function ListWalks(props) {
 }
 function Request(props) {
   const { req, setReloadRequests, setIsVisibleLoading, toastRef } = props;
+  let estado = "";
+
+  if (req.item.pending == "true") {
+    estado = "Pendiente";
+  } else {
+    switch (req.item.isCancelled) {
+      case "false":
+        estado = "Aceptada";
+        break;
+      case "true":
+        estado = "Rechazada";
+        break;
+      default:
+        break;
+    }
+  }
 
   const itemClicked = () => {
     Alert.alert(
@@ -80,7 +95,7 @@ function Request(props) {
         },
         {
           text: "Aceptar",
-          onPress: updateRequest,
+          onPress: acceptRequest,
           style: "cancel"
         },
         {
@@ -111,14 +126,17 @@ function Request(props) {
     );
   };
 
-  const updateRequest = () => {
+  const acceptRequest = () => {
+    setIsVisibleLoading(true);
     let userData = {
-      pending: "false"
+      pending: "false",
+      isCancelled: "false"
     };
     db.ref("request")
       .child(req.item.id)
       .update(userData)
       .then(() => {
+        setReloadRequests(true);
         toastRef.current.show("Solicitud aceptada con éxito");
         // setIsLoading(false);
         //setReloadRequests(false);
@@ -133,9 +151,13 @@ function Request(props) {
 
   const deleteRequest = () => {
     setIsVisibleLoading(true);
+    let userData = {
+      pending: "false",
+      isCancelled: "true"
+    };
     db.ref("request")
       .child(req.item.id)
-      .remove()
+      .update(userData)
       .then(() => {
         setReloadRequests(true);
         toastRef.current.show("Solicitud rechazada");
@@ -154,6 +176,7 @@ function Request(props) {
           <Text>Propietario: {req.item.owner.name}</Text>
           <Text>Trabajador: {req.item.worker.name}</Text>
           <Text>Info: {req.item.info.substr(0, 30)}...</Text>
+          <Text>Estado: {estado}</Text>
         </View>
       </View>
     </TouchableOpacity>
