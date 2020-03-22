@@ -16,25 +16,15 @@ console.warn = message => {
 
 export default function SearchAccommodations() {
 
-  var requestsPending = [];
+  var accommodations = [];
   db.ref()
-  .child('request')
-  .orderByChild('pending')
-  .equalTo('true')
+  .child('accommodation')
   .on('child_added', snap => {
-    requestsPending.push(snap.val());
+    accommodations.push(snap.val());
   });
 
-  var requestsForSits = [];
-  for (let i = 0; i < requestsPending.length; i++) {
-    if(requestsPending[i].type == "sitter") {
-      requestsForSits.push(requestsPending[i]);
-    }
-  }
-  
-
   return (
-    <ListAccommodations requestList={requestsForSits}/>
+    <ListAccommodations accList={accommodations}/>
   );
 
   
