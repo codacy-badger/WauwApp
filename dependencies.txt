@@ -20,3 +20,5 @@ expo install react-native-reanimated
 expo install expo-google-app-auth
 npm install react-native-datepicker --save
 npm i react-native-easy-toast
+npm install react-native-gifted-chat
+expo install react-native-gifted-chat

@@ -5,6 +5,7 @@ import Testeo from "../request/Testeo";
 import Toast from "react-native-easy-toast";
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
+import Chat from "../chat/Chat";
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 const _console = _.clone(console);
@@ -14,12 +15,12 @@ console.warn = message => {
   }
 };
 
-export default function Chat() {
-  const toastRef = useRef();
+//<ListWalks toastRef={toastRef} />
+//<Toast ref={toastRef} position="center" opacity={0.7} />
+
+export default function Notifications() {
+  //const toastRef = useRef();
   return (
-    <View>
-      <ListWalks toastRef={toastRef} />
-      <Toast ref={toastRef} position="center" opacity={0.7} />
-    </View>
+    <Chat></Chat>
   );
 }
