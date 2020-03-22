@@ -31,9 +31,13 @@ function myRequests(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [reloadData, setReloadData] = useState(false);
 
+
   var requests = [];
 
+  var worker = [];
+
   var wauwerId = "";
+
 
   db.ref("wauwers")
     .orderByChild("email")
@@ -42,13 +46,17 @@ function myRequests(props) {
       wauwerId = snap.val().id;
     });
 
+  console.log(wauwerId);
+
 
   db.ref("request")
-    .orderByChild("wauwerId")
+    .orderByChild("ownerId")
     .equalTo(wauwerId)
     .on("child_added", snap => {
       requests.push(snap.val());
     });
+
+  console.log(requests);
 
 
 
@@ -77,27 +85,41 @@ function myRequests(props) {
 
 function Request(requestIn) {
   const { request, navigation } = requestIn;
+
+  var tipo = "";
+
+  if (request.type == "SITTER") {
+    tipo = "Alojamiento";
+  } else {
+    tipo = "Paseo";
+  }
+
+  if (request.pending && !request.isCanceled) {
+    status = "Pendiente de aceptación";
+  } else if (!request.pending && request.isCanceled) {
+    status = "Denegada";
+  } else {
+    status = "Aceptada";
+  }
+
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("ShowRequest", {
+          navigation.navigate("ProfileSitterForm", {
             request: request
           })
         }
       >
         <View style={styles.tarjeta}>
           <View style={styles.row}>
-            <Image
-              style={{ width: 50, height: 50 }}
-              source={{ uri: request.accommodation.wauwer.photo }}
-            />
             <View style={styles.column_left}>
-              <Text> {request.accommodation.wauwer.name} </Text>
+              <Text> Num mascotas: {request.petNumber} </Text>
+              <Text> {status} </Text>
             </View>
             <View style={styles.column_right}>
               <Text> {request.price} €</Text>
-              <Text> {request.pending} </Text>
+              <Text> {tipo} </Text>
             </View>
           </View>
         </View>
