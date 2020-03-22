@@ -79,6 +79,7 @@ function Request(props) {
   const { req, setReloadRequests, setIsVisibleLoading, toastRef } = props;
   let estado = "";
   let tipo = "";
+  let numeroMascotas = "";
   let owner;
   db.ref("wauwers")
     .child(req.item.ownerId)
@@ -107,6 +108,20 @@ function Request(props) {
     tipo = "alojamiento";
   }
 
+  const checkRequestsState = () => {
+    if (estado == "Pendiente") {
+      itemClicked();
+    } else if (estado == "Aceptada") {
+      requestClosed("aceptado");
+    } else if (estado == "Rechazada") {
+      requestClosed("rechazado");
+    }
+  };
+
+  const requestClosed = action => {
+    Alert.alert("¡Ya has " + action + " esta solicitud!", "");
+  };
+
   const itemClicked = () => {
     Alert.alert(
       "Aceptar o Rechazar solicitud",
@@ -117,12 +132,12 @@ function Request(props) {
         },
         {
           text: "Aceptar",
-          onPress: acceptRequest,
+          onPress: confirmAcceptRequest,
           style: "cancel"
         },
         {
           text: "Rechazar",
-          onPress: confirmDeleteRequest,
+          onPress: confirmDeclineRequest,
           style: "cancel"
         }
       ],
@@ -130,14 +145,14 @@ function Request(props) {
     );
   };
 
-  const confirmDeleteRequest = () => {
+  const confirmAcceptRequest = () => {
     Alert.alert(
-      "Rechazar solicitud",
+      "Aceptar solicitud",
       "¿Estás seguro?",
       [
         {
           text: "Si",
-          onPress: deleteRequest
+          onPress: acceptRequest
         },
         {
           text: "No",
@@ -151,26 +166,14 @@ function Request(props) {
   const acceptRequest = () => {
     setIsVisibleLoading(true);
     //Actualizo la request en la tabla de request
-    let userData = {
+    let requestData = {
       pending: "false",
       isCanceled: "false"
     };
     db.ref("request")
       .child(req.item.id)
-      .update(userData)
+      .update(requestData)
       .then(() => {
-        //Si es un alojamiento, quito la disponibilidad en su tabla
-        // if (req.item.type == "SITTER") {
-        //   let accommodationData = {
-        //     isCanceled: "true"
-        //   };
-        //   db.ref("accommodation")
-        //     .child(req.item.accommodation.id)
-        //     .update(accommodationData)
-        //     .catch(() => {
-        //       toastRef.current.show("Error. Inténtelo de nuevo.");
-        //     });
-        // }
         setReloadRequests(true);
         toastRef.current.show("Solicitud aceptada con éxito");
       })
@@ -179,15 +182,33 @@ function Request(props) {
       });
   };
 
-  const deleteRequest = () => {
+  const confirmDeclineRequest = () => {
+    Alert.alert(
+      "Rechazar solicitud",
+      "¿Estás seguro?",
+      [
+        {
+          text: "Si",
+          onPress: declineRequest
+        },
+        {
+          text: "No",
+          style: "cancel"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const declineRequest = () => {
     setIsVisibleLoading(true);
-    let userData = {
+    let requestData = {
       pending: "false",
       isCanceled: "true"
     };
     db.ref("request")
       .child(req.item.id)
-      .update(userData)
+      .update(requestData)
       .then(() => {
         setReloadRequests(true);
         toastRef.current.show("Solicitud rechazada");
@@ -222,19 +243,18 @@ function Request(props) {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    //justifyContent: "space-between",
     padding: 10
   };
 
   return (
-    <TouchableOpacity onPress={itemClicked}>
+    <TouchableOpacity onPress={checkRequestsState}>
       <View style={changeBgColor}>
         <Image style={styles.image} source={{ uri: owner.photo }} />
         <View style={styles.requestContent}>
           <Text>
             Solicitud de {tipo} de: {owner.name}
           </Text>
-          <Text>Info: "Posible mensaje del solicitante."</Text>
+          <Text>Servicio para {req.item.petNumber} mascotas.</Text>
           <Text>Estado de la solicitud: {estado}</Text>
         </View>
       </View>
@@ -243,9 +263,6 @@ function Request(props) {
 }
 
 const styles = StyleSheet.create({
-  prueba: {
-    backgroundColor: "green"
-  },
   image: {
     width: 60,
     height: 60
@@ -271,8 +288,5 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     flex: 1,
     flexDirection: "column"
-    //alignItems: "flex-start",
-    //justifyContent: "space-between",
-    //padding: 20
   }
 });
