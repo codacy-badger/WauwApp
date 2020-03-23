@@ -1,34 +1,19 @@
-// @flow
-import React from 'react';
-import { GiftedChat } from 'react-native-gifted-chat'; // 0.3.0
-
+import React, { Component } from "react";
+import { GiftedChat } from 'react-native-gifted-chat';
 import Fire from './Fire';
 
-let name = "Antonio Mejican";
-
-class Chat extends React.Component {
-
-  static navigationOptions = () => ({
-    title: 'Chat!',
-  });
+export default class Chat extends Component {
 
   state = {
     messages: [],
   };
-
-  get user() {
-    return {
-      name: name,
-      _id: Fire.shared.id,
-    };
-  }
 
   render() {
     return (
       <GiftedChat
         messages={this.state.messages}
         onSend={Fire.shared.send}
-        user={this.user}
+        user={this.props.user}
       />
     );
   }
@@ -44,5 +29,3 @@ class Chat extends React.Component {
     Fire.shared.off();
   }
 }
-
-export default Chat;

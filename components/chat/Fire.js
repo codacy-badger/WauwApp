@@ -1,44 +1,9 @@
-import firebase from 'firebase'; // 4.8.1
+import firebase from 'firebase';
 
-class Fire {
-  constructor() {
-    this.init();
-    this.observeAuth();
-  }
-
-  init = () => {
-    if (!firebase.apps.length) {
-      firebase.initializeApp({
-        apiKey: "AIzaSyD3ppVufXDBSUaOxSyjUnejLEdqtiwrEdU",
-        authDomain: "wauw-ispp-s2.firebaseapp.com",
-        databaseURL: "https://wauw-ispp-s2.firebaseio.com",
-        projectId: "wauw-ispp-s2",
-        storageBucket: "wauw-ispp-s2.appspot.com",
-        messagingSenderId: "785332619976",
-        appId: "1:785332619976:web:f3908cb974b3cc7d8933fd"
-      });
-    }
-  };
-
-  observeAuth = () =>
-    firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
-
-  onAuthStateChanged = user => {
-    if (!user) {
-      try {
-        firebase.auth().signInAnonymously();
-      } catch ({ message }) {
-        alert(message);
-      }
-    }
-  };
-
-  get id() {
-    return "78654738";
-  }
+export default class Fire {
 
   get ref() {
-    return firebase.database().ref('messages');
+    return firebase.database().ref('chats');
   }
 
   parse = snapshot => {
@@ -62,7 +27,7 @@ class Fire {
   get timestamp() {
     return firebase.database.ServerValue.TIMESTAMP;
   }
-  // send the message to the Backend
+
   send = messages => {
     for (let i = 0; i < messages.length; i++) {
       const { text, user } = messages[i];
@@ -77,11 +42,9 @@ class Fire {
 
   append = message => this.ref.push(message);
 
-  // close the connection to the Backend
   off() {
     this.ref.off();
   }
 }
 
 Fire.shared = new Fire();
-export default Fire;
