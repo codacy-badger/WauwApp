@@ -12,6 +12,7 @@ function createDog(props) {
   const [newOwner, setnewOwner] = useState(null);
   const [reloadData, setReloadData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     db.ref("wauwers")
@@ -27,7 +28,7 @@ function createDog(props) {
 
   const addPet = () => {
     let id = db.ref("pet").push().key;
-    let requestData = {
+    let petData = {
       id: id,
       name: newName,
       breed: newBreed,
@@ -35,33 +36,32 @@ function createDog(props) {
       owner: newOwner,
     };
   
-    if (newName === null || newBreed === null || newDescription === null) {
+    if ((newName === null || newName === "") || (newBreed === null || newBreed === "") || (newDescription===null || newDescription==="")) {
       let errores = '';
-      if (newName === null){
-        errores = errores.concat("Debe escribir el nombre del perro.\n");
+      if (newName === null || newName === ""){
+        errores = errores.concat("Debe escribir un nombre.\n");
       }
-      if (newBreed === null){
-        errores = errores.concat("Debe escribir la raza del perro.\n");
+      if (newBreed === null || newBreed === ""){
+        errores = errores.concat("Debe escribir una raza.\n");
       }
-      if (newDescription === null){
-        errores = errores.concat("Debe dar una descripción sobre el perro. \n");
+      if (newDescription===null || newDescription===""){
+        errores = errores.concat("Debe dar una breve descripción de su perro.\n");
       }
-      Alert.alert("Advertencia", errores.toString());   
-    }else{
+      Alert.alert("Advertencia", errores.toString());
+    } else {
       setIsLoading(true);
       db.ref("pet/" + id)
-        .set(requestData)
-        .then(() => {
-          setIsLoading(false);
-          setReloadData(true);
-          setIsVisibleModal(false);
-        })
-        .catch(() => {
-          setError("Ha ocurrido un error");
-          setIsLoading(false);
-        });
-        Alert.alert("Éxito", "Se ha registrado un nuevo perro correctamente.");
-        navigation.navigate("Services");
+      .set(petData)
+      .then(() => {
+        setIsLoading(false);
+        setReloadData(true);
+        setIsVisibleModal(false);
+      }).catch(() => {
+        setError("Ha ocurrido un error");
+        setIsLoading(false);
+      });
+      Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
+      navigation.navigate("Profile");
     }
   };
 
