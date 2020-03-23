@@ -4,12 +4,13 @@ import ProfileWalkerFormScreen from "../screens/Profile/ProfileWalkerForm";
 import ProfileAddDogFormScreen from "../screens/Profile/ProfileAddDogForm";
 import ProfileSitterFormScreen from "../screens/Profile/ProfileSitterForm";
 import ProfileLocationFormScreen from "../screens/Profile/ProfileLocationForm";
-
+import ProfileDrawerNavigator from "./ProfileDrawer";
+import ShowRequestScreen from "../screens/Profile/ShowRequest";
 const ProfileScreenStacks = createStackNavigator({
-  Profile: {
-    screen: ProfileScreen,
+  ProfileDrawer: {
+    screen: ProfileDrawerNavigator,
     navigationOptions: () => ({
-      title: "Mi perfil",
+      title: "Mi Perfil",
       headerTitleAlign: "center"
     })
   },
@@ -36,6 +37,13 @@ const ProfileScreenStacks = createStackNavigator({
   },
   ProfileLocationForm: {
     screen: ProfileLocationFormScreen,
+    navigationOptions: () => ({
+      title: "Escoger Localización",
+      headerTitleAlign: "center"
+    })
+  },
+  ShowRequest: {
+    screen: ShowRequestScreen,
     navigationOptions: () => ({
       title: "Escoger Localización",
       headerTitleAlign: "center"

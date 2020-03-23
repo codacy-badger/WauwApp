@@ -18,27 +18,51 @@ console.warn = message => {
 
 
 function CreateAccommodation(props) {
-  const [newDate, setDate] = useState(new Date());
-  const { id, info, pending, owner, quantity, type, worker, setIsVisibleModal, navigation } = props;
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [newStartTime, setStartTime] = useState(new Date());
+  const [newEndTime, setEndTime] = useState(new Date());
+
+  const { setIsVisibleModal, navigation } = props;
+  const [modeS, setModeS] = useState('date');
+  const [showS, setShowS] = useState(false);
+
+  const [modeE, setModeE] = useState('date');
+  const [showE, setShowE] = useState(false);
+
   const [reloadData, setReloadData] = useState(false);
   
-  const onChange = (event, selectedDate) => {
+  const onChangeS = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
+    setShowS(Platform.OS === 'ios');
+    setStartTime(currentDate);
 
   };
 
-  const showMode = currentMode => {
-    setShow(true);
-    setMode(currentMode);
+  const showModeS = currentMode => {
+    setShowS(true);
+    setModeS(currentMode);
     
   };
 
-  const showDatepicker = () => {
-    showMode('date');
+  const showDatepickerS = () => {
+    showModeS('date');
+  };
+
+  const onChangeE = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowE(Platform.OS === 'ios');
+    setEndTime(currentDate);
+
+
+  };
+
+  const showModeE = currentMode => {
+    setShowE(true);
+    setModeE(currentMode);
+    
+  };
+
+  const showDatepickerE = () => {
+    showModeE('date');
   };
 
 
@@ -50,27 +74,22 @@ function CreateAccommodation(props) {
       .equalTo(email)
       .on("value", function(snap) {
         snap.forEach(function(child) {
-          setNewWorker(child.val());
+          setNewWorker(child.val().id);
         });
       });
     setReloadData(false);
   }, [reloadData]);
 
 
-  const newPending = 'true';
-  const [newInfo, setNewInfo] = useState(null);
+  const newPending = true;
+  const newIsCanceled = false;
   const [newWorker, setNewWorker] = useState([]);
-  const [newQuantity, setNewQuantity] = useState(null);
-  const newType = 'sitter';
-  const newOwner = ' ';
-  //const [error, setError] = useState(null);
+  const [newSalary, setNewSalary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
 
 
 
-
-  //TODO: modificar para borrar el historial de la navegación
   const all= () => {
     
     addRequest();
@@ -81,53 +100,57 @@ function CreateAccommodation(props) {
 
 
   const addRequest = () => {
-      let id= db.ref("request").push().key;
+      let id= db.ref("accommodation").push().key;
       setIsLoading(true);
-      let requestData = {
+      let accommodationData = {
         id: id,
-        date: newDate,
-        info: newInfo,
+        startTime: newStartTime,
+        endTime: newEndTime,
         pending: newPending,
-        owner: newOwner,
-        quantity: newQuantity,
-        type: newType,
+        isCanceled: newIsCanceled,
+        salary: newSalary,
         worker: newWorker,
 
       };
       
-    if (newInfo === null || newQuantity === null || newDate <= new Date()) {
+    if (newStartTime === null || newEndTime === null || newSalary===null || newStartTime < new Date() || newEndTime < newStartTime) {
       let errores = '';
-      if (newInfo === null){
-        errores = errores.concat("Debe escribir la información sobre el alojamiento.\n");
+      if (newStartTime === null){
+        errores = errores.concat("Debe escribir una fecha de entrada.\n");
       }
-      if (newQuantity === null){
-        errores = errores.concat("Debe escribir el precio para el alojamiento.\n");
+      if (newEndTime === null){
+        errores = errores.concat("Debe escribir una fecha de salida.\n");
       }
-      if (!Number.isNaN(newQuantity) && newQuantity < 10){
+      if (isNaN(newSalary) || newSalary < 10){
         errores = errores.concat("El precio mínimo es 10.\n");
       }
-      /* if (){
-        errores = errores.concat("Debe ser una cantidad entre 5 y 100, sin €.\n");
-      } */
-      //setError("El formulario no debe tener campos vacíos.");
-      if (newDate <= new Date()){
-        //setError("La fecha debe ser posterior a la actual.");
-        errores = errores.concat("La fecha debe ser posterior a la actual.\n");
+
+      if (newStartTime < new Date()){
+        errores = errores.concat("La fecha de entrada debe ser posterior o igual a la actual.\n");
+      }
+      if (newEndTime < newStartTime){
+        errores = errores.concat("La fecha de entrada debe ser anterior o igual a la fecha de salida.\n");
       }
       Alert.alert("Advertencia", errores.toString());
-    }else {
-      
+   
+      }
+      else {
+
       let errores = '';
-      if (!Number.isNaN(newQuantity) && newQuantity < 10){
+      if (isNaN(newSalary) || newSalary < 10){    
         errores = errores.concat("El precio mínimo es 10.\n");
-        if (newDate <= new Date()){
-          errores = errores.concat("La fecha debe ser posterior a la actual.\n");
+        if(newStartTime < new Date() || newEndTime < newStartTime){
+          errores = errores.concat("La fecha de entrada debe ser posterior o igual a la actual.\n");
+          errores = errores.concat("La fecha de entrada debe ser anterior o igual a la fecha de salida.\n");
         }
+      
         Alert.alert("Advertencia", errores.toString());
-      }else{
+      }
+      
+      else{
         setIsLoading(true);
-        db.ref("request/" + id)
-          .set(requestData)
+        db.ref("accommodation/" + id)
+          .set(accommodationData)
           .then(() => {
             setIsLoading(false);
             setReloadData(true);
@@ -150,34 +173,46 @@ function CreateAccommodation(props) {
               <Text>Fecha</Text>
               <View>
                   <View>
-                    <Button onPress={showDatepicker} title="Fecha de entrada" />
+                    <Button onPress={showDatepickerS} title="Fecha de entrada" />
                   </View>
                   
-                  {show && (
+                  {showS && (
                     <DateTimePicker
-                      testID="dateTimePicker"
+                      testID="dateTimePickerS"
                       timeZoneOffsetInMinutes={0}
-                      value={newDate}
-                      mode={mode}
+                      value={newStartTime}
+                      mode={modeS}
                       is24Hour={true}
                       display="default"
-                      onChange={onChange}
+                      onChange={onChangeS}
                     />
                   )}
               </View>
-              <Text>Información de alojamiento</Text>
-              <TextInput
-              placeholder="Introduce aquí la información"
-              containerStyle={styles.input}
-              onChange={v => setNewInfo(v.nativeEvent.text)}
-              />
-              <Text>Precio total</Text>
+              <View>
+                  <View>
+                    <Button onPress={showDatepickerE} title="Fecha de salida" />
+                  </View>
+                  
+                  {showE && (
+                    <DateTimePicker
+                      testID="dateTimePickerE"
+                      timeZoneOffsetInMinutes={0}
+                      value={newEndTime}
+                      mode={modeE}
+                      is24Hour={true}
+                      display="default"
+                      onChange={onChangeE}
+                    />
+                  )}
+              </View>
+             
+              <Text>Precio por noche</Text>
               <TextInput
               placeholder="10.00"
               keyboardType= 'numeric'
               containerStyle={styles.input}
               
-              onChange={v => setNewQuantity(v.nativeEvent.text)}
+              onChange={v => setNewSalary(v.nativeEvent.text)}
               
               />
             <Button 
