@@ -5,8 +5,10 @@ import {
   Text,
   Image,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  TouchableOpacity
 } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
 import UserGuest from "../../account/UserGuest";
 import { Button } from "react-native-elements";
@@ -28,7 +30,13 @@ function Profile(props) {
   const { navigation } = props;
 
   return (
-    <SafeAreaView style={styles.area}>
+    <SafeAreaView style={globalStyles.safeArea}>
+      <TouchableOpacity
+        style={{ alignItems: "flex-end", margin: 16 }}
+        onPress={navigation.openDrawer}
+      >
+        <FontAwesome name="bars" size={24} color="#161924" />
+      </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
         <View style={styles.area}>
           <View style={styles.viewStyle}>
@@ -121,7 +129,6 @@ const styles = StyleSheet.create({
   btnTxtStyle: { color: "black" },
   viewStyle: {
     flex: 1,
-    paddingTop: 20,
     paddingLeft: 20,
     paddingRight: 20
   },
@@ -141,8 +148,5 @@ const styles = StyleSheet.create({
   },
   imageView: {
     backgroundColor: "transparent"
-  },
-  area: {
-    flex: 1
   }
 });

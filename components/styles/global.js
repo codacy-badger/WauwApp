@@ -21,5 +21,8 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "100",
     marginTop: 10,
     fontWeight: "300"
+  },
+  safeArea: {
+    flex: 1
   }
 });

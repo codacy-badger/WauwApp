@@ -2,11 +2,14 @@ import React from "react";
 import { Icon } from "react-native-elements";
 import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-
 import HomeScreenStack from "./HomeStack";
 import NotificationsScreenStack from "./NotificationsStack";
 import ServicesScreenStacks from "./ServicesStacks";
 import ProfileScreenStack from "./ProfileStack";
+import ChatsScreenStack from "./ChatsStack";
+import ProfileMyRequests from "../screens/Profile/ProfileMyRequests";
+import ProfileMyAccommodations from "../screens/Profile/ProfileMyAccommodations";
+import ProfileMyWalks from "../screens/Profile/ProfileMyWalks";
 import { HeaderStyleInterpolators } from "react-navigation-stack";
 
 const NavigationStacks = createBottomTabNavigator(
@@ -25,14 +28,14 @@ const NavigationStacks = createBottomTabNavigator(
         )
       })
     },
-    Notifications: {
-      screen: NotificationsScreenStack,
+    Chat: {
+      screen: ChatsScreenStack,
       navigationOptions: () => ({
-        tabBarLabel: "Notifications",
+        tabBarLabel: "Chats",
         tabBarIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
-            name="bell"
+            name="chat"
             size={31}
             color={tintColor}
           />
@@ -47,6 +50,20 @@ const NavigationStacks = createBottomTabNavigator(
           <Icon
             type="material-community"
             name="dog-service"
+            size={31}
+            color={tintColor}
+          />
+        )
+      })
+    },
+    Notifications: {
+      screen: NotificationsScreenStack,
+      navigationOptions: () => ({
+        tabBarLabel: "Notifications",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="bell"
             size={31}
             color={tintColor}
           />
@@ -70,7 +87,7 @@ const NavigationStacks = createBottomTabNavigator(
   },
   {
     initialRouteName: "Home",
-    order: ["Home", "Notifications", "Services", "Profile"],
+    order: ["Home", "Chat", "Services", "Notifications", "Profile"],
     tabBarOptions: {
       showLabel: false,
       showIcon: true,
