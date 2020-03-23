@@ -27,8 +27,9 @@ console.warn = message => {
 function myRequests(props) {
 
   const { navigation } = props;
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [loading, setLoading] = useState(true);
+  const [requestsList, setRequestList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
 
@@ -87,6 +88,7 @@ function Request(requestIn) {
   const { request, navigation } = requestIn;
 
   var tipo = "";
+  var status = "";
 
   if (request.type == "SITTER") {
     tipo = "Alojamiento";

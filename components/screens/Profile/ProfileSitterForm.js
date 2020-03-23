@@ -36,7 +36,7 @@ function showRequest(props) {
 
     alert("Se ha cancelado la solicitud correctamente");
 
-    navigation.navigate("AnimalShelters");
+    navigation.navigate("Home");
   }
 
   if (request.type == "SITTER") {
