@@ -30,7 +30,13 @@ function Profile(props) {
   const { navigation } = props;
 
   return (
-    <SafeAreaView style={styles.area} onPress={props.navigation.openDrawers}>
+    <SafeAreaView style={globalStyles.safeArea}>
+      <TouchableOpacity
+        style={{ alignItems: "flex-end", margin: 16 }}
+        onPress={navigation.openDrawer}
+      >
+        <FontAwesome name="bars" size={24} color="#161924" />
+      </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
         <View style={styles.area}>
           <View style={styles.viewStyle}>
@@ -142,8 +148,5 @@ const styles = StyleSheet.create({
   },
   imageView: {
     backgroundColor: "transparent"
-  },
-  area: {
-    flex: 1
   }
 });

@@ -1,10 +1,21 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, SafeAreaView, TouchableOpacity } from "react-native";
+import { globalStyles } from "../../styles/global";
+import { FontAwesome } from "@expo/vector-icons";
 
-export default function ProfileMyWalks() {
+export default function ProfileMyWalks(props) {
+  const { navigation } = props;
   return (
-    <View>
-      <Text>FVista de Mis Paseos</Text>
-    </View>
+    <SafeAreaView style={globalStyles.safeArea}>
+      <TouchableOpacity
+        style={{ alignItems: "flex-end", margin: 16 }}
+        onPress={navigation.openDrawer}
+      >
+        <FontAwesome name="bars" size={24} color="#161924" />
+      </TouchableOpacity>
+      <View>
+        <Text>Vista de mis paseos</Text>
+      </View>
+    </SafeAreaView>
   );
 }
