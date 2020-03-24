@@ -12,7 +12,7 @@ function showRequest(props) {
   var status = "";
   var worker = [];
 
-  console.log("id", id),
+  console.log("id:"+ id);
 
     db.ref("wauwers")
       .orderByChild("id")
