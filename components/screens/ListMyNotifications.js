@@ -5,7 +5,8 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Alert
+  Alert,
+  SafeAreaView
 } from "react-native";
 import { Image } from "react-native-elements";
 import { db } from "../population/config";
@@ -51,7 +52,7 @@ export default function ListWalkRequests(props) {
   }, [reloadRequests]);
 
   return (
-    <View>
+    <SafeAreaView>
       {requestsList ? (
         <FlatList
           data={requestsList}
@@ -71,7 +72,7 @@ export default function ListWalkRequests(props) {
         </View>
       )}
       <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -79,7 +80,7 @@ function Request(props) {
   const { req, setReloadRequests, setIsVisibleLoading, toastRef } = props;
   let estado = "";
   let tipo = "";
-  let numeroMascotas = "";
+  let fondo = "white";
   let owner;
   db.ref("wauwers")
     .child(req.item.ownerId)
@@ -87,15 +88,18 @@ function Request(props) {
       owner = snap.val();
     });
 
-  if (req.item.pending == "true") {
+  if (req.item.pending) {
     estado = "Pendiente";
+    fondo = "rgba(255,128,0,0.6)";
   } else {
     switch (req.item.isCanceled) {
-      case "false":
+      case false:
         estado = "Aceptada";
+        fondo = "rgba(0,128,0,0.6)";
         break;
-      case "true":
+      case true:
         estado = "Rechazada";
+        fondo = "rgba(255,0,0,0.6)";
         break;
       default:
         break;
@@ -167,8 +171,8 @@ function Request(props) {
     setIsVisibleLoading(true);
     //Actualizo la request en la tabla de request
     let requestData = {
-      pending: "false",
-      isCanceled: "false"
+      pending: false,
+      isCanceled: false
     };
     db.ref("request")
       .child(req.item.id)
@@ -203,8 +207,8 @@ function Request(props) {
   const declineRequest = () => {
     setIsVisibleLoading(true);
     let requestData = {
-      pending: "false",
-      isCanceled: "true"
+      pending: false,
+      isCanceled: true
     };
     db.ref("request")
       .child(req.item.id)
@@ -217,18 +221,6 @@ function Request(props) {
         toastRef.current.show("Error. Inténtelo de nuevo.");
       });
   };
-  //<Button title="ACEPTAR" onPress={updateRequest} />
-  //<Button title="RECHAZAR" onPress={confirmDeleteRequest} />
-  //<Text>Info: {req.item.info.substr(0, 30)}...</Text>
-
-  let fondo = "white";
-  if (estado == "Aceptada") {
-    fondo = "rgba(0,128,0,0.6)";
-  } else if (estado == "Rechazada") {
-    fondo = "rgba(255,0,0,0.6)";
-  } else if (estado == "Pendiente") {
-    fondo = "rgba(255,128,0,0.6)";
-  }
 
   const changeBgColor = {
     borderRadius: 6,

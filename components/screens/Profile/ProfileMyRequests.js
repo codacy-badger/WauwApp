@@ -5,10 +5,8 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator
+  SafeAreaView
 } from "react-native";
-import { Button, Avatar, Rating, Card, Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -23,13 +21,7 @@ function ProfileMyRequests(props) {
   const [requestsList, setRequestList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
-  var requests = [];
-
-  var worker = [];
-
-  var wauwerId = "";
-
-
+  let wauwerId;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
@@ -37,17 +29,20 @@ function ProfileMyRequests(props) {
       wauwerId = snap.val().id;
     });
 
-  console.log(wauwerId);
-
-
-  db.ref("request")
-    .orderByChild("ownerId")
-    .equalTo(wauwerId)
-    .on("child_added", snap => {
-      requests.push(snap.val());
-    });
-
-  console.log(requests);
+  useEffect(() => {
+    db.ref("request")
+      .orderByChild("ownerId")
+      .equalTo(wauwerId)
+      .on("value", snap => {
+        const requests = [];
+        snap.forEach(child => {
+          requests.push(child.val());
+        });
+        setRequestList(requests);
+      });
+    setReloadData(false);
+    setLoading(false);
+  }, []);
 
   return (
     <SafeAreaView style={globalStyles.safeArea}>
@@ -58,21 +53,19 @@ function ProfileMyRequests(props) {
         <FontAwesome name="bars" size={24} color="#161924" />
       </TouchableOpacity>
       <ScrollView>
-        {requests ? (
+        {requestsList ? (
           <FlatList
-            data={requests}
+            data={requestsList}
             renderItem={request => (
-              <Request request={request.item} navigation={navigation} />
+              <Request request={request} navigation={navigation} />
             )}
-            keyExtractor={request => {
-              request.id;
-            }}
+            keyExtractor={request => request.id}
           />
         ) : (
-            <View>
-              <Text> No hay solicitudes </Text>
-            </View>
-          )}
+          <View>
+            <Text> No hay solicitudes </Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -80,41 +73,76 @@ function ProfileMyRequests(props) {
 
 function Request(requestIn) {
   const { request, navigation } = requestIn;
+  console.log(request);
 
-  var tipo = "";
-  var status = "";
+  let tipo = "";
+  let status = "";
+  let fondo = "white";
 
-  if (request.type == "SITTER") {
-    tipo = "Alojamiento";
+  if (request.item.pending) {
+    status = "Pendiente de aceptación";
+    fondo = "rgba(255,128,0,0.6)";
   } else {
+    switch (request.item.isCanceled) {
+      case false:
+        status = "Aceptada";
+        fondo = "rgba(0,128,0,0.6)";
+        break;
+      case true:
+        status = "Denegada";
+        fondo = "rgba(255,0,0,0.6)";
+        break;
+      default:
+        break;
+    }
+  }
+
+  if (request.item.type == "SITTER") {
+    tipo = "Alojamiento";
+  } else if (request.item.type == "WALK") {
     tipo = "Paseo";
   }
 
-  if (request.pending && !request.isCanceled) {
-    status = "Pendiente de aceptación";
-  } else if (!request.pending && request.isCanceled) {
-    status = "Denegada";
-  } else {
-    status = "Aceptada";
-  }
+  const tarjeta = {
+    elevation: 1,
+    backgroundColor: fondo,
+    borderRadius: 25,
+    borderStyle: "solid"
+  };
+
+  // const changeBgColor = {
+  //   borderRadius: 6,
+  //   elevation: 3,
+  //   backgroundColor: fondo,
+  //   shadowOffset: { width: 1, height: 1 },
+  //   shadowColor: "#333",
+  //   shadowOpacity: 0.3,
+  //   shadowRadius: 2,
+  //   marginHorizontal: 4,
+  //   marginVertical: 6,
+  //   flex: 1,
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   padding: 10
+  // };
 
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("ShowRequest", {
-            request: request
+            request: request.item
           })
         }
       >
-        <View style={styles.tarjeta}>
+        <View style={tarjeta}>
           <View style={styles.row}>
             <View style={styles.column_left}>
-              <Text> Num mascotas: {request.petNumber} </Text>
+              <Text> Num mascotas: {request.item.petNumber} </Text>
               <Text> {status} </Text>
             </View>
             <View style={styles.column_right}>
-              <Text> {request.price} €</Text>
+              <Text> {request.item.price} €</Text>
               <Text> {tipo} </Text>
             </View>
           </View>
