@@ -24,5 +24,16 @@ export const globalStyles = StyleSheet.create({
   },
   safeArea: {
     flex: 1
+  },
+  drawerView: {
+    height: 150,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  drawerImage: {
+    height: 120,
+    width: 120,
+    borderRadius: 60
   }
 });
