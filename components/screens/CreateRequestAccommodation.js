@@ -5,6 +5,7 @@ import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
+import { CheckBox } from 'react-native-elements'
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 const _console = _.clone(console);
@@ -19,18 +20,18 @@ console.warn = message => {
 function createRequestAccommodation(props) {
   const {navigation} = props;
   
-  const newplace= '';
+  const newPlace= newWorker.place;
   const[newPrice, setNewPrice] = useState([]);
   const newStartTime = useState(null);;
   const newEndTime = useState(null);;
-  const newPetNumber = '';
+  const [newPetNumber, setNewPetNumber] = useState([]);
 
   const[newOwner, setNewOwner] = useState([]);
+  const[newWorker, setNewWorker] = useState([]);
   
   const newIsCanceled = false;
   const newType = "walk";
   const newPending = true;
-  const newWorker = '';
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [reloadData, setReloadData] = useState(false);
@@ -46,9 +47,6 @@ function createRequestAccommodation(props) {
   
 
 
-  //Coger worker a partir del id
-  //navigation.state.params.worker
-
   useEffect(() => {
     db.ref("wauwers")
       .orderByChild("email")
@@ -60,6 +58,16 @@ function createRequestAccommodation(props) {
       });
     setReloadData(false);
   }, [reloadData]);
+
+
+
+  useEffect(() => {
+    db.ref("wauwers").child("id").equalTo(navigation.state.params.worker)
+    .on( "value" ,  snap => {
+      setNewWorker(snap.val())
+    });
+
+    });
 
 
   const all= () => {
@@ -77,13 +85,15 @@ function createRequestAccommodation(props) {
     setIsLoading(true);
     let requestData = {
       id: id,
-      date: newDate,
-      info: newDescription,
       pending: newPending,
       owner: newOwner,
-      quantity: newPrice,
+      price: newPrice,
       type: newType,
-      worker: newWorker
+      worker: newWorker,
+      isCanceled: newIsCanceled,
+      place: newPlace,
+      startTime : newStartTime,
+      endTime: newEndTime
     };
     db.ref("request/" + id)
       .set(requestData)
@@ -114,6 +124,14 @@ function createRequestAccommodation(props) {
       <Text style={styles.text}>
         {"Precio paseo \n"}
         <Text style={styles.data}>{newPrice}</Text>
+      </Text>
+
+      <Text style={styles.text}>
+      {"Selecciona la/s mascota/s que desea que sean cuidadas\n"}
+      <CheckBox
+      title='Mascotas'
+      checked={this.state.checked}
+      />
       </Text>
 
       <View style={styles.buttonContainer}>
