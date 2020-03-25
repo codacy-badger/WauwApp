@@ -1,5 +1,7 @@
 import { createStackNavigator } from "react-navigation-stack";
 import { CreateRequestScreen } from "../screens/CreateRequest";
+import {CreateRequestAccommodationScreen} from "../screens/CreateRequestAccommodation";
+
 
 const RequestScreenStacks = createStackNavigator({
     CreateRequest: {
@@ -9,6 +11,13 @@ const RequestScreenStacks = createStackNavigator({
            headerTitleAlign: "center",
        })
     },
+    CreateRequestAccommodation: {
+        screen: CreateRequestAccommodationScreen,
+        navigationOptions: () => ({
+          title: "Crear Solicitud Alojamiento",
+          headerTitleAlign: "center"
+        })
+      }
 
 });
 
