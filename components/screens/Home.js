@@ -41,7 +41,10 @@ function Home(props) {
           </Text>
 
           <View style={styles.viewStyle2}>
-            <Image style={styles.image} source={require("../images/dog.jpg")} />
+            <Image
+              style={styles.image}
+              source={require("../../assets/images/dog.jpg")}
+            />
           </View>
 
           <View style={styles.viewStyle2}>
