@@ -1,11 +1,13 @@
 import React, { useState , useEffect} from "react";
-import { StyleSheet, Text, TextInput, Button, View, Image } from "react-native";
+import { StyleSheet, Text, TextInput, Button, View, Alert } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
-import { CheckBox } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements';
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 const _console = _.clone(console);
@@ -18,34 +20,14 @@ console.warn = message => {
 
 
 function createRequestAccommodation(props) {
-  const {navigation} = props;
-  
-  const newPlace= newWorker.place;
-  const[newPrice, setNewPrice] = useState([]);
-  const newStartTime = useState(null);;
-  const newEndTime = useState(null);;
-  const [newPetNumber, setNewPetNumber] = useState([]);
+  const {navigation, setIsVisibleModal} = props;
+  console.log(props);
 
-  const[newOwner, setNewOwner] = useState([]);
-  const[newWorker, setNewWorker] = useState([]);
-  
-  const newIsCanceled = false;
-  const newType = "walk";
-  const newPending = true;
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+
   const [reloadData, setReloadData] = useState(false);
 
-    
-  const calcularPrecio = () => {
-
-    duration = newEndTime.getDate() - newStartTime.getDate();
-    salary = navigation.state.params.accommodation.salary;
-    
-    setNewPrice(salary * duration);
-  }
-  
-
+  const[newOwner, setNewOwner] = useState([]);
+  const newWorker = " ";
 
   useEffect(() => {
     db.ref("wauwers")
@@ -61,25 +43,41 @@ function createRequestAccommodation(props) {
 
 
 
-  useEffect(() => {
-    db.ref("wauwers").child("id").equalTo(navigation.state.params.worker)
-    .on( "value" ,  snap => {
-      setNewWorker(snap.val())
-    });
+  // useEffect(() => {
+  //   db.ref("wauwers").child("id").equalTo(navigation.state.params.accommodation.worker)
+  //   .on( "value" ,  snap => {
+  //     setNewWorker(snap.val())
+  //   });
+  //   });
 
-    });
+    console.log(newOwner);
+
+    
+  //const newPlace= newWorker.place;
+  const[newPrice, setNewPrice] = useState([]);
+ 
+   
+  const newStartTime= new Date(navigation.state.params.startTime);
+  const newEndTime= new Date(navigation.state.params.endTime);
+  
+  const newIsCanceled = false;
+  const newType = "walk";
+  const newPetNumber = " ";
+  const newPending = true;
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
 
-  const all= () => {
-      
-    calcularPrecio();
-    addRequest();
-    navigation.navigate("Home");
-
-  }
+    duration = newEndTime.getDate() - newStartTime.getDate();
+    salary = navigation.state.params.formData.salary;
+    
+    setNewPrice(salary * duration);
 
 
-  const addRequest = () => {
+  
+
+
+  const addRequestAccommodation = () => {
     let id= db.ref("requests").push().key;
     setError(null);
     setIsLoading(true);
@@ -89,54 +87,64 @@ function createRequestAccommodation(props) {
       owner: newOwner,
       price: newPrice,
       type: newType,
-      worker: newWorker,
       isCanceled: newIsCanceled,
       place: newPlace,
       startTime : newStartTime,
-      endTime: newEndTime
+      endTime: newEndTime,
+      worker: newWorker,
+      petNumber: newPetNumber
     };
-    db.ref("request/" + id)
+
+      setIsLoading(true);
+         
+      db.ref("request/" + id)
       .set(requestData)
       .then(() => {
         setIsLoading(false);
         setReloadData(false);
         setIsVisibleModal(false);
-      })
+          })
       .catch(() => {
         setError("Ha ocurrido un error");
         setIsLoading(false);
-      });
-  };
+          });
+          Alert.alert("Éxito", "Se ha solicitado el alojamiento correctamente.");
+          navigation.navigate("Services");
+        
+      
+    };
+  
+
 
   return (
-    <View>
-      <Text style={styles.text}>
-        {"Nombre Paseador\n"}
-        <Text style={styles.data}>{navigation.state.params.wauwer.name}</Text>
-      </Text>
-      <Text style={styles.text}>
-        {"Fecha\n"}
-        <Text style={styles.data}>{newDate}</Text>{" "}
-      </Text>
-      <Text style={styles.text}>
-        {"Información \n"} <Text style={styles.data}>{newDescription}</Text>{" "}
-      </Text>
-      <Text style={styles.text}>
-        {"Precio paseo \n"}
-        <Text style={styles.data}>{newPrice}</Text>
-      </Text>
+    <View style={styles.view}>
 
       <Text style={styles.text}>
-      {"Selecciona la/s mascota/s que desea que sean cuidadas\n"}
-      <CheckBox
-      title='Mascotas'
-      checked={this.state.checked}
-      />
+        {"Nombre Cuidador\n"}
+        {/* <Text style={styles.data}>{newWorker.name}</Text> */}
       </Text>
+      <Text style={styles.text}>
+        {"Descripcion Cuidador \n"}
+        {/* <Text style={styles.data}>{newWorker.description}</Text> */}
+      </Text>
+      <Text style={styles.text}>
+        {"Fecha de inicio\n"}
+        <Text style={styles.data}>{newStartTime}</Text>{" "}
+      </Text>
+      <Text style={styles.text}>
+        {"Fecha de inicio\n"}
+        <Text style={styles.data}>{newEndTime}</Text>{" "}
+      </Text>
+      <Text style={styles.text}>
+        {"Precio Total Alojamiento \n"}
+        <Text style={styles.data}>{newPrice}</Text>{" "}
+      </Text>
+      
 
       <View style={styles.buttonContainer}>
-        <Button title="Crear Solicitud" onPress={all} color="#0de" />
+        <Button title="Crear Solicitud" onPress={addRequestAccommodation} color="#0de" />
       </View>
+
     </View>
   );
 }

@@ -90,7 +90,7 @@ function CreateAccommodation(props) {
       pending: newPending,
       isCanceled: newIsCanceled,
       salary: newSalary,
-      workerId: newWorker
+      worker: newWorker
     };
 
     if (

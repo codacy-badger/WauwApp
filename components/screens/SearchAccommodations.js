@@ -93,8 +93,8 @@ function Accommodation(props) {
     <View style={styles.separacion}>
       <TouchableOpacity
       onPress={() =>
-         navigation.navigate("CreateRequestAccommodation", {
-           accommodation: accommodation.item[0]
+         navigation.navigate("FormRequestAccommodation", {
+           accommodation: accommodation.item
        })
       } 
       >
