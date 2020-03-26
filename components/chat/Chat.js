@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { GiftedChat } from 'react-native-gifted-chat';
 import Fire from './Fire';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import { StyleSheet, View} from "react-native";
 
 export default class Chat extends Component {
 
@@ -10,11 +12,14 @@ export default class Chat extends Component {
 
   render() {
     return (
+      <View style={styles.chatStyle}>
       <GiftedChat
         messages={this.state.messages}
         onSend={Fire.shared.send}
         user={this.props.user}
       />
+      <KeyboardSpacer topSpacing={-50}/>
+      </View>
     );
   }
 
@@ -29,3 +34,11 @@ export default class Chat extends Component {
     Fire.shared.off();
   }
 }
+
+const styles = StyleSheet.create({
+  chatStyle: {
+    backgroundColor: '#E8CCFF',
+    width: '100%',
+    height: '100%'
+  }
+});
