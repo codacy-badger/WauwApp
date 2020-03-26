@@ -149,10 +149,7 @@ export default class LoginScreen extends Component {
   render() {
     return (
       <View style={globalStyles.loginView}>
-        <Image
-          source={require("../../assets/images/prints.png")}
-          style={globalStyles.loginPrints}
-        />
+        <Text style={globalStyles.loginTxt}>WAUW</Text>
         <Image
           source={require("../../assets/images/logo.png")}
           style={globalStyles.loginImage}
@@ -172,7 +169,7 @@ export default class LoginScreen extends Component {
               name="google"
               size={30}
               color="white"
-              marginLeft={20}
+              marginLeft={25}
             />
           }
           titleStyle={globalStyles.loginBtnTittle}

@@ -39,18 +39,18 @@ export const globalStyles = StyleSheet.create({
   },
   /* Login Screen */
   loginImage: {
-    height: "45%",
-    width: "70%",
+    height: "40%",
+    width: "60%",
     resizeMode: "stretch",
     alignSelf: "center",
-    marginBottom: 10,
-    marginTop: -20
+    marginBottom: 40,
+    marginTop: 10
   },
   loginBtn: {
     backgroundColor: "#443099",
     borderRadius: 30,
     marginTop: 10,
-    marginBottom: 5,
+    marginBottom: 10,
     width: "100%",
     height: "50%",
     justifyContent: "flex-start"
@@ -59,22 +59,25 @@ export const globalStyles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     width: "75%",
-    height: "8%",
+    height: "10%",
     backgroundColor: "#443099",
-    marginTop: 60,
+    marginTop: 50,
     marginRight: 20,
-    marginLeft: 20
+    marginLeft: 20,
+    justifyContent: "center"
   },
   loginPrints: {
     height: "10%",
-    width: "85%",
+    width: "82%",
     resizeMode: "stretch",
     backgroundColor: "transparent",
     alignSelf: "center",
-    marginBottom: 20
+    marginBottom: 20,
+    marginTop: 30
   },
   loginBtnTittle: {
-    marginLeft: 40
+    marginLeft: 50,
+    fontSize: 17
   },
   loginView: {
     flex: 1,
@@ -84,5 +87,10 @@ export const globalStyles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 60,
     marginBottom: 60
+  },
+  loginTxt: {
+    fontSize: 50,
+    color: "#5c54a4",
+    marginTop: 40
   }
 });
