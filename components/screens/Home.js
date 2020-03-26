@@ -58,6 +58,15 @@ function Home(props) {
               <Button
                 buttonStyle={globalStyles.btnStyle}
                 titleStyle={globalStyles.btnTextStyle}
+                title="Pago"
+                onPress={() => navigation.navigate("Pago")}
+              />
+            </View>
+
+            <View style={styles.viewStyle2}>
+              <Button
+                buttonStyle={globalStyles.btnStyle}
+                titleStyle={globalStyles.btnTextStyle}
                 title="Protectoras"
                 onPress={() => navigation.navigate("AnimalShelters")}
               />
