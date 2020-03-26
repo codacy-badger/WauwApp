@@ -56,53 +56,29 @@ export default class LoginScreen extends Component {
             .then(function(result) {
               console.log("user signed in ");
               if (result.additionalUserInfo.isNewUser) {
-                //Rol creado
-                let idRol = db
-                  .ref()
-                  .child("rol")
-                  .push().key;
-                let query = db.ref().child("rol/" + idRol);
-                query.set({
-                  id: idRol,
-                  nombre: "wauwer"
-                });
-
-                //Cuenta de usuario creada
-                let idUA = db
-                  .ref()
-                  .child("user_account")
-                  .push().key;
-                query = db.ref().child("user_account/" + idUA);
-
-                query.set({
-                  id: idUA,
-                  username: "",
-                  password: "",
-                  rolId: idRol
-                });
-                console.log("Cuenta de usuario creada");
-
                 let idWauwer = db
                   .ref()
                   .child("wauwers")
                   .push().key;
-                
-                console.log(idWauwer);
+
                 query = db.ref().child("wauwers/" + idWauwer);
                 query.set({
+                  //Person properties
                   id: idWauwer,
                   name: result.additionalUserInfo.profile.given_name,
                   surname: result.additionalUserInfo.profile.family_name,
-                  dni: "",
                   photo: result.additionalUserInfo.profile.picture,
-                  avgScore: 2.5,
-                  user_accountId: idUA,
-                  paypalURL: "",
-                  description: "",
+                  email: result.user.email,
+                  //wauer properties
                   wauwPoints: 0,
-                  price: 5,
-                  petNumber: 0,
-                  email: result.user.email
+                  //Número de mascotas que va a aceptar como máximo
+                  petNumberSitter: 0,
+                  homeDescription: "",
+                  avgScore: 2.5,
+                  walkSalary: 0,
+                  isWalker: false,
+                  isSitter: false,
+                  location: null
                 });
                 console.log("Usuario añadido con éxito");
 
@@ -168,6 +144,7 @@ export default class LoginScreen extends Component {
       return { error: true };
     }
   };
+
 
   render() {
     return (

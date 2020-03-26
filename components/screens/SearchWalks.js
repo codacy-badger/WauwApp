@@ -8,9 +8,10 @@ import {
   SafeAreaView,
   ActivityIndicator
 } from "react-native";
-import { Button, Avatar, Rating, Card, Image } from "react-native-elements";
+import { SearchBar, ListItem, Button, Avatar, Rating, Card, Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../population/config";
+import Loading from "../Loading";
 import { withNavigation } from "react-navigation";
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
@@ -25,43 +26,44 @@ console.warn = message => {
 
 function SearchWalks(props) {
   const { navigation } = props;
+  const { search, setSearch } = useState("");
+  const [loading, setLoading] = useState(true);
+  const [reloadData, setReloadData] = useState(false);
+  const [data, setData] = useState([]);
 
-  const [loading, setLoading] = useState(false);
-
-  var usersIdAvailables = [];
-  db.ref()
-    .child("availability_wauwers")
-    .on("child_added", snap => {
-      usersIdAvailables.push(snap.val().wauwerId);
-    });
-  var wauwersId = Array.from(new Set(usersIdAvailables));
-  var wauwers = [];
-  for (let i = 0; i < wauwersId.length; i++) {
-    db.ref()
-      .child("wauwers/" + wauwersId[i])
-      .on("value", snap => {
-        wauwers.push(snap.val());
+  useEffect(() => {
+    db.ref("availability-wauwers").on("value", snap => {
+      const allData = [];
+      snap.forEach(child => {
+        const wauwerData = [];
+        wauwerData.push(child.val().wauwer);
+        wauwerData.push(child.val().availability);
+        allData.push(wauwerData);
       });
-  }
-
-  if (loading) {
+      setData(allData);
+    });
+    setReloadData(false);
+    setLoading(false);
+  }, [reloadData]);//esto es el disparador del useEffect
     return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="150%" color="#443099" />
-      </View>
-    );
-  } else {
-    return (
+      
       <SafeAreaView>
+        <SearchBar
+        placeholder = "Introduce una hora de inicio"
+        onChangeText = { e => setSearch(e)}
+        value = {search}
+        containerStyle = {styles.searchBar}
+        />
         <ScrollView>
-          {wauwers ? (
+        <Loading isVisible={loading} text={"Un momento..."} />
+          {data ? (
             <FlatList
-              data={wauwers}
-              renderItem={wauwer => (
-                <Wauwer wauwer={wauwer.item} navigation={navigation} />
+              data={data}
+              renderItem= {wauwerData => (
+                <Wauwer wauwerData={wauwerData} navigation={navigation} />
               )}
-              keyExtractor={wauwer => {
-                wauwer.id;
+              keyExtractor={wauwerData => {
+                wauwerData
               }}
             />
           ) : (
@@ -73,16 +75,21 @@ function SearchWalks(props) {
       </SafeAreaView>
     );
   }
-}
 
-function Wauwer(wauwerIn) {
-  const { wauwer, navigation } = wauwerIn;
+function Wauwer(props) {
+  const { wauwerData, navigation } = props;
+  /* console.log("WAUWER");
+  console.log(wauwerData.item[0]);
+  console.log("DISPONIBILIDAD");
+  console.log(wauwerData.item[1]);
+  console.log('=========================='); */
+
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("CreateRequest", {
-            wauwer: wauwer
+            wauwer: wauwerData.item[0] //TODO: MODIFICAR LA REDIRECCIÓN
           })
         }
       >
@@ -90,14 +97,18 @@ function Wauwer(wauwerIn) {
           <View style={styles.row}>
             <Image
               style={{ width: 50, height: 50 }}
-              source={{ uri: wauwer.photo }}
+              source={{ uri: wauwerData.item[0].photo }}
             />
             <View style={styles.column_left}>
-              <Text> {wauwer.name} </Text>
-              <Text> {wauwer.avgScore} </Text>
+              <Text> {wauwerData.item[0].name} </Text>
+              <Text> {wauwerData.item[0].avgScore} </Text>
+            </View>
+            <View style={styles.column_left}>
+              <Text> {wauwerData.item[1].day} </Text>
+              <Text> {wauwerData.item[1].startTime} - {wauwerData.item[1].endDate} </Text>
             </View>
             <View style={styles.column_right}>
-              <Text> {wauwer.price} €</Text>
+              <Text> {wauwerData.item[0].price} €</Text>
             </View>
           </View>
         </View>
@@ -154,5 +165,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 10
+  },
+  searchBar: {
+    marginBottom: 20,
+
   }
 });

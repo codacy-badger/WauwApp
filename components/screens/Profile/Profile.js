@@ -5,8 +5,10 @@ import {
   Text,
   Image,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  TouchableOpacity
 } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
 import UserGuest from "../../account/UserGuest";
 import { Button } from "react-native-elements";
@@ -14,6 +16,7 @@ import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -27,7 +30,13 @@ function Profile(props) {
   const { navigation } = props;
 
   return (
-    <SafeAreaView style={styles.area}>
+    <SafeAreaView style={globalStyles.safeArea}>
+      <TouchableOpacity
+        style={{ alignItems: "flex-end", margin: 16 }}
+        onPress={navigation.openDrawer}
+      >
+        <FontAwesome name="bars" size={24} color="#161924" />
+      </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
         <View style={styles.area}>
           <View style={styles.viewStyle}>
@@ -37,6 +46,12 @@ function Profile(props) {
             <Image
               source={require("../../../assets/images/prints.png")}
               style={styles.ImageIconStyle}
+            />
+            <Button
+              buttonStyle={styles.btnStyle2}
+              containerStyle={styles.btnContainer2}
+              title="Cambiar mi Localización"
+              onPress={() => navigation.navigate("ProfileLocationForm")}
             />
             <Button
               buttonStyle={styles.btnStyle2}
@@ -81,7 +96,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff7549",
     borderRadius: 30,
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
+    width: "100%"
   },
   btnContainer: {
     alignItems: "center",
@@ -97,7 +113,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#443099",
     borderRadius: 30,
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
+    width: "100%"
   },
   btnContainer2: {
     alignItems: "center",
@@ -109,17 +126,17 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginBottom: 10
   },
+  btnTxtStyle: { color: "black" },
   viewStyle: {
     flex: 1,
-    paddingTop: 20,
     paddingLeft: 20,
     paddingRight: 20
   },
   viewStyle2: {
+    paddingTop: 5,
     flex: 1,
-    padding: 20,
     paddingBottom: 60,
-    marginBottom: 20
+    marginBottom: 60
   },
   ImageIconStyle: {
     height: "20%",
@@ -131,8 +148,5 @@ const styles = StyleSheet.create({
   },
   imageView: {
     backgroundColor: "transparent"
-  },
-  area: {
-    flex: 1
   }
 });
