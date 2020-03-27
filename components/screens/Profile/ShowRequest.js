@@ -7,7 +7,7 @@ function showRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
 
-  var id = request.workerId;
+  var id = request.worker;
   var tipo = "";
   var status = "";
   var worker = [];

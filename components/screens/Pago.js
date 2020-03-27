@@ -179,6 +179,7 @@ export default function Pago() {
         .then(response => {
           setShouldShowWebviewLoading(true);
           console.log("response.status", response.status);
+          alert("El pago se ha realizado correctamente");
         })
         .catch(err => {
           setShouldShowWebviewLoading(true);

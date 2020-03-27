@@ -30,15 +30,15 @@ function ProfileMyRequests(props) {
     });
 
   useEffect(() => {
-    db.ref("request")
-      .orderByChild("ownerId")
+    db.ref("requests")
+      .orderByChild("owner")
       .equalTo(wauwerId)
       .on("value", snap => {
-        const requests = [];
+        const requests1 = [];
         snap.forEach(child => {
-          requests.push(child.val());
+          requests1.push(child.val());
         });
-        setRequestList(requests);
+        setRequestList(requests1);
       });
     setReloadData(false);
     setLoading(false);
