@@ -1,8 +1,12 @@
 import { createStackNavigator } from "react-navigation-stack";
-import { CreateRequestScreen } from "../screens/CreateRequest";
+
+
 import {CreateRequestAccommodationScreen} from "../screens/CreateRequestAccommodation";
 import {FormRequestAccommodationScreen} from "../screens/FormRequestAccommodation";
 
+
+
+import { CreateRequestScreen } from "../screens/CreateRequestWalk";
 
 
 const RequestScreenStacks = createStackNavigator({

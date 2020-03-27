@@ -6,20 +6,21 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  ActivityIndicator
+  Alert
 } from "react-native";
-import { SearchBar, ListItem, Button, Avatar, Rating, Card, Image } from "react-native-elements";
+import { SearchBar, Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../population/config";
 import Loading from "../Loading";
+import { email } from "../account/QueriesProfile";
 import { withNavigation } from "react-navigation";
-import { YellowBox } from 'react-native';
-import _ from 'lodash';
+import { YellowBox } from "react-native";
+import _ from "lodash";
 
-YellowBox.ignoreWarnings(['Setting a timer']);
+YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
 console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
+  if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
 };
@@ -30,6 +31,16 @@ function SearchWalks(props) {
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
+
+  let petNumber;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", snap => {
+      petNumber = snap.val().petNumber;
+    });
+    console.log(petNumber);
+    console.log(email);
 
   useEffect(() => {
     db.ref("availability-wauwers").on("value", snap => {
@@ -44,54 +55,61 @@ function SearchWalks(props) {
     });
     setReloadData(false);
     setLoading(false);
-  }, [reloadData]);//esto es el disparador del useEffect
-    return (
-      
-      <SafeAreaView>
-        <SearchBar
-        placeholder = "Introduce una hora de inicio"
-        onChangeText = { e => setSearch(e)}
-        value = {search}
-        containerStyle = {styles.searchBar}
-        />
-        <ScrollView>
+  }, [reloadData]); //esto es el disparador del useEffect
+  return (
+    <SafeAreaView>
+      <SearchBar
+        placeholder="Introduce una hora de inicio"
+        onChangeText={e => setSearch(e)}
+        value={search}
+        containerStyle={styles.searchBar}
+      />
+      <ScrollView>
         <Loading isVisible={loading} text={"Un momento..."} />
-          {data ? (
-            <FlatList
-              data={data}
-              renderItem= {wauwerData => (
-                <Wauwer wauwerData={wauwerData} navigation={navigation} />
-              )}
-              keyExtractor={wauwerData => {
-                wauwerData
-              }}
-            />
-          ) : (
-            <View>
-              <Text> No hay usuarios </Text>
-            </View>
-          )}
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
+        {data ? (
+          <FlatList
+            data={data}
+            renderItem={wauwerData => (
+              <Wauwer wauwerData={wauwerData} petNumber={petNumber} navigation={navigation} />
+            )}
+            keyExtractor={wauwerData => {
+              wauwerData;
+            }}
+          />
+        ) : (
+          <View>
+            <Text> No hay usuarios </Text>
+          </View>
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
 
 function Wauwer(props) {
-  const { wauwerData, navigation } = props;
+  const { wauwerData, petNumber, navigation } = props;
   /* console.log("WAUWER");
   console.log(wauwerData.item[0]);
   console.log("DISPONIBILIDAD");
   console.log(wauwerData.item[1]);
   console.log('=========================='); */
 
+  const checkHasPets = () => {
+    
+    
+   // if(petNumber>0){
+      navigation.navigate("CreateRequest", {
+        wauwer: wauwerData.item[0] //TODO: MODIFICAR LA REDIRECCIÓN
+      });
+  //  }else{
+  //    Alert.alert("¡No tienes mascotas que pasear!","");
+    
+  };
+
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("CreateRequest", {
-            wauwer: wauwerData.item[0] //TODO: MODIFICAR LA REDIRECCIÓN
-          })
-        }
+        onPress={checkHasPets}
       >
         <View style={styles.tarjeta}>
           <View style={styles.row}>
@@ -105,7 +123,10 @@ function Wauwer(props) {
             </View>
             <View style={styles.column_left}>
               <Text> {wauwerData.item[1].day} </Text>
-              <Text> {wauwerData.item[1].startTime} - {wauwerData.item[1].endDate} </Text>
+              <Text>
+                {" "}
+                {wauwerData.item[1].startTime} - {wauwerData.item[1].endDate}{" "}
+              </Text>
             </View>
             <View style={styles.column_right}>
               <Text> {wauwerData.item[0].price} €</Text>
@@ -167,7 +188,6 @@ const styles = StyleSheet.create({
     padding: 10
   },
   searchBar: {
-    marginBottom: 20,
-
+    marginBottom: 20
   }
 });
