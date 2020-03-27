@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { email } from "../account/QueriesProfile";
 import { YellowBox } from "react-native";
 import _ from "lodash";
 

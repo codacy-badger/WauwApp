@@ -1,35 +1,49 @@
 import React, { useState , useEffect} from "react";
-import { StyleSheet, Text, TextInput, Button, View, Alert } from "react-native";
+import { StyleSheet, Text, Button, View, Alert ,ScrollView} from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
-import { YellowBox } from 'react-native';
 import _ from 'lodash';
-import { CheckBox } from 'react-native-elements';
-import DateTimePicker from "@react-native-community/datetimepicker";
 
-
-YellowBox.ignoreWarnings(['Setting a timer']);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
-    _console.warn(message);
-  }
-};
 
 
 
 function createRequestAccommodation(props) {
-  const {navigation, setIsVisibleModal} = props;
-  console.log(props);
+  const {navigation} = props;
 
 
   const [reloadData, setReloadData] = useState(false);
+ 
+  const startTime = navigation.state.params.formData.startTime;
+  const endTime= navigation.state.params.formData.endTime;
+  
+  const newStartTime = startTime.toLocaleString('en-US');
+  const newEndTime = endTime.toLocaleString('en-US');
 
-  const[newOwner, setNewOwner] = useState([]);
-  const newWorker = " ";
+  
+  
+  const newIsCanceled = false;
+  const newType = "sitter";
+  const newPetNumber = " ";
+  const newPending = true;
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [newWorker, setNewWorker] = useState([]);
+  const [newOwner, setNewOwner] = useState([]);
 
+  const salary = navigation.state.params.formData.salary;
+
+  let propiedades = {
+    salary: salary, 
+    startTime:startTime, 
+    endTime:endTime
+  }
+
+  const newPrice= Precio(propiedades);
+  
+  
   useEffect(() => {
+    // To retrieve the current logged user
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
@@ -43,39 +57,36 @@ function createRequestAccommodation(props) {
 
 
 
-  // useEffect(() => {
-  //   db.ref("wauwers").child("id").equalTo(navigation.state.params.accommodation.worker)
-  //   .on( "value" ,  snap => {
-  //     setNewWorker(snap.val())
-  //   });
-  //   });
-
-    console.log(newOwner);
-
+  useEffect(() => {
+    db.ref("wauwers")
+      .orderByChild("id")
+      .equalTo(navigation.state.params.formData.worker)
+      .on("value", function(snap) {
+        snap.forEach(function(child) {
+          setNewWorker(child.val());
+        });
+      });
+    setReloadData(false);
+  }, [reloadData]);
     
-  //const newPlace= newWorker.place;
-  const[newPrice, setNewPrice] = useState([]);
+    
+
+
+  
  
-   
-  const newStartTime= new Date(navigation.state.params.startTime);
-  const newEndTime= new Date(navigation.state.params.endTime);
-  
-  const newIsCanceled = false;
-  const newType = "walk";
-  const newPetNumber = " ";
-  const newPending = true;
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-
-    duration = newEndTime.getDate() - newStartTime.getDate();
-    salary = navigation.state.params.formData.salary;
     
-    setNewPrice(salary * duration);
-
+  
+  
+   
+    const all = () => {
+      addRequestAccommodation();
+      Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
+      navigation.navigate("Home");
+    };
 
   
 
+    
 
   const addRequestAccommodation = () => {
     let id= db.ref("requests").push().key;
@@ -84,48 +95,46 @@ function createRequestAccommodation(props) {
     let requestData = {
       id: id,
       pending: newPending,
-      owner: newOwner,
+      owner: newOwner.id,
       price: newPrice,
       type: newType,
       isCanceled: newIsCanceled,
-      place: newPlace,
-      startTime : newStartTime,
-      endTime: newEndTime,
-      worker: newWorker,
+      startTime : startTime,
+      endTime: endTime,
+      worker: newWorker.id,
       petNumber: newPetNumber
     };
-
-      setIsLoading(true);
+    console.log(requestData);
+    
+      // setIsLoading(true);
          
-      db.ref("request/" + id)
-      .set(requestData)
-      .then(() => {
-        setIsLoading(false);
-        setReloadData(false);
-        setIsVisibleModal(false);
-          })
-      .catch(() => {
-        setError("Ha ocurrido un error");
-        setIsLoading(false);
-          });
-          Alert.alert("Éxito", "Se ha solicitado el alojamiento correctamente.");
-          navigation.navigate("Services");
+      // db.ref("request/" + id)
+      // .set(requestData)
+      // .then(() => {
+      //   setIsLoading(false);
+      //   setReloadData(false);
+      //   setIsVisibleModal(false);
+      //     })
+      // .catch(() => {
+      //   setError("Ha ocurrido un error");
+      //   setIsLoading(false);
+      //     });
+          
         
       
     };
   
-
-
+ 
   return (
-    <View style={styles.view}>
+    <ScrollView style={{backgroundColor:"white"}}>
 
       <Text style={styles.text}>
         {"Nombre Cuidador\n"}
-        {/* <Text style={styles.data}>{newWorker.name}</Text> */}
+         <Text style={styles.data}>{newWorker.name}</Text> 
       </Text>
       <Text style={styles.text}>
         {"Descripcion Cuidador \n"}
-        {/* <Text style={styles.data}>{newWorker.description}</Text> */}
+        <Text style={styles.data}>{newWorker.description}</Text> 
       </Text>
       <Text style={styles.text}>
         {"Fecha de inicio\n"}
@@ -137,20 +146,34 @@ function createRequestAccommodation(props) {
       </Text>
       <Text style={styles.text}>
         {"Precio Total Alojamiento \n"}
-        <Text style={styles.data}>{newPrice}</Text>{" "}
+        <Precio
+              salary={salary}
+              startTime={startTime}
+              endTime= {endTime}
+            />
       </Text>
       
 
       <View style={styles.buttonContainer}>
-        <Button title="Crear Solicitud" onPress={addRequestAccommodation} color="#0de" />
+        <Button title="Crear Solicitud" onPress={all} color="#0de" />
       </View>
 
-    </View>
+      </ScrollView>
   );
 }
 
 
+
 export default withNavigation(createRequestAccommodation);
+
+function Precio (props){
+  const {salary, startTime, endTime} = props
+  const duration = endTime.getDate() - startTime.getDate();
+  const newPrice= salary * duration;
+  console.log(newPrice);
+  return newPrice;
+  
+}
 
 const styles = StyleSheet.create({
   text: {
