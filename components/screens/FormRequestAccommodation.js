@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet, Alert } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
+import { email } from "../account/QueriesProfile";
+import { CheckBox } from "react-native-elements";
+
+
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { YellowBox } from "react-native";
 import _ from "lodash";
@@ -14,6 +18,7 @@ function FormRequestAccommodation(props) {
   const [reloadData, setReloadData] = useState(false);
 
 
+  
     const [newStartTime, setStartTime] = useState(new Date());
     const [newEndTime, setEndTime] = useState(new Date());
   
@@ -22,6 +27,10 @@ function FormRequestAccommodation(props) {
   
     const [modeE, setModeE] = useState("date");
     const [showE, setShowE] = useState(false);
+
+    const [petNumber, setPetNumber] = useState(0);
+    const [petNames, setPetNames] = useState([]);
+  
   
     
   
@@ -55,25 +64,47 @@ function FormRequestAccommodation(props) {
       showModeE("date");
     };
 
-  
-    let formData = {
-        idAccommodation: navigation.state.params.accommodation.id,
-        pending: navigation.state.params.accommodation.pending,
-        salary: navigation.state.params.accommodation.salary,
-        worker: navigation.state.params.accommodation.worker,
-        isCanceled: navigation.state.params.accommodation.isCanceled,
-        startTime: newStartTime,
-        endTime : newEndTime
-       
-      };
 
+    useEffect(() => {
+      // To retrieve my pets' names
+      db.ref("pet")
+        .orderByChild("owner/email")
+        .equalTo(email)
+        .on("value", snap => {
+          const pets = [];
+          snap.forEach(child => {
+            pets.push(child.val().name);
+          });
+          setPetNames(pets);
+        });
+    }, []);
+    
+      
+
+
+  
+    
       const sendForm = () => {
+
+        let formData = {
+          idAccommodation: navigation.state.params.accommodation.id,
+          pending: navigation.state.params.accommodation.pending,
+          salary: navigation.state.params.accommodation.salary,
+          worker: navigation.state.params.accommodation.worker,
+          isCanceled: navigation.state.params.accommodation.isCanceled,
+          startTime: newStartTime,
+          endTime : newEndTime,
+          petNumber: petNumber
+         
+        };
+  
 
       if (
         newStartTime === null ||
           newEndTime === null ||
           newStartTime < new Date() ||
-          newEndTime < newStartTime
+          newEndTime.getDate() - newStartTime.getDate() == 0 ||
+          petNumber === null
         ) {
           let errores = "";
           if (newStartTime === null) {
@@ -88,11 +119,22 @@ function FormRequestAccommodation(props) {
               "La fecha de entrada debe ser posterior o igual a la actual.\n"
             );
           }
-          if (newEndTime < newStartTime) {
+          if (newEndTime.getDate() - newStartTime.getDate() == 0) {
             errores = errores.concat(
               "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
             );
           }
+          if (petNumber === 0 && petNames=== null) {
+            errores = errores.concat(
+              "Tienes que añadir alguna mascota a tu perfil.\n"
+            );
+          }
+          if (petNumber === 0 ){
+            errores = errores.concat(
+              "Tienes que seleccionar alguna mascota para el alojamiento.\n"
+            );
+          }
+          
           Alert.alert("Advertencia", errores.toString());
         } else {
           let errores = "";
@@ -114,8 +156,6 @@ function FormRequestAccommodation(props) {
             });
             Alert.alert("Éxito", "Confirme su solicitud.");
            
-            
-          
         }
         }
       };
@@ -159,14 +199,21 @@ function FormRequestAccommodation(props) {
                 />
               )}
         </View> 
-          {/* <Text style={styles.text}>
-          {"Selecciona la/s mascota/s que desea que sean cuidadas\n"}
-          <CheckBox
-          title='Mascotas'
-          checked={this.state.checked}
-          />
-         </Text> */}
-
+        <View>
+        <Text style={styles.text}>
+          ¿Qué mascotas quiere que pasee?
+        </Text>
+        <View style={styles.container}>
+          {petNames.map(pet => (
+            <PetCheckbox
+              name={pet}
+              petNumber={petNumber}
+              setPetNumber={setPetNumber}
+            />
+          ))}
+        </View>
+      </View>
+     
         <View style={styles.buttonContainer}>
         <Button title="Añadir Fechas" onPress={sendForm} color="#0de" />
       </View>
@@ -178,6 +225,31 @@ function FormRequestAccommodation(props) {
 }
 
 export default withNavigation(FormRequestAccommodation);
+
+function PetCheckbox(props) {
+  const { name, petNumber, setPetNumber } = props;
+  const [checked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    let number = petNumber;
+    if (checked) {
+      number++;
+    } else if (!checked && petNumber > 0) {
+      number--;
+    }
+    setPetNumber(number);
+  }, [checked]);
+
+  const setChecked = () => {
+    setIsChecked(!checked);
+  };
+  return (
+    <View style={styles.checkbox}>
+      <CheckBox title={name} checked={checked} onPress={setChecked} />
+    </View>
+  );
+}
+
 
 const styles = StyleSheet.create({
   text: {
