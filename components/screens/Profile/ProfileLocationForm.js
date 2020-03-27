@@ -7,14 +7,13 @@ import {db} from "../../population/config";
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
   const[address, setAddress] = useState(null);
-  const [userInfo, setUserInfo] = useState([]);
   const [reloadData, setReloadData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  //const toastRef = useRef();
+  const [wauwer,setWauwer] = useState([]);
+  
   console.log(email);
-  console.log(address);
-  console.log(userInfo);
+  console.log(wauwer.location);
   console.log(reloadData);
 
 
@@ -24,7 +23,7 @@ export default function ProfileLocationForm(props) {
       .equalTo(email)
       .on("value", function(snap) {
         snap.forEach(function(child) {
-          setUserInfo(child.val());
+          setWauwer(child.val());
         });
       });
     setReloadData(false);
@@ -38,9 +37,8 @@ export default function ProfileLocationForm(props) {
       setIsLoading(true);
       let userData = {
         location: address
-      };
-      db.ref("wauwers")
-        .child(id)
+      }
+      db.ref("wauwers/" + wauwer.id)
         .update(userData)
         .then(() => {
           setIsLoading(false);
@@ -58,10 +56,18 @@ export default function ProfileLocationForm(props) {
           <Input
             placeholder="Avenida Reina Mercedes, Sevilla"
             containerStyle={styles.input}
-            defaultValue={userInfo.location}
+            defaultValue={wauwer.location}
             onChange={v => setAddress(v.nativeEvent.text)}
             errorMessage={error}
           />
+          <Button
+            title="Cambiar dirección"
+            containerStyle={styles.btnContainer}
+            buttonStyle={styles.btn}
+            onPress={updateLocation}
+            loading={isLoading}
+          />
+
           <Button
             title="Cambiar dirección"
             containerStyle={styles.btnContainer}
