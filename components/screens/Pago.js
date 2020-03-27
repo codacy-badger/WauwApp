@@ -43,7 +43,7 @@ export default function Pago() {
       transactions: [
         {
           amount: {
-            currency: "AUD",
+            currency: "EUR",
             total: "26",
             details: {
               shipping: "6",
@@ -67,15 +67,15 @@ export default function Pago() {
                 price: "20",
                 tax: "0",
                 sku: "product34",
-                currency: "AUD"
+                currency: "EUR"
               }
             ]
           }
         }
       ],
       redirect_urls: {
-        return_url: "https://example.com/",
-        cancel_url: "https://example.com/"
+        return_url: "https://example.com/return",
+        cancel_url: "https://example.com/cancel"
       }
     };
 
@@ -87,9 +87,9 @@ export default function Pago() {
 
     const auth = {
       username:
-        "AbWreDhl9ulTXpqXUGZaWr6Xakkt5n4O1CqWxAbJQTYIqaJviDac_aFbuqForg8E397E27KUEjzsTN_Z", //"your_paypal-app-client-ID",
+        "Ae_L6RAR88pOaOQMic4aHMqEs8USRHOJk_SrJhQRh9TjtFLiLKeX4wGjAXFeziPITDsHjHZnQujPENUM", //"your_paypal-app-client-ID",
       password:
-        "EME-6Ls-C7cs10uPpNXiBciXt-vLMC48TR1s9FpP3t5mwGNmvHoEavtpjbzINw3z1jNV_D4vkYgglEaX" //"your-paypal-app-secret-ID
+        "ELqYLSyLndUlJ4_99bIn2liEzE8JlGVsk1sMVO0bub3m1cIRqSNc0aJfBEIKw2ZQsFhzXzwTpAOWHKVt" //"your-paypal-app-secret-ID
     };
 
     const options = {
@@ -113,7 +113,7 @@ export default function Pago() {
         //Resquest payal payment (It will load login page payment detail on the way)
         axios
           .post(
-            `https://api.sandbox.paypal.com/v1/payments/payment`,
+            "https://api.sandbox.paypal.com/v1/payments/payment",
             dataDetail,
             {
               headers: {
@@ -157,32 +157,44 @@ export default function Pago() {
       setShouldShowWebviewLoading(false);
     }
 
-    if (webViewState.url.includes("https://example.com/")) {
+    if (webViewState.url.includes("https://example.com/return")) {
+      console.log("lo incluye");
+
       setPaypalUrl(null);
       const urlArr = webViewState.url.split(/(=|&)/);
 
       const paymentId = urlArr[2];
-      const payerId = urlArr[10];
+      const payerId = urlArr[10]; //"ZFU99T7QB3ALG"; //urlArr[10];
+      // console.log("urlArr:", urlArr);
+      // console.log("paymentId:", paymentId);
+      // console.log("urlArr:", urlArr[6]);
 
+      // `https://api.sandbox.paypal.com/v1/payments/payment/${paymentId}/execute`
+      // Authorization: `Bearer ${accessToken}`
       axios
         .post(
-          `https://api.sandbox.paypal.com/v1/payments/payment/${paymentId}/execute`,
+          "https://api.sandbox.paypal.com/v1/payments/payment/$"
+            .concat(paymentId)
+            .concat("/execute"),
           { payer_id: payerId },
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`
+              Authorization: "Bearer $".concat(accessToken)
             }
           }
         )
         .then(response => {
           setShouldShowWebviewLoading(true);
-          console.log(response);
+          console.log("response:", response);
         })
         .catch(err => {
           setShouldShowWebviewLoading(true);
-          console.log({ ...err });
+
+          console.log("Error:", { ...err.code });
         });
+    } else {
+      console.log("atrás");
     }
   };
 
@@ -212,7 +224,7 @@ export default function Pago() {
           <WebView
             style={{ height: "100%", width: "100%" }}
             source={{ uri: paypalUrl }}
-            onNavigationStateChange={this._onNavigationStateChange}
+            onNavigationStateChange={_onNavigationStateChange}
             javaScriptEnabled={true}
             domStorageEnabled={true}
             startInLoadingState={false}
@@ -237,7 +249,7 @@ export default function Pago() {
   );
 }
 
-// App.navigationOptions = {
+// Pago.navigationOptions = {
 //   title: "App"
 // };
 
