@@ -97,13 +97,13 @@ function Wauwer(props) {
   const checkHasPets = () => {
     
     
-    if(petNumber>0){
+   // if(petNumber>0){
       navigation.navigate("CreateRequest", {
         wauwer: wauwerData.item[0] //TODO: MODIFICAR LA REDIRECCIÓN
       });
-    }else{
-      Alert.alert("¡No tienes mascotas que pasear!","");
-    }
+  //  }else{
+  //    Alert.alert("¡No tienes mascotas que pasear!","");
+    
   };
 
   return (

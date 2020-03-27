@@ -26,7 +26,7 @@ console.warn = message => {
 function createRequest(props) {
   const { navigation } = props;
   const newPrice = navigation.state.params.wauwer.price;
-  const [newDate, setNewDate] = useState(null);
+  const [newInterval, setNewInterval] = useState(null);
   const [newOwner, setNewOwner] = useState([]);
   const newWorker = navigation.state.params.wauwer;
   const [error, setError] = useState(null);
@@ -49,6 +49,7 @@ function createRequest(props) {
   }, [reloadData]);
 
   const [availabilities, setAvailabilities] = useState([]);
+  const [newAvailability, setNewAvailability] = useState([]);
 
   useEffect(() => {
     // To retrieve the walker availabilities
@@ -85,12 +86,16 @@ function createRequest(props) {
     navigation.navigate("Home");
   };
 
+  const funct = (value) => {
+    setNewAvailability(value.id);
+    setNewInterval(value.day + " " + value.startTime + "h - " + value.endDate + "h");
+  }
+
   const addRequest = () => {
     let id = db.ref("request").push().key;
     setError(null);
     setIsLoading(true);
     let requestData = {
-      endTime:"",
       id: id,
       isCanceled: false,
       owner: newOwner,
@@ -98,9 +103,10 @@ function createRequest(props) {
       petNumber: petNumber,
       place: "localización",
       price: newPrice,
-      startTime: "",
       type: "WALK",
-      worker: newWorker 
+      worker: newWorker,
+      interval: newInterval,
+      availability: newAvailability,
     };
     db.ref("request/" + id)
       .set(requestData)
@@ -122,9 +128,9 @@ function createRequest(props) {
         <Text style={styles.data}>{newWorker.name}</Text>
       </Text>
 
-      {/* <Text style={styles.text}>
+      {/* { <Text style={styles.text}>
         {"Información \n"} <Text style={styles.data}>{newDescription}</Text>{" "}
-      </Text> */}
+      </Text> } */}
       <Text style={styles.text}>
         {"Precio paseo \n"}
         <Text style={styles.data}>{newPrice}</Text>
@@ -135,8 +141,8 @@ function createRequest(props) {
       </Text>
 
       <Picker
-        selectedValue={newDate}
-        onValueChange={value => setNewDate(value)}
+        selectedValue={newInterval}
+        onValueChange={value => funct(value)} 
       >
         {availabilities.map(item => (
           <Picker.Item
@@ -144,7 +150,7 @@ function createRequest(props) {
               item.day + " " + item.startTime + "h - " + item.endDate + "h"
             }
             value={
-              item.day + " " + item.startTime + "h - " + item.endDate + "h"
+              item
             }
           />
         ))}
@@ -152,11 +158,11 @@ function createRequest(props) {
 
       <Text style={styles.text}>
         {"Fecha\n"}
-        <Text style={styles.data}>{newDate}</Text>{" "}
+        <Text style={styles.data}>{newInterval}</Text>{" "}
       </Text>
       <View>
         <Text style={styles.text}>
-          ¿Qué mascotas quiere que pasee {newWorker.name}?
+          {"¿Qué mascotas quiere que pasee" + newWorker.name + "?"}
         </Text>
         <View style={styles.container}>
           {petNames.map(pet => (
