@@ -88,9 +88,9 @@ export default function Pago() {
 
     const auth = {
       username:
-        "AfQqYfPUuC7fag4J4UE2WMFpIPozIP9Xj9yQVnGgAmMckurx67zKuhI42RUsb8hxF2AgoNsrg2O9aas9", //"your_paypal-app-client-ID",
+        "AUrtghWgBuLlBCqUDRK4NfYpHNRxRPlxdQFu1m0nV8XSrVnfGT734v_CrmSWFjGvJ9GgcVlEyJ6GsgXq", //"your_paypal-app-client-ID",
       password:
-        "ELqU5PSnSggYMAoY6XAaCaOv_DLdY2VoGR6vXVdWeD9ivn_zZa2ZnJ10-AATQeL6EhC0MqwJzxcPTibd" //"your-paypal-app-secret-ID
+        "EMc9eBqWueUaCtRuB92j3smvFqF4jyog2nzyFFY1Ud5us5vxm5F_KOKFj2QN1fVnaj8f33zBlh8eOGz2" //"your-paypal-app-secret-ID
     };
 
     const options = {
