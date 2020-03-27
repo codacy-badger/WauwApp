@@ -6,6 +6,7 @@ import ProfileSitterFormScreen from "../screens/Profile/ProfileSitterForm";
 import ProfileLocationFormScreen from "../screens/Profile/ProfileLocationForm";
 import ProfileDrawerNavigator from "./ProfileDrawer";
 import ShowRequestScreen from "../screens/Profile/ShowRequest";
+import ProfileAddLocationDefaultScreen from "../screens/Profile/ProfileAddLocationDefault";
 const ProfileScreenStacks = createStackNavigator({
   ProfileDrawer: {
     screen: ProfileDrawerNavigator,
@@ -46,6 +47,14 @@ const ProfileScreenStacks = createStackNavigator({
     screen: ShowRequestScreen,
     navigationOptions: () => ({
       title: "Escoger Localización",
+      headerTitleAlign: "center"
+    })
+  },
+
+  ProfileAddLocationDefault: {
+    screen: ProfileAddLocationDefaultScreen,
+    navigationOptions: () =>({
+      title: "Ubicación por defecto",
       headerTitleAlign: "center"
     })
   }
