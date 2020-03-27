@@ -69,10 +69,10 @@ export default function ProfileLocationForm(props) {
           />
 
           <Button
-            title="Cambiar dirección"
+            title="Coger tu ubicación directamente"
             containerStyle={styles.btnContainer}
             buttonStyle={styles.btn}
-            onPress={updateLocation}
+            onPress={() => navigation.navigate("ProfileAddLocationDefault")}
             loading={isLoading}
           />
         </View>
