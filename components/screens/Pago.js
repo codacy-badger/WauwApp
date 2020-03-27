@@ -11,6 +11,7 @@ import axios from "axios";
 import qs from "qs";
 import { decode, encode } from "base-64";
 
+
 export default function Pago() {
   const [isWebViewLoading, SetIsWebViewLoading] = useState(false);
   const [paypalUrl, setPaypalUrl] = useState("");
@@ -43,11 +44,11 @@ export default function Pago() {
       transactions: [
         {
           amount: {
-            currency: "AUD",
-            total: "26",
+            currency: "EUR",
+            total: "36",
             details: {
               shipping: "6",
-              subtotal: "20",
+              subtotal: "30",
               shipping_discount: "0",
               insurance: "0",
               handling_fee: "0",
@@ -64,10 +65,10 @@ export default function Pago() {
                 name: "Book",
                 description: "Chasing After The Wind",
                 quantity: "1",
-                price: "20",
+                price: "30",
                 tax: "0",
                 sku: "product34",
-                currency: "AUD"
+                currency: "EUR"
               }
             ]
           }
@@ -87,9 +88,9 @@ export default function Pago() {
 
     const auth = {
       username:
-        "AbWreDhl9ulTXpqXUGZaWr6Xakkt5n4O1CqWxAbJQTYIqaJviDac_aFbuqForg8E397E27KUEjzsTN_Z", //"your_paypal-app-client-ID",
+        "AVoei4BdvFtP_nB5Ulu0fN0L1FrW_he7DLx2A1Y6TUdOFVwrKed73my0bwlUeAXO0mFJZyAfZ5cGpWwz", //"your_paypal-app-client-ID",
       password:
-        "EME-6Ls-C7cs10uPpNXiBciXt-vLMC48TR1s9FpP3t5mwGNmvHoEavtpjbzINw3z1jNV_D4vkYgglEaX" //"your-paypal-app-secret-ID
+        "EBAPtB2_JPDoKsftonMYhsF7BWb1SIxCLD6IplXwNKRZEAgD1HOstsQr4Q7PVcT5vmXKcy7GTzY2rp2R" //"your-paypal-app-secret-ID
     };
 
     const options = {
