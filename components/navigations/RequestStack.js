@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import { CreateRequestScreen } from "../screens/CreateRequest";
+import { CreateRequestScreen } from "../screens/CreateRequestWalk";
 
 const RequestScreenStacks = createStackNavigator({
     CreateRequest: {
