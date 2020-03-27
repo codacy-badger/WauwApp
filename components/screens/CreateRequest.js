@@ -1,36 +1,42 @@
-import React, { useState , useEffect} from "react";
-import { StyleSheet, Text, TextInput, Button, View, Alert, Picker } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  Button,
+  View,
+  Alert,
+  Picker,
+  ScrollView
+} from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
-import { YellowBox } from 'react-native';
-import _ from 'lodash';
-import RNPickerSelect from 'react-native-picker-select';
+import { YellowBox } from "react-native";
+import { CheckBox } from "react-native-elements";
+import _ from "lodash";
 
-YellowBox.ignoreWarnings(['Setting a timer']);
+YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
 console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
+  if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
 };
 
-
-
 function createRequest(props) {
-  const {navigation} = props;
-  const newDescription= navigation.state.params.wauwer.description;
-  const newPrice =navigation.state.params.wauwer.price;
+  const { navigation } = props;
+  const newPrice = navigation.state.params.wauwer.price;
   const [newDate, setNewDate] = useState(null);
-  const newPending = "true";
   const [newOwner, setNewOwner] = useState([]);
-  const newType = "walk";
-  const newWorker= navigation.state.params.wauwer;
+  const newWorker = navigation.state.params.wauwer;
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [reloadData, setReloadData] = useState(false);
+  const [petNumber, setPetNumber] = useState(0);
+  const [petNames, setPetNames] = useState([]);
 
-  useEffect(() => { // To retrieve the current logged user
+  useEffect(() => {
+    // To retrieve the current logged user
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
@@ -42,12 +48,13 @@ function createRequest(props) {
     setReloadData(false);
   }, [reloadData]);
 
-  const[availabilities, setAvailabilities] = useState([]);
-  
-  useEffect(() => { // To retrieve the walker availabilities
+  const [availabilities, setAvailabilities] = useState([]);
+
+  useEffect(() => {
+    // To retrieve the walker availabilities
     db.ref("availability-wauwers")
-    .orderByChild("wauwer/id")
-    .equalTo(newWorker.id)
+      .orderByChild("wauwer/id")
+      .equalTo(newWorker.id)
       .on("value", snap => {
         const availabilitiesList = [];
         snap.forEach(child => {
@@ -58,29 +65,42 @@ function createRequest(props) {
     setReloadData(false);
   }, [reloadData]);
 
+  useEffect(() => {
+    // To retrieve my pets' names
+    db.ref("pet")
+      .orderByChild("owner/email")
+      .equalTo(email)
+      .on("value", snap => {
+        const pets = [];
+        snap.forEach(child => {
+          pets.push(child.val().name);
+        });
+        setPetNames(pets);
+      });
+  }, []);
 
-  const all= () => {
-    
+  const all = () => {
     addRequest();
     Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
     navigation.navigate("Home");
-
   };
 
-
   const addRequest = () => {
-    let id= db.ref("requests").push().key;
+    let id = db.ref("request").push().key;
     setError(null);
     setIsLoading(true);
     let requestData = {
+      endTime:"",
       id: id,
-      date: newDate,
-      info: newDescription,
-      pending: newPending,
+      isCanceled: false,
       owner: newOwner,
-      quantity: newPrice,
-      type: newType,
-      worker: newWorker
+      pending: true,
+      petNumber: petNumber,
+      place: "localización",
+      price: newPrice,
+      startTime: "",
+      type: "WALK",
+      worker: newWorker 
     };
     db.ref("request/" + id)
       .set(requestData)
@@ -93,19 +113,18 @@ function createRequest(props) {
         setError("Ha ocurrido un error");
         setIsLoading(false);
       });
-    
   };
 
   return (
-    <View>
+    <ScrollView style={{backgroundColor:"white"}}>
       <Text style={styles.text}>
         {"Nombre Paseador\n"}
         <Text style={styles.data}>{newWorker.name}</Text>
       </Text>
-      
-      <Text style={styles.text}>
+
+      {/* <Text style={styles.text}>
         {"Información \n"} <Text style={styles.data}>{newDescription}</Text>{" "}
-      </Text>
+      </Text> */}
       <Text style={styles.text}>
         {"Precio paseo \n"}
         <Text style={styles.data}>{newPrice}</Text>
@@ -114,30 +133,73 @@ function createRequest(props) {
       <Text style={styles.text}>
         {"¿Cuándo quiere que " + newWorker.name + " pasee a su perro?"}
       </Text>
-      
-      <Picker selectedValue={newDate}
-        onValueChange={value => setNewDate(value) }>
 
-        {availabilities.map(item => 
-        <Picker.Item label={item.day + " " + item.startTime + "h - " + item.endDate + "h"} value={item.day + " " + item.startTime + "h - " + item.endDate + "h"}/> )
-        }
-      
+      <Picker
+        selectedValue={newDate}
+        onValueChange={value => setNewDate(value)}
+      >
+        {availabilities.map(item => (
+          <Picker.Item
+            label={
+              item.day + " " + item.startTime + "h - " + item.endDate + "h"
+            }
+            value={
+              item.day + " " + item.startTime + "h - " + item.endDate + "h"
+            }
+          />
+        ))}
       </Picker>
-      
+
       <Text style={styles.text}>
         {"Fecha\n"}
         <Text style={styles.data}>{newDate}</Text>{" "}
       </Text>
-
+      <View>
+        <Text style={styles.text}>
+          ¿Qué mascotas quiere que pasee {newWorker.name}?
+        </Text>
+        <View style={styles.container}>
+          {petNames.map(pet => (
+            <PetCheckbox
+              name={pet}
+              petNumber={petNumber}
+              setPetNumber={setPetNumber}
+            />
+          ))}
+        </View>
+      </View>
       <View style={styles.buttonContainer}>
         <Button title="Crear Solicitud" onPress={all} color="#0de" />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
-
 export default withNavigation(createRequest);
+
+function PetCheckbox(props) {
+  const { name, petNumber, setPetNumber } = props;
+  const [checked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    let number = petNumber;
+    if (checked) {
+      number++;
+    } else if (!checked && petNumber > 0) {
+      number--;
+    }
+    setPetNumber(number);
+  }, [checked]);
+
+  const setChecked = () => {
+    setIsChecked(!checked);
+  };
+  return (
+    <View style={styles.checkbox}>
+      <CheckBox title={name} checked={checked} onPress={setChecked} />
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   text: {
@@ -152,21 +214,12 @@ const styles = StyleSheet.create({
     color: "grey"
   },
   buttonContainer: {
-    marginTop: 40
-  },
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  input: {
-    marginBottom: 10
-  },
-  btnContainer: {
     marginTop: 20,
-    width: "95%"
+    marginBottom: 20
   },
-  btn: {
-    backgroundColor: "#00a680"
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap"
   }
 });
