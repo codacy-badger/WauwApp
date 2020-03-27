@@ -30,11 +30,46 @@ export default function ProfileLocationForm(props) {
 
 
   async function getLocationAsync() {
-      let currentAddress = await Location.geocodeAsync(address);
+      getPermisos();
+      let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true });
+      console.log('Flag Location:');
+      console.log(location);
+      console.log('Flag LocationCoords:');
+      console.log(location.coords);
+
+      let currentAddress = await Location.geocodeAsync('Avenida Reina Mercedes 45, Sevilla');
+      console.log('Flag CurrentAddress:');
       console.log(currentAddress);
+
+      let geocode = await Location.reverseGeocodeAsync({latitude: 37.383127 , longitude: -6.0015874});
+      console.log('Flag GeoCode:');
+      console.log(geocode);
+
+      let geocode2 = await Location.reverseGeocodeAsync(location.coords);
+      console.log('Flag GeoCode2:');
+      console.log(geocode2);
       
-      return currentAddress.coords;
+      //return currentAddress.coords;
  }
+
+  async function getLocation2Async() {
+    
+    let currentAddress = await Location.geocodeAsync(address);
+    console.log(currentAddress);
+    
+    return currentAddress.coords;
+  }
+
+  async function getPermisos() {
+      // permissions returns only for location permissions on iOS and under certain conditions, see Permissions.LOCATION
+      const { status, permissions } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status === 'granted') {
+        console.log('Permisos concedidos');
+        //return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+      } else {
+        throw new Error('Location permission not granted');
+      }
+  }
 
  async function reverseLocation(coordenadas) {
    let direccion = await Location.reverseGeocodeAsync(coordenadas);
@@ -86,6 +121,27 @@ export default function ProfileLocationForm(props) {
         });
     }
 
+    const ubicacionActual2 = () => { 
+      
+      setIsLoading(true);
+    
+      getLocationAsync();
+
+      // let userData = {
+      //   address: address,
+      //   coordenadas: coordenadas
+      // }
+      // db.ref("wauwers/" + wauwer.id)
+      //     .update(userData)
+      //     .then(() => {
+      //       setIsLoading(false);
+      //       setReloadData(true);
+      //     })
+      //     .catch(() => {
+      //       setError("Ha ocurrido un error");
+      //       setIsLoading(false);
+      //     });
+      }
 
 
   
@@ -102,7 +158,7 @@ export default function ProfileLocationForm(props) {
             title="Cambiar dirección"
             containerStyle={styles.btnContainer}
             buttonStyle={styles.btn}
-            onPress={ubicacionActual}
+            onPress={ubicacionActual2}
             loading={isLoading}
           />
         </View>
