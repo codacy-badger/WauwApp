@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, StyleSheet, Input, Button } from "react-native";
+import { Text, View, StyleSheet} from "react-native";
+import {Input, Button } from "react-native-elements";
 import { email } from "../../account/QueriesProfile"
+import {db} from "../../population/config";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
@@ -10,8 +12,10 @@ export default function ProfileLocationForm(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   //const toastRef = useRef();
-  //console.log(email);
+  console.log(email);
   console.log(address);
+  console.log(userInfo);
+  console.log(reloadData);
 
 
   useEffect(() => {
@@ -50,13 +54,11 @@ export default function ProfileLocationForm(props) {
   }
   
   return (
-    <View>
-      <View>
         <View style={styles.view}>
           <Input
             placeholder="Avenida Reina Mercedes, Sevilla"
             containerStyle={styles.input}
-            defaultValue={address && address}
+            defaultValue={userInfo.location}
             onChange={v => setAddress(v.nativeEvent.text)}
             errorMessage={error}
           />
@@ -68,8 +70,6 @@ export default function ProfileLocationForm(props) {
             loading={isLoading}
           />
         </View>
-      </View>
-    </View>
   );
 }
 
@@ -83,4 +83,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "95%"
   },
+  input: {
+    marginBottom: 10
+  },
+  btn: {
+    backgroundColor: "#00a680"
+  }
 });
