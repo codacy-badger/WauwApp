@@ -178,7 +178,7 @@ export default function Pago() {
         )
         .then(response => {
           setShouldShowWebviewLoading(true);
-          console.log(response);
+          console.log("response.status", response.status);
         })
         .catch(err => {
           setShouldShowWebviewLoading(true);
