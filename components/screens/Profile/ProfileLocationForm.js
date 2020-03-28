@@ -38,13 +38,14 @@ export default function ProfileLocationForm(props) {
 
 
    async function getLocationAsync() {
-     // getPermisos();
+     getPermisos();
      // let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true });
       //console.log('Flag Location:');
       //console.log(location);
       //console.log('Flag LocationCoords:');
       //console.log(location.coords);
-      var direccion = name + ", " + city
+      var direccion = name + ", " + postalCode +" "+ city + ", " + region;
+      console.log(direccion);
 
       let currentAddress = await Location.geocodeAsync(direccion);
       
@@ -102,8 +103,8 @@ export default function ProfileLocationForm(props) {
 
     const ubicacionActual2 = () => { 
       
-      let data = fetch(getLocationAsync()).then()
-        console.log(data);
+      getLocationAsync();
+        
 
         
       //console.log(place);
