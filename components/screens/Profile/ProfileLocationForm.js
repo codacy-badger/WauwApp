@@ -63,7 +63,7 @@ import { withNavigation } from "react-navigation";
 
     const guardarLocation = () => {
       if(!locationWauwer || wauwerAddress == "") {
-        Alert("Por favor, escribe una dirección y marca una localización usando el icono del mapa");
+        Alert.alert("Por favor, escribe una dirección y marca una localización usando el icono del mapa");
       }else {
       let location = {
         location: locationWauwer
