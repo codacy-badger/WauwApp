@@ -2,10 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TextInput, Button, Alert, StyleSheet } from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile"
+import { email } from "../../account/QueriesProfile";
 
-function createDog(props) {
-  const { id, name,breed, description, owner, setIsVisibleModal, navigation } = props;
+function ProfileAddDogForm(props) {
+  const {
+    id,
+    name,
+    breed,
+    description,
+    owner,
+    setIsVisibleModal,
+    navigation
+  } = props;
   const [newName, setNewName] = useState(null);
   const [newBreed, setNewBreed] = useState(null);
   const [newDescription, setNewDescription] = useState(null);
@@ -16,13 +24,13 @@ function createDog(props) {
 
   useEffect(() => {
     db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("value", function(snap){
-      snap.forEach(function(child) {
-        setnewOwner(child.val());
+      .orderByChild("email")
+      .equalTo(email)
+      .on("value", function(snap) {
+        snap.forEach(function(child) {
+          setnewOwner(child.val());
+        });
       });
-    });
     setReloadData(false);
   }, [reloadData]);
 
@@ -33,35 +41,45 @@ function createDog(props) {
       name: newName,
       breed: newBreed,
       description: newDescription,
-      owner: newOwner,
+      owner: newOwner
     };
-  
-    if ((newName === null || newName === "") || (newBreed === null || newBreed === "") || (newDescription===null || newDescription==="")) {
-      let errores = '';
-      if (newName === null || newName === ""){
+
+    if (
+      newName === null ||
+      newName === "" ||
+      newBreed === null ||
+      newBreed === "" ||
+      newDescription === null ||
+      newDescription === ""
+    ) {
+      let errores = "";
+      if (newName === null || newName === "") {
         errores = errores.concat("Debe escribir un nombre.\n");
       }
-      if (newBreed === null || newBreed === ""){
+      if (newBreed === null || newBreed === "") {
         errores = errores.concat("Debe escribir una raza.\n");
       }
-      if (newDescription===null || newDescription===""){
-        errores = errores.concat("Debe dar una breve descripción de su perro.\n");
+      if (newDescription === null || newDescription === "") {
+        errores = errores.concat(
+          "Debe dar una breve descripción de su perro.\n"
+        );
       }
       Alert.alert("Advertencia", errores.toString());
     } else {
       setIsLoading(true);
       db.ref("pet/" + id)
-      .set(petData)
-      .then(() => {
-        setIsLoading(false);
-        setReloadData(true);
-        setIsVisibleModal(false);
-      }).catch(() => {
-        setError("Ha ocurrido un error");
-        setIsLoading(false);
-      });
+        .set(petData)
+        .then(() => {
+          setIsLoading(false);
+          setReloadData(true);
+          setIsVisibleModal(false);
+        })
+        .catch(() => {
+          setError("Ha ocurrido un error");
+          setIsLoading(false);
+        });
       Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
-      navigation.navigate("Profile");
+      navigation.navigate("ProfileDrawer");
     }
   };
 
@@ -71,35 +89,31 @@ function createDog(props) {
       <View>
         <Text>¿Cómo se llama su perro?</Text>
         <TextInput
-        placeholder="Ej.: Fluffy"
-        containerStyle={styles.input}
-        onChange={v => setNewName(v.nativeEvent.text)}    
-        />  
+          placeholder="Ej.: Fluffy"
+          containerStyle={styles.input}
+          onChange={v => setNewName(v.nativeEvent.text)}
+        />
         <Text>¿De qué raza es?</Text>
-        <TextInput 
-        placeholder="Ej.: Chiguagua"
-        containerStyle={styles.input}
-        onChange={v => setNewBreed(v.nativeEvent.text)}
+        <TextInput
+          placeholder="Ej.: Chiguagua"
+          containerStyle={styles.input}
+          onChange={v => setNewBreed(v.nativeEvent.text)}
         />
         <Text>Describa a su perro</Text>
-        <TextInput 
-        multiline={true}
-        numberOfLines={5}
-        containerStyle={styles.input}
-        onChange={v => setNewDescription(v.nativeEvent.text)}
+        <TextInput
+          multiline={true}
+          numberOfLines={5}
+          containerStyle={styles.input}
+          onChange={v => setNewDescription(v.nativeEvent.text)}
         />
-        
-        <Button
-        title="Crear"
-        onPress={addPet}
-        loading={isLoading}
-        />
+
+        <Button title="Crear" onPress={addPet} loading={isLoading} />
       </View>
     </View>
   );
 }
 
-export default withNavigation(createDog);
+export default withNavigation(ProfileAddDogForm);
 
 const styles = StyleSheet.create({
   view: {
@@ -108,6 +122,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   input: {
-    marginBottom: 10,
-  },
+    marginBottom: 10
+  }
 });
