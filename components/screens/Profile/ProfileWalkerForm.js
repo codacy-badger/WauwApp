@@ -31,6 +31,13 @@ function ProfileWalkerForm(props) {
   const { navigation } = props;
   const [ reloadData, setReloadData ] = useState(false);
   const [ newWalker, setNewWalker ] = useState([]);
+  const [ availabilitiesLunes, setAvailabilitiesLunes ] = useState([]);
+  const [ availabilitiesMartes, setAvailabilitiesMartes ] = useState([]);
+  const [ availabilitiesMiercoles, setAvailabilitiesMiercoles ] = useState([]);
+  const [ availabilitiesJueves, setAvailabilitiesJueves ] = useState([]);
+  const [ availabilitiesViernes, setAvailabilitiesViernes ] = useState([]);
+  const [ availabilitiesSabado, setAvailabilitiesSabado ] = useState([]);
+  const [ availabilitiesDomingo, setAvailabilitiesDomingo ] = useState([]);
   const [ availabilities, setAvailabilities ] = useState([]);
 
   useEffect(() => {
@@ -50,19 +57,58 @@ function ProfileWalkerForm(props) {
     // To retrieve availabilities
     db.ref("availability")
       .on("value", snap => {
-        const availabilitiesList = [];
+        const availabilitiesListLunes = [];
+        const availabilitiesListMartes = [];
+        const availabilitiesListMiercoles = [];
+        const availabilitiesListJueves = [];
+        const availabilitiesListViernes = [];
+        const availabilitiesListSabado = [];
+        const availabilitiesListDomingo = [];
+
         snap.forEach(child=>{
-          availabilitiesList.push(child.val());
+
+          switch(child.val().day){
+            case "Lunes":
+              availabilitiesListLunes.push(child.val());
+              break;
+            case "Martes":
+              availabilitiesListMartes.push(child.val());
+              break;
+            case "Miercoles":
+              availabilitiesListMiercoles.push(child.val());
+              break;
+            case "Jueves":
+              availabilitiesListJueves.push(child.val());
+              break;
+            case "Viernes":
+              availabilitiesListViernes.push(child.val());
+              break;
+            case "Sabado":
+              availabilitiesListSabado.push(child.val());
+              break;
+            case "Domingo":
+              availabilitiesListDomingo.push(child.val());
+              break;
+          }
+           
         });
-        setAvailabilities(availabilitiesList);
+        setAvailabilitiesLunes(availabilitiesListLunes);
+        setAvailabilitiesMartes(availabilitiesListMartes);
+        setAvailabilitiesMiercoles(availabilitiesListMiercoles);
+        setAvailabilitiesJueves(availabilitiesListJueves);
+        setAvailabilitiesViernes(availabilitiesListViernes);
+        setAvailabilitiesSabado(availabilitiesListSabado);
+        setAvailabilitiesDomingo(availabilitiesListDomingo);
       });
     setReloadData(false);
   }, [reloadData]);
 
-    console.log(newWalker);
+    
 
   return (
-    <View>
+    <SafeAreaView>
+      <ScrollView>
+    <View>     
       <View>
         <Text style={styles.text}> Salario </Text>
         <Text style={styles.data}>{newWalker.walkSalary}</Text>
@@ -74,9 +120,15 @@ function ProfileWalkerForm(props) {
           <Text>Lunes</Text>
         </CollapseHeader>
         <CollapseBody>
-          <Text>Aaron Bennet</Text>
-          <Text>Claire Barclay</Text>
-          <Text>Kelso Brittany</Text>
+            <FlatList
+              data={availabilitiesLunes}
+              renderItem={availability => (
+                <AvailabilityCheckBox availability={availability.item} navigation={navigation} />
+              )}
+              keyExtractor={availability => {
+                availability.item;
+              }}
+            />
         </CollapseBody>
       </Collapse>
 
@@ -85,9 +137,15 @@ function ProfileWalkerForm(props) {
           <Text>Martes</Text>
         </CollapseHeader>
         <CollapseBody>
-          <Text>Aaron Bennet</Text>
-            <Text>Claire Barclay</Text>
-            <Text>Kelso Brittany</Text>
+            <FlatList
+              data={availabilitiesMartes}
+              renderItem={availability => (
+                <AvailabilityCheckBox availability={availability.item} navigation={navigation} />
+              )}
+              keyExtractor={availability => {
+                availability.item;
+              }}
+            />
         </CollapseBody>
       </Collapse>
 
@@ -96,9 +154,15 @@ function ProfileWalkerForm(props) {
           <Text>Miércoles</Text>
         </CollapseHeader>
         <CollapseBody>
-          <Text>Aaron Bennet</Text>
-          <Text>Claire Barclay</Text>
-          <Text>Kelso Brittany</Text>
+          <FlatList
+            data={availabilitiesMiercoles}
+            renderItem={availability => (
+              <AvailabilityCheckBox availability={availability.item} navigation={navigation} />
+            )}
+            keyExtractor={availability => {
+              availability.item;
+            }}
+          />
         </CollapseBody>
       </Collapse>
 
@@ -107,9 +171,15 @@ function ProfileWalkerForm(props) {
           <Text>Jueves</Text>
         </CollapseHeader>
         <CollapseBody>
-          <Text>Aaron Bennet</Text>
-          <Text>Claire Barclay</Text>
-          <Text>Kelso Brittany</Text>
+          <FlatList
+            data={availabilitiesJueves}
+            renderItem={availability => (
+              <AvailabilityCheckBox availability={availability.item} navigation={navigation} />
+            )}
+            keyExtractor={availability => {
+              availability.item;
+            }}
+          />
         </CollapseBody>
       </Collapse>
 
@@ -118,9 +188,15 @@ function ProfileWalkerForm(props) {
           <Text>Viernes</Text>
         </CollapseHeader>
         <CollapseBody>
-          <Text>Aaron Bennet</Text>
-          <Text>Claire Barclay</Text>
-          <Text>Kelso Brittany</Text>
+          <FlatList
+            data={availabilitiesViernes}
+            renderItem={availability => (
+              <AvailabilityCheckBox availability={availability.item} navigation={navigation} />
+            )}
+            keyExtractor={availability => {
+              availability.item;
+            }}
+          />
         </CollapseBody>
       </Collapse>
 
@@ -129,9 +205,15 @@ function ProfileWalkerForm(props) {
           <Text>Sábado</Text>
         </CollapseHeader>
         <CollapseBody>
-          <Text>Aaron Bennet</Text>
-          <Text>Claire Barclay</Text>
-          <Text>Kelso Brittany</Text>
+          <FlatList
+            data={availabilitiesSabado}
+            renderItem={availability => (
+              <AvailabilityCheckBox availability={availability.item} navigation={navigation} />
+            )}
+            keyExtractor={availability => {
+              availability.item;
+            }}
+          />
         </CollapseBody>
       </Collapse>
 
@@ -140,9 +222,15 @@ function ProfileWalkerForm(props) {
           <Text>Domingo</Text>
         </CollapseHeader>
         <CollapseBody>
-          <Text>Aaron Bennet</Text>
-          <Text>Claire Barclay</Text>
-          <Text>Kelso Brittany</Text>
+          <FlatList
+            data={availabilitiesDomingo}
+            renderItem={availability => (
+              <AvailabilityCheckBox availability={availability.item} navigation={navigation} />
+            )}
+            keyExtractor={availability => {
+              availability.item;
+            }}
+          />
         </CollapseBody>
       </Collapse>
 
@@ -157,6 +245,27 @@ function ProfileWalkerForm(props) {
       <Button title="Voy a ser Pasedor" onPress={null} color="#0de" />
     </View>
   </View>
+  </ScrollView>
+  </SafeAreaView>
+  );
+}
+
+function AvailabilityCheckBox(props) {
+  
+  const { availability } = props;
+  const [checked, setIsChecked] = useState(false);
+  /* console.log("==================================");
+  console.log(availability);
+  console.log("=================================="); */
+
+  const setChecked = () => {
+    setIsChecked(!checked);
+  };
+  
+  return (
+    <View style={styles.checkbox}>
+      <CheckBox title={availability.day + ":  " + availability.startTime + " - " + availability.endDate } checked={checked} onPress={setChecked} />
+    </View>
   );
 }
 
