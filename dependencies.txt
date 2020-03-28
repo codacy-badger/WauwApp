@@ -24,3 +24,4 @@ npm i react-native-easy-toast
 npm install react-native-gifted-chat
 expo install react-native-gifted-chat
 npm install react-native-picker-select
+npm install --save accordion-collapse-react-native
