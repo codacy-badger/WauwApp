@@ -40,15 +40,15 @@ export default function Chats(props) {
       snap.forEach(child => {
         const requestsData = [];
 
-        if ((child.val().idWalker == currentUser.id || child.val().idWauwer == currentUser.id) &&
-          (child.val().isCanceled === false && child.val().pending === false)) {
+        if ((child.val().worker == currentUser.id || child.val().owner == currentUser.id) &&
+          (child.val().isCanceled === false && child.val().pending === false && child.val().isPayed === true)) {
 
           setRequestIDChat(child.val().id);
 
-          if (child.val().idWalker != currentUser.id) {
-            otherUserID = child.val().idWalker;
+          if (child.val().worker != currentUser.id) {
+            otherUserID = child.val().worker;
           } else {
-            otherUserID = child.val().idWauwer;
+            otherUserID = child.val().owner;
           }
 
           db.ref("wauwers").orderByChild("id").equalTo(otherUserID).on("child_added", snap => {
@@ -126,7 +126,7 @@ function RequestChat(props) {
               <Text style={styles.nameUser}> {requestsData.item[0]} </Text>
             </View>
             <View style={styles.column_right}>
-              <Text> {requestsData.item[1].substring(0, 1) + requestsData.item[1].substring(1, requestsData.item[1].size).toLowerCase()} </Text>
+              <Text style={styles.typeRequest}> {requestsData.item[1].substring(0, 1).toUpperCase() + requestsData.item[1].substring(1, requestsData.item[1].size)} </Text>
             </View>
           </View>
         </View>
@@ -141,14 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 10
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20
+    padding: 8
   },
   column_left: {
     flex: 1,
@@ -165,31 +158,25 @@ const styles = StyleSheet.create({
     padding: 20
   },
   tarjeta: {
-    elevation: 1,
     borderRadius: 25,
-    borderStyle: "solid"
+    borderStyle: "solid",
+    backgroundColor: "#aa8caf"
   },
   separacion: {
-    paddingTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingBottom: 5
-  },
-  loading: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  },
-  searchBar: {
-    marginBottom: 20,
-
+    paddingTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10
   },
   userInfoAvatar: {
     marginRight: 20
   },
   nameUser: {
-    fontSize: 17
+    fontSize: 17,
+    color: "white",
+    fontWeight: "bold"
+  },
+  typeRequest: {
+    color: "yellow"
   }
 });
 
