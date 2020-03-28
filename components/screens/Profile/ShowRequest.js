@@ -153,7 +153,7 @@ function showRequest(props) {
             containerStyle={styles.btnContainer2}
             title="Proceder al pago"
             onPress={() =>
-              navigation.navigate("Pago", {
+              navigation.navigate("PayRequest", {
                 request
               })
             }
@@ -206,6 +206,38 @@ function showRequest(props) {
         <Text> Fecha de fin: {request.endTime} </Text>
       </SafeAreaView>
     );
+  
+  } else if (!request.pending && !request.isCanceled && !request.isPayed && request.type == "sitter") {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Image
+          style={{ width: 50, height: 50 }}
+          source={{ uri: worker.photo }}
+        />
+
+        <Text> {worker.name} </Text>
+        <Text> {request.price} €</Text>
+        <Text> Tipo de servicio: {tipo}</Text>
+        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Fecha de inicio: {request.startTime} </Text>
+        <Text> Fecha de fin: {request.endTime} </Text>
+
+        <View style={styles.buttonContainer}>
+          <Button
+            buttonStyle={styles.btnStyle2}
+            containerStyle={styles.btnContainer2}
+            title="Proceder al pago"
+            onPress={() =>
+              navigation.navigate("PayRequest", {
+                request
+              })
+            }
+          />
+        </View>
+        
+      </SafeAreaView>
+    );
+
   } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
