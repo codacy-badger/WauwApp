@@ -24,5 +24,6 @@ npm i react-native-easy-toast
 npm install react-native-gifted-chat
 expo install react-native-gifted-chat
 npm i react-native-webview
+expo install react-native-webview
 npm install react-native-picker-select
 
