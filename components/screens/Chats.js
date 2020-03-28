@@ -19,7 +19,6 @@ export default function Chats(props) {
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
-  const [requestIDChat, setRequestIDChat] = useState();
 
   let currentUser;
   let otherUserID;
@@ -43,8 +42,6 @@ export default function Chats(props) {
         if ((child.val().worker == currentUser.id || child.val().owner == currentUser.id) &&
           (child.val().isCanceled === false && child.val().pending === false && child.val().isPayed === true)) {
 
-          setRequestIDChat(child.val().id);
-
           if (child.val().worker != currentUser.id) {
             otherUserID = child.val().worker;
           } else {
@@ -62,6 +59,7 @@ export default function Chats(props) {
           requestsData.push(otherUserName);
           requestsData.push(child.val().type);
           requestsData.push(otherUserPhoto);
+          requestsData.push(child.val().id);
           allData.push(requestsData);
         }
       });
@@ -80,7 +78,7 @@ export default function Chats(props) {
           <FlatList
             data={data}
             renderItem={requestsData => (
-              <RequestChat requestsData={requestsData} navigation={navigation} currentUser={currentUser} requestIDChat={requestIDChat} />
+              <RequestChat requestsData={requestsData} navigation={navigation} currentUser={currentUser}/>
             )}
             keyExtractor={requestsData => {
               requestsData
@@ -97,7 +95,8 @@ export default function Chats(props) {
 }
 
 function RequestChat(props) {
-  const { requestsData, navigation, currentUser, requestIDChat } = props;
+  const { requestsData, navigation, currentUser} = props;
+  let count = 0;
 
   return (
     <View style={styles.separacion}>
@@ -107,7 +106,8 @@ function RequestChat(props) {
             name: currentUser.name,
             _id: currentUser.id,
             avatar: currentUser.photo,
-            requestID: requestIDChat
+            requestID: requestsData.item[3],
+            count: count
           })
         }
       >

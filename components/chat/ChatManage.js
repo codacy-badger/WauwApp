@@ -7,6 +7,24 @@ export default class ChatManage {
     return firebase.database().ref('chats');
   }
 
+  checkIfExistsChat = requestID => {
+    let result = false;
+
+    this.ref.on("value", snap => {
+      snap.forEach(child =>{
+
+        if (child.val().id == requestID){
+          console.log('Sí hay chat creado para esta request!');
+          result = true;
+        }
+
+      }
+      );
+    });
+
+    return result;
+  }
+
   parse = snapshot => {
     const { timestamp: numberStamp, text, user } = snapshot.val();
     const { key: _id } = snapshot;
