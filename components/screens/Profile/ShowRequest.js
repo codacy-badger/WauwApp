@@ -6,11 +6,13 @@ import { db } from "../../population/config.js";
 function showRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
+  console.log(request);
 
-  var id = request.workerId;
+  var id = request.worker;
   var tipo = "";
   var status = "";
   var worker = [];
+  var pago = "";
 
   console.log("id:"+ id);
 
@@ -21,12 +23,11 @@ function showRequest(props) {
         worker = snap.val();
       });
 
-  console.log("worker", worker);
-
   const cancel = () => {
 
     var idRequest = request.id;
-    var query = db.ref().child("request/" + idRequest);
+    console.log(" request", request.id);
+    var query = db.ref().child("requests/" + idRequest);
 
     query.update({
       pending: false,
@@ -38,7 +39,7 @@ function showRequest(props) {
     navigation.navigate("Home");
   }
 
-  if (request.type == "SITTER") {
+  if (request.type == "sitter") {
     tipo = "Alojamiento";
   } else {
     tipo = "Paseo";
@@ -52,8 +53,14 @@ function showRequest(props) {
     status = "La solicitud ha sido aceptada";
   }
 
+  if(request.isPayed){
+    pago = "La solicitud ya ha sido pagada"
+  }else{
+    pago = "La solicitud aun está a la espera de pago"
+  }
 
-  if (request.pending && request.type == "WALK") {
+
+  if (request.pending && request.type == "walk") {
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -66,9 +73,9 @@ function showRequest(props) {
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
         <Text> Estado de la solicitud:  {status} </Text>
-        <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text> Fecha: {request.interval} </Text>
+        <Text> {pago} </Text>
+
 
         <View style={styles.buttonContainer}>
           <Button
@@ -81,7 +88,7 @@ function showRequest(props) {
       </SafeAreaView>
     );
 
-  } else if (!request.pending && request.isCanceled && request.type == "WALK") {
+  } else if (!request.pending && request.isCanceled && request.type == "walk") {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -93,12 +100,11 @@ function showRequest(props) {
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
         <Text> Estado de la solicitud:  {status} </Text>
-        <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text> Fecha: {request.interval} </Text>
+
       </SafeAreaView>
     );
-  } else if (!request.pending && !request.isCanceled && request.type == "WALK") {
+  } else if (!request.pending && !request.isCanceled && request.isPayed && request.type == "walk") {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -110,9 +116,10 @@ function showRequest(props) {
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
         <Text> Estado de la solicitud:  {status} </Text>
-        <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text> Fecha: {request.interval} </Text>
+        <Text> {pago} </Text>
+
+
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.btnStyle2}
@@ -123,8 +130,84 @@ function showRequest(props) {
         </View>
       </SafeAreaView>
     );
-  } else if (request.pending && request.type == "SITTER") {
 
+  } else if (!request.pending && !request.isCanceled && !request.isPayed && request.type == "walk") {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Image
+          style={{ width: 50, height: 50 }}
+          source={{ uri: worker.photo }}
+        />
+
+        <Text> {worker.name} </Text>
+        <Text> {request.price} €</Text>
+        <Text> Tipo de servicio: {tipo}</Text>
+        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Fecha: {request.interval} </Text>
+        <Text> {pago} </Text>
+
+
+        <View style={styles.buttonContainer}>
+          <Button
+            buttonStyle={styles.btnStyle2}
+            containerStyle={styles.btnContainer2}
+            title="Proceder al pago"
+            onPress={() =>
+              navigation.navigate("PayRequest", {
+                request
+              })
+            }
+          />
+        </View>
+      </SafeAreaView>
+    );
+
+  } else if (request.pending && request.type == "sitter") {
+
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Image
+          style={{ width: 50, height: 50 }}
+          source={{ uri: worker.photo }}
+        />
+
+        <Text> {worker.name} </Text>
+        <Text> {request.price} €</Text>
+        <Text> Tipo de servicio: {tipo}</Text>
+        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Fecha de inicio: {request.startTime} </Text>
+        <Text> Fecha de fin: {request.endTime} </Text>
+        <Text> {pago} </Text>
+
+        <View style={styles.buttonContainer}>
+          <Button
+            buttonStyle={styles.btnStyle2}
+            containerStyle={styles.btnContainer2}
+            title="Cancelar solicitud"
+            onPress={cancel}
+          />
+        </View>
+      </SafeAreaView>
+    );
+
+  } else if (!request.pending && request.isCanceled && request.type == "sitter") {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Image
+          style={{ width: 50, height: 50 }}
+          source={{ uri: worker.photo }}
+        />
+
+        <Text> {worker.name} </Text>
+        <Text> {request.price} €</Text>
+        <Text> Tipo de servicio: {tipo}</Text>
+        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Fecha de inicio: {request.startTime} </Text>
+        <Text> Fecha de fin: {request.endTime} </Text>
+      </SafeAreaView>
+    );
+  
+  } else if (!request.pending && !request.isCanceled && !request.isPayed && request.type == "sitter") {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -143,29 +226,18 @@ function showRequest(props) {
           <Button
             buttonStyle={styles.btnStyle2}
             containerStyle={styles.btnContainer2}
-            title="Cancelar solicitud"
-            onPress={cancel}
+            title="Proceder al pago"
+            onPress={() =>
+              navigation.navigate("PayRequest", {
+                request
+              })
+            }
           />
         </View>
+        
       </SafeAreaView>
     );
 
-  } else if (!request.pending && request.isCanceled && request.type == "SITTER") {
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <Image
-          style={{ width: 50, height: 50 }}
-          source={{ uri: worker.photo }}
-        />
-
-        <Text> {worker.name} </Text>
-        <Text> {request.price} €</Text>
-        <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
-        <Text> Fecha de inicio: {request.startTime} </Text>
-        <Text> Fecha de fin: {request.endTime} </Text>
-      </SafeAreaView>
-    );
   } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -180,6 +252,7 @@ function showRequest(props) {
         <Text> Estado de la solicitud:  {status} </Text>
         <Text> Fecha de inicio: {request.startTime} </Text>
         <Text> Fecha de fin: {request.endTime} </Text>
+        <Text> {pago} </Text>
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.btnStyle2}
