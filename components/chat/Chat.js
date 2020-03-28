@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { GiftedChat } from 'react-native-gifted-chat';
-import Fire from './Fire';
+import ChatManage from './ChatManage';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { StyleSheet, View} from "react-native";
 
@@ -15,7 +15,7 @@ export default class Chat extends Component {
       <View style={styles.chatStyle}>
       <GiftedChat
         messages={this.state.messages}
-        onSend={Fire.shared.send}
+        onSend={ChatManage.shared.send}
         user={this.props.navigation.state.params}
       />
       <KeyboardSpacer topSpacing={-50}/>
@@ -24,14 +24,14 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
-    Fire.shared.on(message =>
+    ChatManage.shared.on(message =>
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
       }))
     );
   }
   componentWillUnmount() {
-    Fire.shared.off();
+    ChatManage.shared.off();
   }
 }
 

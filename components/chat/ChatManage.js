@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-export default class Fire {
+export default class ChatManage {
 
   // Referenciar la tabla chats
   get ref() {
@@ -53,4 +53,4 @@ export default class Fire {
   }
 }
 
-Fire.shared = new Fire();
+ChatManage.shared = new ChatManage();
