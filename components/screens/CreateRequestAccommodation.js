@@ -43,16 +43,6 @@ function createRequestAccommodation(props) {
   const [newOwner, setNewOwner] = useState([]);
 
 
-  //Calcular el precio total del alojamiento
-
-  // let propiedades = {
-  //   salary: salary, 
-  //   startTime:startTime, 
-  //   endTime:endTime,
-  //   petNumber:newPetNumber
-
-  // }
-  // console.log(propiedades)
 
   const [newPrice, setNewPrice] =useState(navigation.state.params.formData.salary);
   
@@ -108,18 +98,17 @@ function createRequestAccommodation(props) {
       price: newPrice,
       type: newType,
       isCanceled: newIsCanceled,
-      startTime : startTime,
-      endTime: endTime,
+      startTime : newStartTime,
+      endTime: newEndTime,
       worker: newWorker.id,
       petNumber: newPetNumber,
       accommodation: newIdAccommodation,
       isPayed: newIsPayed
     };
-    console.log(requestData);
     
       setIsLoading(true);
          
-      db.ref("request/" + id)
+      db.ref("requests/" + id)
       .set(requestData)
       .then(() => {
         setIsLoading(false);
