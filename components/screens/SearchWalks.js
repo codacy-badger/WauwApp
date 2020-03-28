@@ -98,7 +98,7 @@ function Wauwer(props) {
     
     
    // if(petNumber>0){
-      navigation.navigate("CreateRequest", {
+      navigation.navigate("CreateRequestWalk", {
         wauwer: wauwerData.item[0] //TODO: MODIFICAR LA REDIRECCIÓN
       });
   //  }else{

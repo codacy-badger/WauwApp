@@ -77,12 +77,21 @@ function CreateAccommodation(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const all = () => {
-    addRequest();
+    addAccommodation();
   };
 
-  const addRequest = () => {
+  const addCommissions = (props) => {
+    let price = (props * 1.3 )
+    setNewSalary(price);
+  };
+  
+
+
+
+  const addAccommodation = () => {
     let id = db.ref("accommodation").push().key;
     setIsLoading(true);
+    
     let accommodationData = {
       id: id,
       startTime: newStartTime,
@@ -92,6 +101,7 @@ function CreateAccommodation(props) {
       salary: newSalary,
       worker: newWorker
     };
+    console.log(accommodationData);
 
     if (
       newStartTime === null ||
@@ -200,7 +210,7 @@ function CreateAccommodation(props) {
           placeholder="10.00"
           keyboardType="numeric"
           containerStyle={styles.input}
-          onChange={v => setNewSalary(v.nativeEvent.text)}
+          onChange={v => addCommissions(v.nativeEvent.text)}
         />
         <Button title="Crear" onPress={all} loading={isLoading} />
       </View>
