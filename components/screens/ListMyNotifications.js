@@ -8,7 +8,7 @@ import {
   Alert,
   SafeAreaView
 } from "react-native";
-import { Image } from "react-native-elements";
+import { Image, Avatar } from "react-native-elements";
 import { db } from "../population/config";
 import Loading from "../Loading";
 import { YellowBox } from "react-native";
@@ -109,10 +109,13 @@ function Request(props) {
 
   if (req.item.type == "walk") {
     tipo = "paseo";
-    fecha = "Día: ".concat(req.item.interval);
+    fecha = "Día y hora: ".concat(req.item.interval);
   } else if (req.item.type == "sitter") {
     tipo = "alojamiento";
-    fecha = "Del ".concat(req.item.startTime).concat(" al ").concat(req.item.endTime);
+    fecha = "Del "
+      .concat(req.item.startTime)
+      .concat(" al ")
+      .concat(req.item.endTime);
   }
 
   const checkRequestsState = () => {
@@ -226,7 +229,7 @@ function Request(props) {
   };
 
   const changeBgColor = {
-    borderRadius: 6,
+    borderRadius: 10,
     elevation: 3,
     backgroundColor: fondo,
     shadowOffset: { width: 1, height: 1 },
@@ -239,12 +242,20 @@ function Request(props) {
     flexDirection: "row",
     alignItems: "center",
     padding: 10
+    
   };
 
   return (
     <TouchableOpacity onPress={checkRequestsState}>
       <View style={changeBgColor}>
-        <Image style={styles.image} source={{ uri: ownerInfo.photo }} />
+        <Avatar
+          rounded
+          size="large"
+          containerStyle={styles.userInfoAvatar}
+          source={{
+            uri: ownerInfo.photo
+          }}
+        />
         <View style={styles.requestContent}>
           <Text>
             Solicitud de {tipo} de: {ownerInfo.name}
@@ -259,9 +270,15 @@ function Request(props) {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: 60,
-    height: 60
+  viewUserInfo: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    paddingTop: 15,
+    paddingBottom: 15,
+    backgroundColor: "white",
+    borderRadius: 20,
+    backgroundColor: "#00a680"
   },
   request: {
     borderRadius: 6,

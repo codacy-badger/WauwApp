@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, TextInput, Button, View, Image, SafeAreaView, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  Button,
+  View,
+  Image,
+  SafeAreaView,
+  Alert
+} from "react-native";
 import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
 
@@ -7,41 +16,50 @@ function showRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
 
-  var id = request.workerId;
-  var tipo = "";
-  var status = "";
-  var worker = [];
+  let id = request.worker;
+  let tipo = "";
+  let fecha = "";
+  let status = "";
+  let worker = [];
 
-  console.log("id:"+ id);
+  console.log("id:" + id);
 
-    db.ref("wauwers")
-      .orderByChild("id")
-      .equalTo(id)
-      .on("child_added", snap => {
-        worker = snap.val();
-      });
+  db.ref("wauwers")
+    .orderByChild("id")
+    .equalTo(id)
+    .on("child_added", snap => {
+      worker = snap.val();
+    });
 
   console.log("worker", worker);
 
   const cancel = () => {
+    let idRequest = request.id;
+    let query = db.ref().child("requests/" + idRequest);
 
-    var idRequest = request.id;
-    var query = db.ref().child("request/" + idRequest);
+    query
+      .update({
+        pending: false,
+        isCanceled: true
+      })
+      .then(() => {
+        alert("Se ha cancelado la solicitud correctamente");
+        navigation.navigate("Home");
+      })
+      .catch(() => {
+        alert("Error al rechazar la solicitud.");
+      });
+  };
 
-    query.update({
-      pending: false,
-      isCanceled: true
-    })
-
-    alert("Se ha cancelado la solicitud correctamente");
-
-    navigation.navigate("Home");
-  }
-
-  if (request.type == "SITTER") {
+  if (request.type == "sitter") {
     tipo = "Alojamiento";
-  } else {
+    fecha = "Del "
+      .concat(request.startTime)
+      .concat(" al ")
+      .concat(request.endTime);
+  } else if (request.type == "walk") {
     tipo = "Paseo";
+    fecha = "Día y hora: ".concat(request.interval);
   }
 
   if (request.pending && !request.isCanceled) {
@@ -52,9 +70,7 @@ function showRequest(props) {
     status = "La solicitud ha sido aceptada";
   }
 
-
-  if (request.pending && request.type == "WALK") {
-
+  if (request.pending && request.type == "walk") {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -64,11 +80,22 @@ function showRequest(props) {
 
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
-        <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
-        <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text>
+          {" "}
+          Tipo de servicio: {tipo} para {request.petNumber} mascotas.
+        </Text>
+        <Text> Estado de la solicitud: {status} </Text>
+        <Text> {fecha} </Text>
+        {/* <Text>
+          {" "}
+          Hora de inicio: {
+            request.availability_wauwer.availability.startTime
+          }{" "}
+        </Text>
+        <Text>
+          {" "}
+          Hora de fin: {request.availability_wauwer.availability.endDate}{" "}
+        </Text> */}
 
         <View style={styles.buttonContainer}>
           <Button
@@ -80,7 +107,6 @@ function showRequest(props) {
         </View>
       </SafeAreaView>
     );
-
   } else if (!request.pending && request.isCanceled && request.type == "WALK") {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -92,13 +118,25 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Estado de la solicitud: {status} </Text>
         <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text>
+          {" "}
+          Hora de inicio: {
+            request.availability_wauwer.availability.startTime
+          }{" "}
+        </Text>
+        <Text>
+          {" "}
+          Hora de fin: {request.availability_wauwer.availability.endDate}{" "}
+        </Text>
       </SafeAreaView>
     );
-  } else if (!request.pending && !request.isCanceled && request.type == "WALK") {
+  } else if (
+    !request.pending &&
+    !request.isCanceled &&
+    request.type == "WALK"
+  ) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -109,10 +147,18 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Estado de la solicitud: {status} </Text>
         <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text>
+          {" "}
+          Hora de inicio: {
+            request.availability_wauwer.availability.startTime
+          }{" "}
+        </Text>
+        <Text>
+          {" "}
+          Hora de fin: {request.availability_wauwer.availability.endDate}{" "}
+        </Text>
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.btnStyle2}
@@ -124,7 +170,6 @@ function showRequest(props) {
       </SafeAreaView>
     );
   } else if (request.pending && request.type == "SITTER") {
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -135,7 +180,7 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Estado de la solicitud: {status} </Text>
         <Text> Fecha de inicio: {request.startTime} </Text>
         <Text> Fecha de fin: {request.endTime} </Text>
 
@@ -149,8 +194,11 @@ function showRequest(props) {
         </View>
       </SafeAreaView>
     );
-
-  } else if (!request.pending && request.isCanceled && request.type == "SITTER") {
+  } else if (
+    !request.pending &&
+    request.isCanceled &&
+    request.type == "SITTER"
+  ) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -161,7 +209,7 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Estado de la solicitud: {status} </Text>
         <Text> Fecha de inicio: {request.startTime} </Text>
         <Text> Fecha de fin: {request.endTime} </Text>
       </SafeAreaView>
@@ -177,7 +225,7 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Estado de la solicitud: {status} </Text>
         <Text> Fecha de inicio: {request.startTime} </Text>
         <Text> Fecha de fin: {request.endTime} </Text>
         <View style={styles.buttonContainer}>
@@ -190,29 +238,26 @@ function showRequest(props) {
         </View>
       </SafeAreaView>
     );
-
   }
+}
 
+export default withNavigation(showRequest);
+
+const styles = StyleSheet.create({
+  btnStyle2: {
+    backgroundColor: "#443099",
+    borderRadius: 30,
+    marginTop: 5,
+    marginBottom: 5
+  },
+  btnContainer2: {
+    alignItems: "center",
+    alignSelf: "center",
+    width: "75%",
+    backgroundColor: "#443099",
+    marginTop: 5,
+    marginRight: 20,
+    marginLeft: 20,
+    marginBottom: 10
   }
-
-  export default withNavigation(showRequest);
-
-  const styles = StyleSheet.create({
-
-    btnStyle2: {
-      backgroundColor: "#443099",
-      borderRadius: 30,
-      marginTop: 5,
-      marginBottom: 5
-    },
-    btnContainer2: {
-      alignItems: "center",
-      alignSelf: "center",
-      width: "75%",
-      backgroundColor: "#443099",
-      marginTop: 5,
-      marginRight: 20,
-      marginLeft: 20,
-      marginBottom: 10
-    }
-  });
+});
