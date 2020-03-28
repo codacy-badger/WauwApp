@@ -66,9 +66,8 @@ function showRequest(props) {
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
         <Text> Estado de la solicitud:  {status} </Text>
-        <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text> Fecha: {request.interval} </Text>
+
 
         <View style={styles.buttonContainer}>
           <Button
@@ -93,9 +92,7 @@ function showRequest(props) {
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
         <Text> Estado de la solicitud:  {status} </Text>
-        <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text> Fecha: {request.interval} </Text>
       </SafeAreaView>
     );
   } else if (!request.pending && !request.isCanceled && request.type == "WALK") {
@@ -110,9 +107,9 @@ function showRequest(props) {
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
         <Text> Estado de la solicitud:  {status} </Text>
-        <Text> Día: {request.availability_wauwer.availability.day} </Text>
-        <Text> Hora de inicio: {request.availability_wauwer.availability.startTime} </Text>
-        <Text> Hora de fin: {request.availability_wauwer.availability.endDate} </Text>
+        <Text> Fecha: {request.interval} </Text>
+
+
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.btnStyle2}

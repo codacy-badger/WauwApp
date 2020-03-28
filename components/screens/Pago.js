@@ -16,6 +16,7 @@ export default function Pago() {
   const [isWebViewLoading, SetIsWebViewLoading] = useState(false);
   const [paypalUrl, setPaypalUrl] = useState("");
   const [accessToken, setAccessToken] = useState("");
+  const priceRequest = "13";
 
   //Fix bug btoa
   useEffect(() => {
@@ -45,10 +46,10 @@ export default function Pago() {
         {
           amount: {
             currency: "EUR",
-            total: "36",
+            total: priceRequest,
             details: {
-              shipping: "6",
-              subtotal: "30",
+              shipping: "0",
+              subtotal: priceRequest,
               shipping_discount: "0",
               insurance: "0",
               handling_fee: "0",
@@ -65,7 +66,7 @@ export default function Pago() {
                 name: "Book",
                 description: "Chasing After The Wind",
                 quantity: "1",
-                price: "30",
+                price: priceRequest,
                 tax: "0",
                 sku: "product34",
                 currency: "EUR"
