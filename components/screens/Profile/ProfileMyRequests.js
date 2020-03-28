@@ -29,20 +29,24 @@ function ProfileMyRequests(props) {
       wauwerId = snap.val().id;
     });
 
+  console.log("wauwerId", wauwerId);
+
   useEffect(() => {
     db.ref("requests")
       .orderByChild("owner")
       .equalTo(wauwerId)
       .on("value", snap => {
-        const requests = [];
+        const requests1 = [];
         snap.forEach(child => {
-          requests.push(child.val());
+          requests1.push(child.val());
         });
-        setRequestList(requests);
+        setRequestList(requests1);
       });
     setReloadData(false);
     setLoading(false);
   }, []);
+
+  console.log(setRequestList);
 
   return (
     <SafeAreaView style={globalStyles.safeArea}>
@@ -62,10 +66,10 @@ function ProfileMyRequests(props) {
             keyExtractor={request => request.id}
           />
         ) : (
-          <View>
-            <Text> No hay solicitudes </Text>
-          </View>
-        )}
+            <View>
+              <Text> No hay solicitudes </Text>
+            </View>
+          )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -73,7 +77,6 @@ function ProfileMyRequests(props) {
 
 function Request(requestIn) {
   const { request, navigation } = requestIn;
-  console.log(request);
 
   let tipo = "";
   let status = "";

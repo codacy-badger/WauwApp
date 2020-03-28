@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  StyleSheet,
   View,
   Text,
   Image,
@@ -11,12 +10,11 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
 import UserGuest from "../../account/UserGuest";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -30,7 +28,7 @@ function Profile(props) {
   const { navigation } = props;
 
   return (
-    <SafeAreaView style={globalStyles.safeArea}>
+    <SafeAreaView style={globalStyles.safeProfileArea}>
       <TouchableOpacity
         style={{ alignItems: "flex-end", margin: 16 }}
         onPress={navigation.openDrawer}
@@ -38,49 +36,95 @@ function Profile(props) {
         <FontAwesome name="bars" size={24} color="#161924" />
       </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
-        <View style={styles.area}>
-          <View style={styles.viewStyle}>
+        <View>
+          <View style={globalStyles.profileView}>
             <UserGuest />
           </View>
-          <View style={styles.viewStyle2}>
-            <Image
-              source={require("../../../assets/images/prints.png")}
-              style={styles.ImageIconStyle}
-            />
+          <View style={globalStyles.profileView2}>
             <Button
-              buttonStyle={styles.btnStyle2}
-              containerStyle={styles.btnContainer2}
+              buttonStyle={globalStyles.profileBtn}
+              containerStyle={globalStyles.profileBtnContainer}
               title="Cambiar mi Localización"
               onPress={() => navigation.navigate("ProfileLocationForm")}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="map-marker"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
             />
             <Button
-              buttonStyle={styles.btnStyle2}
-              containerStyle={styles.btnContainer2}
+              buttonStyle={globalStyles.profileBtn}
+              containerStyle={globalStyles.profileBtnContainer}
               title="Añadir un Perro"
               onPress={() => navigation.navigate("ProfileAddDogForm")}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="dog"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
             />
             <Button
-              buttonStyle={styles.btnStyle2}
-              containerStyle={styles.btnContainer2}
+              buttonStyle={globalStyles.profileBtn}
+              containerStyle={globalStyles.profileBtnContainer}
               title="Quiero ser Cuidador"
               onPress={() => navigation.navigate("ProfileSitterForm")}
+              icon={
+                <Icon
+                  type="font-awesome"
+                  name="bed"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
             />
             <Button
-              buttonStyle={styles.btnStyle2}
-              containerStyle={styles.btnContainer2}
+              buttonStyle={globalStyles.profileBtn}
+              containerStyle={globalStyles.profileBtnContainer}
               title="Quiero ser Paseador"
               onPress={() => navigation.navigate("ProfileWalkerForm")}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="walk"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
             />
             <Image
               source={require("../../../assets/images/prints.png")}
-              style={styles.ImageIconStyle}
+              style={globalStyles.profilePrints}
             />
 
             <Button
-              buttonStyle={styles.btnStyle}
-              containerStyle={styles.btnContainer}
+              buttonStyle={globalStyles.profileSignOut}
+              containerStyle={globalStyles.profileSignOutContainer}
               title="Cerrar sesión"
               onPress={() => firebase.auth().signOut()}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="logout"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
             />
           </View>
         </View>
@@ -90,63 +134,3 @@ function Profile(props) {
 }
 
 export default withNavigation(Profile);
-
-const styles = StyleSheet.create({
-  btnStyle: {
-    backgroundColor: "#ff7549",
-    borderRadius: 30,
-    marginTop: 5,
-    marginBottom: 5,
-    width: "100%"
-  },
-  btnContainer: {
-    alignItems: "center",
-    alignSelf: "center",
-    width: "90%",
-    backgroundColor: "#ff7549",
-    marginTop: 10,
-    marginRight: 20,
-    marginLeft: 20,
-    marginBottom: 50
-  },
-  btnStyle2: {
-    backgroundColor: "#443099",
-    borderRadius: 30,
-    marginTop: 5,
-    marginBottom: 5,
-    width: "100%"
-  },
-  btnContainer2: {
-    alignItems: "center",
-    alignSelf: "center",
-    width: "75%",
-    backgroundColor: "#443099",
-    marginTop: 5,
-    marginRight: 20,
-    marginLeft: 20,
-    marginBottom: 10
-  },
-  btnTxtStyle: { color: "black" },
-  viewStyle: {
-    flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20
-  },
-  viewStyle2: {
-    paddingTop: 5,
-    flex: 1,
-    paddingBottom: 60,
-    marginBottom: 60
-  },
-  ImageIconStyle: {
-    height: "20%",
-    width: "90%",
-    resizeMode: "stretch",
-    backgroundColor: "transparent",
-    alignSelf: "center",
-    marginBottom: 5
-  },
-  imageView: {
-    backgroundColor: "transparent"
-  }
-});

@@ -91,10 +91,10 @@ function SearchWalks(props) {
 
 function Wauwer(props) {
   const { wauwerData, petNumber, navigation } = props;
-
+  
   const checkHasPets = () => {
     if (petNumber > 0) {
-      navigation.navigate("CreateRequest", {
+      navigation.navigate("CreateRequestWalk", {
         wauwer: wauwerData.item[0] //TODO: MODIFICAR LA REDIRECCIÓN
       });
     } else {

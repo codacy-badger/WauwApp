@@ -4,7 +4,8 @@ import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 
-function createDog(props) {
+function ProfileAddDogForm(props) {
+  
   const {
     id,
     name,
@@ -136,7 +137,6 @@ function createDog(props) {
           containerStyle={styles.input}
           onChange={v => setNewDescription(v.nativeEvent.text)}
         />
-
         <View style={styles.btn}>
           <Button title="Crear" onPress={addPet} loading={isLoading} />
         </View>
@@ -145,7 +145,7 @@ function createDog(props) {
   );
 }
 
-export default withNavigation(createDog);
+export default withNavigation(ProfileAddDogForm);
 
 const styles = StyleSheet.create({
   txt: {

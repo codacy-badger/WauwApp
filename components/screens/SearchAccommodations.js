@@ -62,12 +62,11 @@ function Accommodation(props) {
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
-      //TODO: reparar esto para que navegue a la página adecuada
-      /* onPress={() =>
-         navigation.navigate("CreateAccommodation", {
+      onPress={() =>
+         navigation.navigate("FormRequestAccommodation", {
            accommodation: accommodation.item
        })
-      } */
+      } 
       >
         <View style={styles.tarjeta}>
           <View style={styles.row}>
