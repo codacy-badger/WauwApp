@@ -23,3 +23,6 @@ npm install react-native-datepicker --save
 npm i react-native-easy-toast
 npm install react-native-gifted-chat
 expo install react-native-gifted-chat
+expo install expo-location
+expo install expo-permissions
+expo install react-native-maps

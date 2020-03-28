@@ -1,34 +1,22 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, StyleSheet} from "react-native";
+import { Text, View, StyleSheet, Alert} from "react-native";
 import {Input, Button } from "react-native-elements";
 import { email } from "../../account/QueriesProfile"
 import {db} from "../../population/config";
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { setPlaneDetection } from "expo/build/AR";
+import MapView from "react-native-maps";
+import Modal from "../../account/Modal";
+import { withNavigation } from "react-navigation";
 
-export default function ProfileLocationForm(props) {
+ export default function ProfileLocationForm(props) {
   const { navigation } = props;
   //Dirección postal
-  const[name, setName] = useState(null);
-  const[city, setCity] = useState(null);
-  const[postalCode, setPostalCode] = useState(null);
-  const[region, setRegion] = useState(null);
-  //Coordenadas
-  const[coordenadas,setCoordenadas] = useState({});
-  const [reloadData, setReloadData] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [wauwerAddress, setWauwerAddress] = useState("");
+  const [isVisibleMap, setIsVisibleMap] = useState(false);
+  const [locationWauwer, setLocationWauwer] = useState(null);
   const [error, setError] = useState(null);
-  const [wauwer,setWauwer] = useState([]);
-  const [place, setPlace ] = useState();
-  //Datos
-  const [acurracy, setAcurracy] = useState(null);
-  const [altitude, setAltitude] = useState(null);
-  const [heading, setHeading] = useState(null);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [speed, setSpeed] = useState(null);
-  
+  const [wauwer, setWauwer] = useState();
 
   useEffect(() => {
     db.ref("wauwers")
@@ -39,221 +27,159 @@ export default function ProfileLocationForm(props) {
           setWauwer(child.val());
         });
       });
-    setReloadData(false);
-  }, [reloadData]);
-
-
-   async function getLocationAsync() {
-     getPermisos();
-     // let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true });
-      //console.log('Flag Location:');
-      //console.log(location);
-      //console.log('Flag LocationCoords:');
-      //console.log(location.coords);
-      // var direccion = name + ", " + postalCode +" "+ city + ", " + region;
-      // console.log(direccion);
-
-      // let currentAddress = await Location.geocodeAsync(direccion);
-      
-      
-      // setPlace(currentAddress[0].latitude);
-      // console.log(place);
-
-      let currentAddress = await Location.geocodeAsync('Avenida Reina Mercedes, Sevilla');
-      console.log('INICIO ----------------------------------------------------');
-      console.log(currentAddress);
-      console.log(currentAddress[0]);
-      console.log(currentAddress[0].accuracy);
-      console.log(currentAddress[0].altitude);
-      console.log(currentAddress[0].heading);
-      console.log(currentAddress[0].latitude);
-      console.log(currentAddress[0].longitude);
-      console.log(currentAddress[0].speed);
-      console.log('----------------------------------------------------');
-      console.log('Acurracy');
-      setAcurracy(currentAddress[0].accuracy);
-      console.log(acurracy);
-      console.log('----------------------------------------------------');
-      console.log('Altitude');
-      setAltitude(currentAddress[0].altitude);
-      console.log(altitude);
-      console.log('----------------------------------------------------');
-      console.log('Heading');
-      setHeading(currentAddress[0].heading);
-      console.log(heading);
-      console.log('----------------------------------------------------');
-      console.log('Latitude');
-      setLatitude(currentAddress[0].latitude);
-      console.log(latitude);
-      console.log('----------------------------------------------------');
-      console.log('Longitude');
-      setLongitude(currentAddress[0].longitude);
-      console.log(longitude);
-      console.log('----------------------------------------------------');
-      console.log('Speed');
-      setSpeed(currentAddress[0].speed);
-      console.log(speed);
-      console.log('----------------------------------------------------');
-
-     // let geocode = await Location.reverseGeocodeAsync(currentAddress[0]);
-      //console.log('Flag GeoCode:');
-      //console.log(geocode);
-
-      //let geocode2 = await Location.reverseGeocodeAsync(location.coords);
-      //console.log('Flag GeoCode2:');
-      //console.log(geocode2);
-      
-      //return currentAddress.coords;
- }
-
-  async function getPermisos() {
-      // permissions returns only for location permissions on iOS and under certain conditions, see Permissions.LOCATION
-      const { status, permissions } = await Permissions.askAsync(Permissions.LOCATION);
-      if (status === 'granted') {
-        console.log('Permisos concedidos');
-        //return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-      } else {
-        throw new Error('Location permission not granted');
-      }
-  }
-
- 
-
-  const updateLocation = () => {
-    setError(null);
-    if (!address) {
-      setError("La dirección no puede ser la misma.");
-    } else {
-      setIsLoading(true);
-      let userData = {
-        location: address
-      }
-      db.ref("wauwers/" + wauwer.id)
-        .update(userData)
-        .then(() => {
-          setIsLoading(false);
-          setReloadData(true);
-        })
-        .catch(() => {
-          setError("Ha ocurrido un error");
-          setIsLoading(false);
-        });
-    }
-  }
-
-    const ubicacionActual2 = () => { 
-      
-      getLocationAsync();
-        
-
-        
-      //console.log(place);
-
-      // let userData = {
-      //   address: address,
-      //   coordenadas: coordenadas
-      // }
-      // db.ref("wauwers/" + wauwer.id)
-      //     .update(userData)
-      //     .then(() => {
-      //       setIsLoading(false);
-      //       setReloadData(true);
-      //     })
-      //     .catch(() => {
-      //       setError("Ha ocurrido un error");
-      //       setIsLoading(false);
-      //     });
-      }
+    
+  }, []);
 
 
   
   return (
-        <View style={styles.view}>
-          {wauwer.address ? (
-          <View>
-          <Input
-            placeholder="Avenida Reina Mercedes 27"
-            containerStyle={styles.input}
-            defaultValue={wauwer.address.name}
-            onChange={v => setName(v.nativeEvent.text)}
-            errorMessage={error}
-          />
-          <View/>
-          <View>
-          <Input
-            placeholder="41012"
-            containerStyle={styles.input}
-            defaultValue={wauwer.address.postalCode}
-            onChange={v => setPostalCode(v.nativeEvent.text)}
-            errorMessage={error}
-          />
-          </View>
-          <View>
-          <Input
-            placeholder="Sevilla"
-            containerStyle={styles.input}
-            defaultValue={wauwer.address.city}
-            onChange={v => setCity(v.nativeEvent.text)}
-            errorMessage={error}
-          />
-          </View>
-          <View>
-          <Input
-            placeholder="Andalucía"
-            containerStyle={styles.input}
-            defaultValue={wauwer.address.region}
-            onChange={v => setRegion(v.nativeEvent.text)}
-            errorMessage={error}
-          />
-          </View>
-          </View>
-          ):(
-            <View style={styles.view}>
-            <View>
-            <Input
-            placeholder="Avenida Reina Mercedes 27"
-            containerStyle={styles.input}
-            onChange={v => setName(v.nativeEvent.text)}
-            errorMessage={error}
-          />
-          </View>
-          <View>
-          <Input
-            placeholder="41012"
-            containerStyle={styles.input}
-            onChange={v => setPostalCode(v.nativeEvent.text)}
-            errorMessage={error}
-          />
-          </View>
-          <View>
-          <Input
-            placeholder="Sevilla"
-            containerStyle={styles.input}
-            onChange={v => setCity(v.nativeEvent.text)}
-            errorMessage={error}
-          />
-          </View>
-          <View>
-          <Input
-            placeholder="Andalucía"
-            containerStyle={styles.input}
-            onChange={v => setRegion(v.nativeEvent.text)}
-            errorMessage={error}
-          />
-          </View>
-          </View>
-          )}
-          <Button
-            title="Cambiar dirección"
-            containerStyle={styles.btnContainer}
-            buttonStyle={styles.btn}
-            onPress={ubicacionActual2}
-            loading={isLoading}
-          />
-        </View>
-       
+    <View>
+    <FormAdd
+        setWauwerAddress={setWauwerAddress}
+        setIsVisibleMap={setIsVisibleMap}
+        locationWauwer={locationWauwer}
+        wauwer={wauwer}
+        wauwerAddress={wauwerAddress}
+        navigation={navigation}
+      />
+    <Map
+    isVisibleMap={isVisibleMap}
+    setIsVisibleMap={setIsVisibleMap}
+    setLocationWauwer={setLocationWauwer}
+  />
+  </View>
   );
   }
+
+  function FormAdd(props) {
+    const {
+      setWauwerAddress,
+      setIsVisibleMap,
+      locationWauwer,
+      wauwer,
+      wauwerAddress,
+      navigation
+    } = props;
+
+    const guardarLocation = () => {
+      let location = {
+        location: locationWauwer
+      }
+
+      let add = {
+        address: wauwerAddress
+      }
+      db.ref("wauwers/" + wauwer.id).update(location);
+      db.ref("wauwers/" + wauwer.id).update(add);
+      Alert.alert(
+        'Editado',
+        'Editado correctamente',
+        [
+          {text: 'Vale', onPress: () => navigation.navigate("ProfileDrawer")},
+        ],
+        { cancelable: false }
+      )
+      
+    }
+  
+    return (
+      <View style={styles.viewForm}>
+        <Input
+          placeholder="Dirección"
+          containerStyle={styles.input}
+          rightIcon={{
+            type: "material-community",
+            name: "google-maps",
+            color: locationWauwer ? "#00a680" : "#c2c2c2",
+            onPress: () => setIsVisibleMap(true)
+          }}
+          onChange={e => setWauwerAddress(e.nativeEvent.text)}
+        />
+
+        <Button
+          title="Guardar Ubicacion"
+          onPress={guardarLocation}
+          containerStyle={styles.viewMapBtnContainerSave}
+          buttonStyle={styles.viewMapBtnSave}
+            />
+      </View>
+    );
+  }
+
+  function Map(props) {
+    const {
+      isVisibleMap,
+      setIsVisibleMap,
+      setLocationWauwer,
+    } = props;
+    const [location, setLocation] = useState(null);
+  
+    useEffect(() => {
+      (async () => {
+        const resultPermissions = await Permissions.askAsync(
+          Permissions.LOCATION
+        );
+        const statusPermissions = resultPermissions.permissions.location.status;
+  
+        if (statusPermissions !== "granted") {
+          
+          setError('No tienes activado el permiso de localización.')
+        } else {
+          const loc = await Location.getCurrentPositionAsync({});
+          setLocation({
+            latitude: loc.coords.latitude,
+            longitude: loc.coords.longitude,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.001
+          });
+        }
+      })();
+    }, []);
+  
+    const confirmLocation = () => {
+      setLocationWauwer(location);
+      Alert.alert("Localización marcada");
+      setIsVisibleMap(false);
+    };
+  
+    return (
+      <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
+        <View>
+          {location && (
+            <MapView
+              style={styles.mapStyle}
+              initialRegion={location}
+              showsUserLocation={true}
+              onRegionChange={region => setLocation(region)}
+            >
+              <MapView.Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude
+                }}
+                draggable
+              />
+            </MapView>
+          )}
+          <View style={styles.viewMapBtn}>
+            <Button
+              title="Guardar Ubicacion"
+              onPress={confirmLocation}
+              containerStyle={styles.viewMapBtnContainerSave}
+              buttonStyle={styles.viewMapBtnSave}
+            />
+            <Button
+              title="Cancelar Ubicación"
+              onPress={() => setIsVisibleMap(false)}
+              containerStyle={styles.viewMapBtnContainerCancel}
+              buttonStyle={styles.viewMapBtnCancel}
+            />
+          </View>
+        </View>
+      </Modal>
+    );
+  }
+
 
 
 const styles = StyleSheet.create({
@@ -271,5 +197,33 @@ const styles = StyleSheet.create({
   },
   btn: {
     backgroundColor: "#00a680"
-  }
+  },
+  mapStyle: {
+    width: "100%",
+    height: 550
+  },
+  viewMapBtn: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10
+  },
+  viewMapBtnContainerSave: {
+    paddingRight: 5
+  },
+  viewMapBtnSave: {
+    backgroundColor: "#00a680"
+  },
+  viewMapBtnContainerCancel: {
+    paddingLeft: 5
+  },
+  viewMapBtnCancel: {
+    backgroundColor: "#a60d0d"
+  },
+  viewForm: {
+    marginLeft: 10,
+    marginRight: 10
+  },
+  input: {
+    marginBottom: 10
+  },
 });
