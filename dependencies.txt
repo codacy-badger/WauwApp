@@ -23,3 +23,4 @@ npm install react-native-datepicker --save
 npm i react-native-easy-toast
 npm install react-native-gifted-chat
 expo install react-native-gifted-chat
+npm i react-native-webview
