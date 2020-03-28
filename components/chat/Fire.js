@@ -2,6 +2,7 @@ import firebase from 'firebase';
 
 export default class Fire {
 
+  // Referenciar la tabla chats
   get ref() {
     return firebase.database().ref('chats');
   }
@@ -19,15 +20,18 @@ export default class Fire {
     return message;
   };
 
+  // Traerse los x últimos mensajes del chat
   on = callback =>
     this.ref
       .limitToLast(20)
       .on('child_added', snapshot => callback(this.parse(snapshot)));
 
+  // Obtener tiempo actual
   get timestamp() {
     return firebase.database.ServerValue.TIMESTAMP;
   }
 
+  // Crear mensaje
   send = messages => {
     for (let i = 0; i < messages.length; i++) {
       const { text, user } = messages[i];
@@ -40,8 +44,10 @@ export default class Fire {
     }
   };
 
+  // Meter mensaje en la tabla
   append = message => this.ref.push(message);
 
+  //Eliminar referencia
   off() {
     this.ref.off();
   }

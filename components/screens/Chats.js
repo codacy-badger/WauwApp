@@ -19,6 +19,7 @@ export default function Chats(props) {
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
+  const [requestIDChat, setRequestIDChat] = useState();
 
   let currentUser;
   let otherUserID;
@@ -41,6 +42,8 @@ export default function Chats(props) {
 
         if ((child.val().idWalker == currentUser.id || child.val().idWauwer == currentUser.id) &&
           (child.val().isCanceled === false && child.val().pending === false)) {
+
+          setRequestIDChat(child.val().id);
 
           if (child.val().idWalker != currentUser.id) {
             otherUserID = child.val().idWalker;
@@ -77,7 +80,7 @@ export default function Chats(props) {
           <FlatList
             data={data}
             renderItem={requestsData => (
-              <RequestChat requestsData={requestsData} navigation={navigation} currentUser={currentUser} />
+              <RequestChat requestsData={requestsData} navigation={navigation} currentUser={currentUser} requestIDChat={requestIDChat} />
             )}
             keyExtractor={requestsData => {
               requestsData
@@ -94,7 +97,7 @@ export default function Chats(props) {
 }
 
 function RequestChat(props) {
-  const { requestsData, navigation, currentUser } = props;
+  const { requestsData, navigation, currentUser, requestIDChat } = props;
 
   return (
     <View style={styles.separacion}>
@@ -103,7 +106,8 @@ function RequestChat(props) {
           navigation.navigate("Chat", {
             name: currentUser.name,
             _id: currentUser.id,
-            avatar: currentUser.photo
+            avatar: currentUser.photo,
+            requestID: requestIDChat
           })
         }
       >
