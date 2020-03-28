@@ -37,8 +37,8 @@ export default function ListWalkRequests(props) {
     });
 
   useEffect(() => {
-    db.ref("request")
-      .orderByChild("workerId")
+    db.ref("requests")
+      .orderByChild("worker")
       .equalTo(id)
       .on("value", snap => {
         const requests = [];
@@ -78,14 +78,15 @@ export default function ListWalkRequests(props) {
 
 function Request(props) {
   const { req, setReloadRequests, setIsVisibleLoading, toastRef } = props;
+  let fecha = "";
   let estado = "";
   let tipo = "";
   let fondo = "white";
-  let owner;
+  let ownerInfo;
   db.ref("wauwers")
-    .child(req.item.ownerId)
+    .child(req.item.owner)
     .on("value", snap => {
-      owner = snap.val();
+      ownerInfo = snap.val();
     });
 
   if (req.item.pending) {
@@ -106,10 +107,12 @@ function Request(props) {
     }
   }
 
-  if (req.item.type == "WALK") {
+  if (req.item.type == "walk") {
     tipo = "paseo";
-  } else if (req.item.type == "SITTER") {
+    fecha = "Día: ".concat(req.item.interval);
+  } else if (req.item.type == "sitter") {
     tipo = "alojamiento";
+    fecha = "Del ".concat(req.item.startTime).concat(" al ").concat(req.item.endTime);
   }
 
   const checkRequestsState = () => {
@@ -174,7 +177,7 @@ function Request(props) {
       pending: false,
       isCanceled: false
     };
-    db.ref("request")
+    db.ref("requests")
       .child(req.item.id)
       .update(requestData)
       .then(() => {
@@ -210,7 +213,7 @@ function Request(props) {
       pending: false,
       isCanceled: true
     };
-    db.ref("request")
+    db.ref("requests")
       .child(req.item.id)
       .update(requestData)
       .then(() => {
@@ -241,12 +244,13 @@ function Request(props) {
   return (
     <TouchableOpacity onPress={checkRequestsState}>
       <View style={changeBgColor}>
-        <Image style={styles.image} source={{ uri: owner.photo }} />
+        <Image style={styles.image} source={{ uri: ownerInfo.photo }} />
         <View style={styles.requestContent}>
           <Text>
-            Solicitud de {tipo} de: {owner.name}
+            Solicitud de {tipo} de: {ownerInfo.name}
           </Text>
           <Text>Servicio para {req.item.petNumber} mascotas.</Text>
+          <Text>{fecha}</Text>
           <Text>Estado de la solicitud: {estado}</Text>
         </View>
       </View>
@@ -272,7 +276,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    //justifyContent: "space-between",
     padding: 10
   },
   requestContent: {

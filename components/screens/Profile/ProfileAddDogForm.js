@@ -2,10 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TextInput, Button, Alert, StyleSheet } from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile"
+import { email } from "../../account/QueriesProfile";
 
 function createDog(props) {
-  const { id, name,breed, description, owner, setIsVisibleModal, navigation } = props;
+  const {
+    id,
+    name,
+    breed,
+    description,
+    owner,
+    setIsVisibleModal,
+    navigation
+  } = props;
   const [newName, setNewName] = useState(null);
   const [newBreed, setNewBreed] = useState(null);
   const [newDescription, setNewDescription] = useState(null);
@@ -16,15 +24,29 @@ function createDog(props) {
 
   useEffect(() => {
     db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("value", function(snap){
-      snap.forEach(function(child) {
-        setnewOwner(child.val());
+      .orderByChild("email")
+      .equalTo(email)
+      .on("child_added", snap => {
+        const newNewOwner = {
+          avgScore: snap.val().avgScore,
+          description: snap.val().description,
+          dni: snap.val().dni,
+          email: snap.val().email,
+          id: snap.val().id,
+          name: snap.val().name,
+          paypalURL: snap.val().paypalURL,
+          petNumber: snap.val().petNumber + 1,
+          photo: snap.val().photo,
+          price: snap.val().price,
+          surname: snap.val().surname,
+          user_accountId: snap.val().user_accountId,
+          wauwPoints: snap.val().wauwPoints
+        };
+        setnewOwner(newNewOwner);
       });
-    });
     setReloadData(false);
   }, [reloadData]);
+  console.log(newOwner);
 
   const addPet = () => {
     let id = db.ref("pet").push().key;
@@ -33,67 +55,91 @@ function createDog(props) {
       name: newName,
       breed: newBreed,
       description: newDescription,
-      owner: newOwner,
+      owner: newOwner
     };
-  
-    if ((newName === null || newName === "") || (newBreed === null || newBreed === "") || (newDescription===null || newDescription==="")) {
-      let errores = '';
-      if (newName === null || newName === ""){
+
+    if (
+      newName === null ||
+      newName === "" ||
+      newBreed === null ||
+      newBreed === "" ||
+      newDescription === null ||
+      newDescription === ""
+    ) {
+      let errores = "";
+      if (newName === null || newName === "") {
         errores = errores.concat("Debe escribir un nombre.\n");
       }
-      if (newBreed === null || newBreed === ""){
+      if (newBreed === null || newBreed === "") {
         errores = errores.concat("Debe escribir una raza.\n");
       }
-      if (newDescription===null || newDescription===""){
-        errores = errores.concat("Debe dar una breve descripción de su perro.\n");
+      if (newDescription === null || newDescription === "") {
+        errores = errores.concat(
+          "Debe dar una breve descripción de su perro.\n"
+        );
       }
       Alert.alert("Advertencia", errores.toString());
     } else {
       setIsLoading(true);
       db.ref("pet/" + id)
-      .set(petData)
-      .then(() => {
-        setIsLoading(false);
-        setReloadData(true);
-        setIsVisibleModal(false);
-      }).catch(() => {
-        setError("Ha ocurrido un error");
-        setIsLoading(false);
-      });
-      Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
-      navigation.navigate("Profile");
+        .set(petData)
+        .then(() => {
+          db.ref("wauwers/" + newOwner.id)
+            .update({
+              petNumber: newOwner.petNumber
+            })
+            .then(() => {
+              Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
+              navigation.navigate("ProfileDrawer");
+              setIsLoading(false);
+              setReloadData(true);
+              setIsVisibleModal(false);
+            })
+            .catch(() => {
+              setError("Ha ocurrido un error");
+              setIsLoading(false);
+            });
+        })
+        .catch(() => {
+          setError("Ha ocurrido un error");
+          setIsLoading(false);
+        });
     }
   };
 
   return (
     <View style={styles.view}>
-      <Text>Formulario de datos de nuevo perro</Text>
+      <Text style={{ marginBottom: 10 }}>
+        Formulario de datos de nuevo perro
+      </Text>
       <View>
-        <Text>¿Cómo se llama su perro?</Text>
+        <Text style={styles.txt}>¿Cómo se llama su perro?</Text>
         <TextInput
-        placeholder="Ej.: Fluffy"
-        containerStyle={styles.input}
-        onChange={v => setNewName(v.nativeEvent.text)}    
-        />  
-        <Text>¿De qué raza es?</Text>
-        <TextInput 
-        placeholder="Ej.: Chiguagua"
-        containerStyle={styles.input}
-        onChange={v => setNewBreed(v.nativeEvent.text)}
+          style={styles.input}
+          placeholder="Ej.: Fluffy"
+          containerStyle={styles.input}
+          onChange={v => setNewName(v.nativeEvent.text)}
         />
-        <Text>Describa a su perro</Text>
-        <TextInput 
-        multiline={true}
-        numberOfLines={5}
-        containerStyle={styles.input}
-        onChange={v => setNewDescription(v.nativeEvent.text)}
+        <Text style={styles.txt}>¿De qué raza es?</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Ej.: Chiguagua"
+          containerStyle={styles.input}
+          onChange={v => setNewBreed(v.nativeEvent.text)}
         />
-        
-        <Button
-        title="Crear"
-        onPress={addPet}
-        loading={isLoading}
+        <Text style={styles.txt}>Describa a su perro</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Ej.: Muy manso"
+          multiline={true}
+          numberOfLines={5}
+          containerStyle={styles.input}
+          onChange={v => setNewDescription(v.nativeEvent.text)}
         />
+
+        <View style={styles.btn}>
+          <Button title="Crear" onPress={addPet} loading={isLoading} />
+        </View>
       </View>
     </View>
   );
@@ -102,6 +148,12 @@ function createDog(props) {
 export default withNavigation(createDog);
 
 const styles = StyleSheet.create({
+  txt: {
+    marginBottom: 3
+  },
+  btn: {
+    marginTop: 25
+  },
   view: {
     alignItems: "center",
     paddingTop: 10,
@@ -109,5 +161,8 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 10,
-  },
+    borderRadius: 5,
+    borderColor: "black",
+    borderWidth: 1
+  }
 });

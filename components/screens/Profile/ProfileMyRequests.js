@@ -30,8 +30,8 @@ function ProfileMyRequests(props) {
     });
 
   useEffect(() => {
-    db.ref("request")
-      .orderByChild("ownerId")
+    db.ref("requests")
+      .orderByChild("owner")
       .equalTo(wauwerId)
       .on("value", snap => {
         const requests = [];
@@ -97,9 +97,9 @@ function Request(requestIn) {
     }
   }
 
-  if (request.item.type == "SITTER") {
+  if (request.item.type == "sitter") {
     tipo = "Alojamiento";
-  } else if (request.item.type == "WALK") {
+  } else if (request.item.type == "walk") {
     tipo = "Paseo";
   }
 

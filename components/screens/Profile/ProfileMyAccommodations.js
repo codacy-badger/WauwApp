@@ -31,7 +31,7 @@ function ProfileMyAccommodations(props) {
 
   useEffect(() => {
     db.ref("accommodation")
-      .orderByChild("workerId")
+      .orderByChild("worker")
       .equalTo(wauwerId)
       .on("value", snap => {
         const accommodations = [];
