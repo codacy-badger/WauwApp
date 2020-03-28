@@ -12,9 +12,10 @@ import { email } from '../account/QueriesProfile';
 import { db } from "../population/config.js";
 import { ScrollView } from "react-native-gesture-handler";
 import Loading from "../Loading";
+import { Avatar } from "react-native-elements";
 
-export default function Chats() {
-  //const { navigation } = props; navigation={navigation}
+export default function Chats(props) {
+  const { navigation } = props;
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
@@ -31,7 +32,7 @@ export default function Chats() {
       currentUser = snap.val();
     });
 
-  console.log(currentUser);
+  //console.log(currentUser);
 
   useEffect(() => {
 
@@ -39,7 +40,7 @@ export default function Chats() {
       const allData = [];
       snap.forEach(child => {
         const requestsData = [];
-        
+
         if ((child.val().idWalker == currentUser.id || child.val().idWauwer == currentUser.id) &&
           (child.val().isCanceled === false && child.val().pending === false)) {
 
@@ -78,7 +79,7 @@ export default function Chats() {
           <FlatList
             data={data}
             renderItem={requestsData => (
-              <RequestChat requestsData={requestsData} />
+              <RequestChat requestsData={requestsData} navigation={navigation} currentUser={currentUser} />
             )}
             keyExtractor={requestsData => {
               requestsData
@@ -95,23 +96,52 @@ export default function Chats() {
 }
 
 function RequestChat(props) {
-  const { requestsData } = props;
-  console.log("NOMBRE");
+  const { requestsData, navigation, currentUser } = props;
+
+  let name = currentUser.name;
+  let id = currentUser.id;
+  let avatar = currentUser.photo;
+  let user = {
+    name: name,
+    _id: id,
+    avatar: avatar
+  };
+
+  /* console.log("NOMBRE");
   console.log(requestsData.item[0]);
   console.log("TIPO");
   console.log(requestsData.item[1]);
   console.log("FOTO");
   console.log(requestsData.item[2]);
-  console.log('==========================');
+  console.log('=========================='); */
 
   return (
-    <View>
-      <View>
-        <Text>{requestsData.item[0]}</Text>
-      </View>
-      <View>
-        <Text> {requestsData.item[1]} </Text>
-      </View>
+    <View style={styles.separacion}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Chat", user)
+        }
+      >
+        <View style={styles.tarjeta}>
+          <View style={styles.row}>
+            <Avatar
+              rounded
+              size="large"
+              containerStyle={styles.userInfoAvatar}
+              source={{
+                uri:
+                  requestsData.item[2]
+              }}
+            />
+            <View style={styles.column_left}>
+              <Text style={styles.nameUser}> {requestsData.item[0]} </Text>
+            </View>
+            <View style={styles.column_right}>
+              <Text> {requestsData.item[1].substring(0, 1) + requestsData.item[1].substring(1, requestsData.item[1].size).toLowerCase()} </Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -123,21 +153,55 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 10
+  },
+  column: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20
+  },
+  column_left: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    padding: 20
+  },
+  column_right: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    padding: 20
+  },
+  tarjeta: {
+    elevation: 1,
+    //backgroundColor: "#123",
+    borderRadius: 25,
+    borderStyle: "solid"
+  },
+  separacion: {
+    paddingTop: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingBottom: 5
+  },
+  loading: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
+  },
+  searchBar: {
+    marginBottom: 20,
+
+  },
+  userInfoAvatar: {
+    marginRight: 20
+  },
+  nameUser: {
+    fontSize: 17
   }
 });
-
-
-/* const [userInfo, setUserInfo] = useState([]);
-
-  useEffect(() => {
-
-  }, []);
-
-  return (
-    <Chat user={{
-      name: userInfo.name,
-      _id: userInfo.id,
-      avatar: userInfo.photo
-    }}></Chat>
-  ); */
 

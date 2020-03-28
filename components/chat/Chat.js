@@ -16,7 +16,7 @@ export default class Chat extends Component {
       <GiftedChat
         messages={this.state.messages}
         onSend={Fire.shared.send}
-        user={this.props.user}
+        user={this.props.navigation.state.params}
       />
       <KeyboardSpacer topSpacing={-50}/>
       </View>
