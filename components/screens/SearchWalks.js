@@ -39,8 +39,6 @@ function SearchWalks(props) {
     .on("child_added", snap => {
       petNumber = snap.val().petNumber;
     });
-    console.log(petNumber);
-    console.log(email);
 
   useEffect(() => {
     db.ref("availability-wauwers").on("value", snap => {
@@ -56,6 +54,7 @@ function SearchWalks(props) {
     setReloadData(false);
     setLoading(false);
   }, [reloadData]); //esto es el disparador del useEffect
+
   return (
     <SafeAreaView>
       <SearchBar
@@ -70,7 +69,11 @@ function SearchWalks(props) {
           <FlatList
             data={data}
             renderItem={wauwerData => (
-              <Wauwer wauwerData={wauwerData} petNumber={petNumber} navigation={navigation} />
+              <Wauwer
+                wauwerData={wauwerData}
+                petNumber={petNumber}
+                navigation={navigation}
+              />
             )}
             keyExtractor={wauwerData => {
               wauwerData;
@@ -88,29 +91,20 @@ function SearchWalks(props) {
 
 function Wauwer(props) {
   const { wauwerData, petNumber, navigation } = props;
-  /* console.log("WAUWER");
-  console.log(wauwerData.item[0]);
-  console.log("DISPONIBILIDAD");
-  console.log(wauwerData.item[1]);
-  console.log('=========================='); */
-
+  
   const checkHasPets = () => {
-    
-    
-   // if(petNumber>0){
-      navigation.navigate("CreateRequest", {
+    if (petNumber > 0) {
+      navigation.navigate("CreateRequestWalk", {
         wauwer: wauwerData.item[0] //TODO: MODIFICAR LA REDIRECCIÓN
       });
-  //  }else{
-  //    Alert.alert("¡No tienes mascotas que pasear!","");
-    
+    } else {
+      Alert.alert("¡No tienes mascotas que pasear!", "");
+    }
   };
 
   return (
     <View style={styles.separacion}>
-      <TouchableOpacity
-        onPress={checkHasPets}
-      >
+      <TouchableOpacity onPress={checkHasPets}>
         <View style={styles.tarjeta}>
           <View style={styles.row}>
             <Image
