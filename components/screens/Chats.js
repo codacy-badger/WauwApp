@@ -32,8 +32,6 @@ export default function Chats(props) {
       currentUser = snap.val();
     });
 
-  //console.log(currentUser);
-
   useEffect(() => {
 
     db.ref("requests").on("value", snap => {
@@ -69,7 +67,7 @@ export default function Chats(props) {
 
     setReloadData(false);
     setLoading(false);
-  }, [reloadData]);//esto es el disparador del useEffect
+  }, [reloadData]);
   return (
 
     <SafeAreaView>
@@ -98,28 +96,15 @@ export default function Chats(props) {
 function RequestChat(props) {
   const { requestsData, navigation, currentUser } = props;
 
-  let name = currentUser.name;
-  let id = currentUser.id;
-  let avatar = currentUser.photo;
-  let user = {
-    name: name,
-    _id: id,
-    avatar: avatar
-  };
-
-  /* console.log("NOMBRE");
-  console.log(requestsData.item[0]);
-  console.log("TIPO");
-  console.log(requestsData.item[1]);
-  console.log("FOTO");
-  console.log(requestsData.item[2]);
-  console.log('=========================='); */
-
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("Chat", user)
+          navigation.navigate("Chat", {
+            name: currentUser.name,
+            _id: currentUser.id,
+            avatar: currentUser.photo
+          })
         }
       >
         <View style={styles.tarjeta}>
@@ -177,7 +162,6 @@ const styles = StyleSheet.create({
   },
   tarjeta: {
     elevation: 1,
-    //backgroundColor: "#123",
     borderRadius: 25,
     borderStyle: "solid"
   },
