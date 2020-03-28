@@ -21,7 +21,13 @@ export default function ProfileLocationForm(props) {
   const [error, setError] = useState(null);
   const [wauwer,setWauwer] = useState([]);
   const [place, setPlace ] = useState();
-  
+  //Datos
+  const [acurracy, setAcurracy] = useState(null);
+  const [altitude, setAltitude] = useState(null);
+  const [heading, setHeading] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [speed, setSpeed] = useState(null);
   
 
   useEffect(() => {
@@ -44,16 +50,50 @@ export default function ProfileLocationForm(props) {
       //console.log(location);
       //console.log('Flag LocationCoords:');
       //console.log(location.coords);
-      var direccion = name + ", " + postalCode +" "+ city + ", " + region;
-      console.log(direccion);
+      // var direccion = name + ", " + postalCode +" "+ city + ", " + region;
+      // console.log(direccion);
 
-      let currentAddress = await Location.geocodeAsync(direccion);
+      // let currentAddress = await Location.geocodeAsync(direccion);
       
       
-      setPlace(currentAddress[0].latitude);
-      console.log(place);
+      // setPlace(currentAddress[0].latitude);
+      // console.log(place);
 
-
+      let currentAddress = await Location.geocodeAsync('Avenida Reina Mercedes, Sevilla');
+      console.log('INICIO ----------------------------------------------------');
+      console.log(currentAddress);
+      console.log(currentAddress[0]);
+      console.log(currentAddress[0].accuracy);
+      console.log(currentAddress[0].altitude);
+      console.log(currentAddress[0].heading);
+      console.log(currentAddress[0].latitude);
+      console.log(currentAddress[0].longitude);
+      console.log(currentAddress[0].speed);
+      console.log('----------------------------------------------------');
+      console.log('Acurracy');
+      setAcurracy(currentAddress[0].accuracy);
+      console.log(acurracy);
+      console.log('----------------------------------------------------');
+      console.log('Altitude');
+      setAltitude(currentAddress[0].altitude);
+      console.log(altitude);
+      console.log('----------------------------------------------------');
+      console.log('Heading');
+      setHeading(currentAddress[0].heading);
+      console.log(heading);
+      console.log('----------------------------------------------------');
+      console.log('Latitude');
+      setLatitude(currentAddress[0].latitude);
+      console.log(latitude);
+      console.log('----------------------------------------------------');
+      console.log('Longitude');
+      setLongitude(currentAddress[0].longitude);
+      console.log(longitude);
+      console.log('----------------------------------------------------');
+      console.log('Speed');
+      setSpeed(currentAddress[0].speed);
+      console.log(speed);
+      console.log('----------------------------------------------------');
 
      // let geocode = await Location.reverseGeocodeAsync(currentAddress[0]);
       //console.log('Flag GeoCode:');
