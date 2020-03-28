@@ -9,7 +9,12 @@ import { setPlaneDetection } from "expo/build/AR";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
-  const[address, setAddress] = useState(null);
+  //Dirección postal
+  const[name, setName] = useState(null);
+  const[city, setCity] = useState(null);
+  const[postalCode, setPostalCode] = useState(null);
+  const[region, setRegion] = useState(null);
+  //Coordenadas
   const[coordenadas,setCoordenadas] = useState({});
   const [reloadData, setReloadData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,8 +44,9 @@ export default function ProfileLocationForm(props) {
       //console.log(location);
       //console.log('Flag LocationCoords:');
       //console.log(location.coords);
+      var direccion = name + ", " + city
 
-      let currentAddress = await Location.geocodeAsync(address);
+      let currentAddress = await Location.geocodeAsync(direccion);
       
       
       setPlace(currentAddress[0].latitude);
@@ -94,26 +100,6 @@ export default function ProfileLocationForm(props) {
     }
   }
 
-  const ubicacionActual = () => { 
-    setIsLoading(true);
-    setCoordenadas(getLocationAsync());
-    setAddress(reverseLocation(coordenadas));
-    let userData = {
-      address: address,
-      coordenadas: coordenadas
-    }
-    db.ref("wauwers/" + wauwer.id)
-        .update(userData)
-        .then(() => {
-          setIsLoading(false);
-          setReloadData(true);
-        })
-        .catch(() => {
-          setError("Ha ocurrido un error");
-          setIsLoading(false);
-        });
-    }
-
     const ubicacionActual2 = () => { 
       
       let data = fetch(getLocationAsync()).then()
@@ -142,13 +128,80 @@ export default function ProfileLocationForm(props) {
   
   return (
         <View style={styles.view}>
+          {wauwer.address ? (
+          <View>
           <Input
-            placeholder="Avenida Reina Mercedes, Sevilla"
+            placeholder="Avenida Reina Mercedes 27"
             containerStyle={styles.input}
-            defaultValue={wauwer.address}
-            onChange={v => setAddress(v.nativeEvent.text)}
+            defaultValue={wauwer.address.name}
+            onChange={v => setName(v.nativeEvent.text)}
             errorMessage={error}
           />
+          <View/>
+          <View>
+          <Input
+            placeholder="41012"
+            containerStyle={styles.input}
+            defaultValue={wauwer.address.postalCode}
+            onChange={v => setPostalCode(v.nativeEvent.text)}
+            errorMessage={error}
+          />
+          </View>
+          <View>
+          <Input
+            placeholder="Sevilla"
+            containerStyle={styles.input}
+            defaultValue={wauwer.address.city}
+            onChange={v => setCity(v.nativeEvent.text)}
+            errorMessage={error}
+          />
+          </View>
+          <View>
+          <Input
+            placeholder="Andalucía"
+            containerStyle={styles.input}
+            defaultValue={wauwer.address.region}
+            onChange={v => setRegion(v.nativeEvent.text)}
+            errorMessage={error}
+          />
+          </View>
+          </View>
+          ):(
+            <View style={styles.view}>
+            <View>
+            <Input
+            placeholder="Avenida Reina Mercedes 27"
+            containerStyle={styles.input}
+            onChange={v => setName(v.nativeEvent.text)}
+            errorMessage={error}
+          />
+          </View>
+          <View>
+          <Input
+            placeholder="41012"
+            containerStyle={styles.input}
+            onChange={v => setPostalCode(v.nativeEvent.text)}
+            errorMessage={error}
+          />
+          </View>
+          <View>
+          <Input
+            placeholder="Sevilla"
+            containerStyle={styles.input}
+            onChange={v => setCity(v.nativeEvent.text)}
+            errorMessage={error}
+          />
+          </View>
+          <View>
+          <Input
+            placeholder="Andalucía"
+            containerStyle={styles.input}
+            onChange={v => setRegion(v.nativeEvent.text)}
+            errorMessage={error}
+          />
+          </View>
+          </View>
+          )}
           <Button
             title="Cambiar dirección"
             containerStyle={styles.btnContainer}
@@ -157,6 +210,7 @@ export default function ProfileLocationForm(props) {
             loading={isLoading}
           />
         </View>
+       
   );
   }
 
