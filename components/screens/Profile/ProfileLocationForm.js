@@ -5,6 +5,7 @@ import { email } from "../../account/QueriesProfile"
 import {db} from "../../population/config";
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import { setPlaneDetection } from "expo/build/AR";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
@@ -14,6 +15,8 @@ export default function ProfileLocationForm(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [wauwer,setWauwer] = useState([]);
+  const [place, setPlace ] = useState();
+  
   
 
   useEffect(() => {
@@ -29,36 +32,32 @@ export default function ProfileLocationForm(props) {
   }, [reloadData]);
 
 
-  async function getLocationAsync() {
-      getPermisos();
-      let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true });
-      console.log('Flag Location:');
-      console.log(location);
-      console.log('Flag LocationCoords:');
-      console.log(location.coords);
+   async function getLocationAsync() {
+     // getPermisos();
+     // let location = await Location.getCurrentPositionAsync({enableHighAccuracy: true });
+      //console.log('Flag Location:');
+      //console.log(location);
+      //console.log('Flag LocationCoords:');
+      //console.log(location.coords);
 
-      let currentAddress = await Location.geocodeAsync('Avenida Reina Mercedes 45, Sevilla');
-      console.log('Flag CurrentAddress:');
-      console.log(currentAddress);
+      let currentAddress = await Location.geocodeAsync(address);
+      
+      
+      setPlace(currentAddress[0].latitude);
+      console.log(place);
 
-      let geocode = await Location.reverseGeocodeAsync({latitude: 37.383127 , longitude: -6.0015874});
-      console.log('Flag GeoCode:');
-      console.log(geocode);
 
-      let geocode2 = await Location.reverseGeocodeAsync(location.coords);
-      console.log('Flag GeoCode2:');
-      console.log(geocode2);
+
+     // let geocode = await Location.reverseGeocodeAsync(currentAddress[0]);
+      //console.log('Flag GeoCode:');
+      //console.log(geocode);
+
+      //let geocode2 = await Location.reverseGeocodeAsync(location.coords);
+      //console.log('Flag GeoCode2:');
+      //console.log(geocode2);
       
       //return currentAddress.coords;
  }
-
-  async function getLocation2Async() {
-    
-    let currentAddress = await Location.geocodeAsync(address);
-    console.log(currentAddress);
-    
-    return currentAddress.coords;
-  }
 
   async function getPermisos() {
       // permissions returns only for location permissions on iOS and under certain conditions, see Permissions.LOCATION
@@ -71,13 +70,7 @@ export default function ProfileLocationForm(props) {
       }
   }
 
- async function reverseLocation(coordenadas) {
-   let direccion = await Location.reverseGeocodeAsync(coordenadas);
-   console.log(direccion);
-
-   return direccion.street;
-
- }
+ 
 
   const updateLocation = () => {
     setError(null);
@@ -123,9 +116,11 @@ export default function ProfileLocationForm(props) {
 
     const ubicacionActual2 = () => { 
       
-      setIsLoading(true);
-    
-      getLocationAsync();
+      let data = fetch(getLocationAsync()).then()
+        console.log(data);
+
+        
+      //console.log(place);
 
       // let userData = {
       //   address: address,
