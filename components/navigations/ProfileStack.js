@@ -6,8 +6,6 @@ import ProfileSitterFormScreen from "../screens/Profile/ProfileSitterForm";
 import ProfileLocationFormScreen from "../screens/Profile/ProfileLocationForm";
 import ProfileDrawerNavigator from "./ProfileDrawer";
 import ShowRequestScreen from "../screens/Profile/ShowRequest";
-import PayRequestScreen from "../screens/Profile/PayRequest";
-
 
 const ProfileScreenStacks = createStackNavigator({
   ProfileDrawer: {
@@ -48,14 +46,7 @@ const ProfileScreenStacks = createStackNavigator({
   ShowRequest: {
     screen: ShowRequestScreen,
     navigationOptions: () => ({
-      title: "Solicitud",
-      headerTitleAlign: "center"
-    })
-  },
-  PayRequest: {
-    screen: PayRequestScreen,
-    navigationOptions: () => ({
-      title: "Pago",
+      title: "Escoger Localización",
       headerTitleAlign: "center"
     })
   }

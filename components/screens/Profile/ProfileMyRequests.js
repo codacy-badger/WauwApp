@@ -29,24 +29,20 @@ function ProfileMyRequests(props) {
       wauwerId = snap.val().id;
     });
 
-  console.log("wauwerId", wauwerId);
-
   useEffect(() => {
-    db.ref("requests")
-      .orderByChild("owner")
+    db.ref("request")
+      .orderByChild("ownerId")
       .equalTo(wauwerId)
       .on("value", snap => {
-        const requests1 = [];
+        const requests = [];
         snap.forEach(child => {
-          requests1.push(child.val());
+          requests.push(child.val());
         });
-        setRequestList(requests1);
+        setRequestList(requests);
       });
     setReloadData(false);
     setLoading(false);
   }, []);
-
-  console.log(setRequestList);
 
   return (
     <SafeAreaView style={globalStyles.safeArea}>
@@ -66,10 +62,10 @@ function ProfileMyRequests(props) {
             keyExtractor={request => request.id}
           />
         ) : (
-            <View>
-              <Text> No hay solicitudes </Text>
-            </View>
-          )}
+          <View>
+            <Text> No hay solicitudes </Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -77,6 +73,7 @@ function ProfileMyRequests(props) {
 
 function Request(requestIn) {
   const { request, navigation } = requestIn;
+  console.log(request);
 
   let tipo = "";
   let status = "";
@@ -100,9 +97,9 @@ function Request(requestIn) {
     }
   }
 
-  if (request.item.type == "sitter") {
+  if (request.item.type == "SITTER") {
     tipo = "Alojamiento";
-  } else if (request.item.type == "walk") {
+  } else if (request.item.type == "WALK") {
     tipo = "Paseo";
   }
 
