@@ -116,33 +116,25 @@ function ProfileWalkerForm(props) {
           default:
             break;
         }
-      });
-      setAvailabilitiesGlobal(availabilitiesListLunes);
-      setAvailabilitiesMartes(availabilitiesListMartes);
-      setAvailabilitiesMiercoles(availabilitiesListMiercoles);
-      setAvailabilitiesJueves(availabilitiesListJueves);
-      setAvailabilitiesViernes(availabilitiesListViernes);
-      setAvailabilitiesSabado(availabilitiesListSabado);
-      setAvailabilitiesDomingo(availabilitiesListDomingo);
-
-      // avGlobal.push(availabilitiesListMartes);
-      // avGlobal.push(availabilitiesListMiercoles);
-      // avGlobal.push(availabilitiesListJueves);
-      // avGlobal.push(availabilitiesListViernes);
-      // avGlobal.push(availabilitiesListSabado);
-      // avGlobal.push(availabilitiesListDomingo);
-
-      avGlobal.push(availabilitiesLunes);
-      
-      
+      }
+      );
+      avGlobal.push(availabilitiesListLunes);
       avGlobal.push(availabilitiesListMartes);
+      avGlobal.push(availabilitiesListMiercoles);
+      avGlobal.push(availabilitiesListJueves);
+      avGlobal.push(availabilitiesListViernes);
+      avGlobal.push(availabilitiesListSabado);
+      avGlobal.push(availabilitiesListDomingo);
+     
       setAvailabilitiesGlobal(avGlobal);
-      console.log("NuevoGLOBAL: ", availabilitiesGlobal);
-      //console.log(availabilitiesListLunes);
+      
     });
     setReloadData(false);
   }, [reloadData]);
 
+  /* console.log("=====================");
+  console.log("Availabilities" + availabilitiesGlobal);
+  console.log("============ FIN ================"); */
   return (
     <SafeAreaView>
       <ScrollView>
@@ -159,23 +151,10 @@ function ProfileWalkerForm(props) {
               </CollapseHeader>
               <CollapseBody>
                 <AvailabilityFlatList
-                  availabilities={availabilitiesLunes}
+                  availabilities={availabilitiesGlobal[0]}
                   isChecked={isChecked}
                   globalPos={0}
                 />
-                {/* <FlatList
-                  data={availabilitiesLunes}
-                  renderItem={availability => (
-                    <AvailabilityCheckBox
-                      availability={availability.item}
-                      navigation={navigation}
-                      isCkecked={isChecked}
-                    />
-                  )}
-                  keyExtractor={availability => {
-                    availability.item;
-                  }}
-                /> */}
               </CollapseBody>
             </Collapse>
 
@@ -185,21 +164,10 @@ function ProfileWalkerForm(props) {
               </CollapseHeader>
               <CollapseBody>
                 <AvailabilityFlatList
-                  availabilities={availabilitiesMartes}
+                  availabilities={availabilitiesGlobal[1]}
                   isChecked={isChecked}
+                  globalPos={1}
                 />
-                {/* <FlatList
-                  data={availabilitiesMartes}
-                  renderItem={availability => (
-                    <AvailabilityCheckBox
-                      availability={availability.item}
-                      navigation={navigation}
-                    />
-                  )}
-                  keyExtractor={availability => {
-                    availability.item;
-                  }}
-                /> */}
               </CollapseBody>
             </Collapse>
 
@@ -209,21 +177,10 @@ function ProfileWalkerForm(props) {
               </CollapseHeader>
               <CollapseBody>
                 <AvailabilityFlatList
-                  availabilities={availabilitiesMiercoles}
+                  availabilities={availabilitiesGlobal[2]}
                   isChecked={isChecked}
+                  globalPos={2}
                 />
-                {/* <FlatList
-                  data={availabilitiesMiercoles}
-                  renderItem={availability => (
-                    <AvailabilityCheckBox
-                      availability={availability.item}
-                      navigation={navigation}
-                    />
-                  )}
-                  keyExtractor={availability => {
-                    availability.item;
-                  }}
-                /> */}
               </CollapseBody>
             </Collapse>
 
@@ -233,21 +190,10 @@ function ProfileWalkerForm(props) {
               </CollapseHeader>
               <CollapseBody>
                 <AvailabilityFlatList
-                  availabilities={availabilitiesJueves}
+                  availabilities={availabilitiesGlobal[3]}
                   isChecked={isChecked}
+                  globalPos={3}
                 />
-                {/* <FlatList
-                  data={availabilitiesJueves}
-                  renderItem={availability => (
-                    <AvailabilityCheckBox
-                      availability={availability.item}
-                      navigation={navigation}
-                    />
-                  )}
-                  keyExtractor={availability => {
-                    availability.item;
-                  }}
-                /> */}
               </CollapseBody>
             </Collapse>
 
@@ -257,21 +203,10 @@ function ProfileWalkerForm(props) {
               </CollapseHeader>
               <CollapseBody>
                 <AvailabilityFlatList
-                  availabilities={availabilitiesViernes}
+                  availabilities={availabilitiesGlobal[4]}
                   isChecked={isChecked}
+                  globalPos={4}
                 />
-                {/* <FlatList
-                  data={availabilitiesViernes}
-                  renderItem={availability => (
-                    <AvailabilityCheckBox
-                      availability={availability.item}
-                      navigation={navigation}
-                    />
-                  )}
-                  keyExtractor={availability => {
-                    availability.item;
-                  }}
-                /> */}
               </CollapseBody>
             </Collapse>
 
@@ -281,21 +216,10 @@ function ProfileWalkerForm(props) {
               </CollapseHeader>
               <CollapseBody>
                 <AvailabilityFlatList
-                  availabilities={availabilitiesSabado}
+                  availabilities={availabilitiesGlobal[5]}
                   isChecked={isChecked}
+                  globalPos={5}
                 />
-                {/* <FlatList
-                  data={availabilitiesSabado}
-                  renderItem={availability => (
-                    <AvailabilityCheckBox
-                      availability={availability.item}
-                      navigation={navigation}
-                    />
-                  )}
-                  keyExtractor={availability => {
-                    availability.item;
-                  }}
-                /> */}
               </CollapseBody>
             </Collapse>
 
@@ -305,21 +229,10 @@ function ProfileWalkerForm(props) {
               </CollapseHeader>
               <CollapseBody>
                 <AvailabilityFlatList
-                  availabilities={availabilitiesDomingo}
+                  availabilities={availabilitiesGlobal[6]}
                   isChecked={isChecked}
+                  globalPos={6}
                 />
-                {/* <FlatList
-                  data={availabilitiesDomingo}
-                  renderItem={availability => (
-                    <AvailabilityCheckBox
-                      availability={availability.item}
-                      navigation={navigation}
-                    />
-                  )}
-                  keyExtractor={availability => {
-                    availability.item;
-                  }}
-                /> */}
               </CollapseBody>
             </Collapse>
           </View>
@@ -362,7 +275,7 @@ function AvailabilityFlatList(props) {
 }
 
 function AvailabilityCheckBox(props) {
-  const { availability } = props;
+  const { availability, globalPos } = props;
   const [checked, setIsChecked] = useState(false);
   /* console.log("==================================");
   console.log(availability);
@@ -370,6 +283,7 @@ function AvailabilityCheckBox(props) {
   //console.log(availability);
 
   const setChecked = () => {
+    
     setIsChecked(!checked);
     console.log(availability[2]);
   };
