@@ -11,13 +11,10 @@ import _ from 'lodash';
 import { email } from '../account/QueriesProfile';
 import { db } from "../population/config.js";
 import { ScrollView } from "react-native-gesture-handler";
-import Loading from "../Loading";
 import { Avatar } from "react-native-elements";
 
 export default function Chats(props) {
   const { navigation } = props;
-  const [loading, setLoading] = useState(true);
-  const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
 
   let currentUser;
@@ -66,14 +63,11 @@ export default function Chats(props) {
       setData(allData);
     });
 
-    setReloadData(false);
-    setLoading(false);
-  }, [reloadData]);
-  return (
+  }, []);
 
+  return (
     <SafeAreaView>
       <ScrollView>
-        <Loading isVisible={loading} text={"Un momento..."} />
         {data ? (
           <FlatList
             data={data}

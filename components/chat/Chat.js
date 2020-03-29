@@ -7,10 +7,19 @@ import firebase from 'firebase';
 
 export default class Chat extends Component {
 
-  state = {
-    messages: [],
-    requestID: this.props.navigation.state.params.requestID
-  };
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      messages: [],
+      requestID: this.props.navigation.state.params.requestID
+    };
+
+    if (this.checkIfExistsChat(this.state.requestID) === false) {
+      console.log('==================================CREANDO CHAT==================================');
+      this.createChat(this.state.requestID);
+    }
+  }
 
   render() {
     return (
@@ -26,11 +35,6 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
-    if (this.checkIfExistsChat(this.state.requestID) === false) {
-      console.log('==================================CREANDO CHAT==================================');
-      this.createChat(this.state.requestID);
-    }
-
     this.on(message =>
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
@@ -56,6 +60,11 @@ export default class Chat extends Component {
       }
       );
     });
+
+    /* db.ref("chats_messages").orderByChild("request").equalTo(requestID).on("child_added", snap => {
+      console.log('==================================YA EXISTE UN CHAT==================================');
+      result = true;
+    }); */
 
     return result;
 
