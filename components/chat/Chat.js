@@ -1,22 +1,23 @@
 import React, { Component } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import KeyboardSpacer from 'react-native-keyboard-spacer';
+import KeyboardSpacer from "react-native-keyboard-spacer";
 import { StyleSheet, View } from "react-native";
 import { db } from "../population/config.js";
-import firebase from 'firebase';
+import firebase from "firebase";
 
 export default class Chat extends Component {
-
   constructor(props) {
     super(props);
-  
+
     this.state = {
       messages: [],
       requestID: this.props.navigation.state.params.requestID
     };
 
     if (this.checkIfExistsChat(this.state.requestID) === false) {
-      console.log('==================================CREANDO CHAT==================================');
+      console.log(
+        "==================================CREANDO CHAT=================================="
+      );
       this.createChat(this.state.requestID);
     }
   }
@@ -37,7 +38,7 @@ export default class Chat extends Component {
   componentDidMount() {
     this.on(message =>
       this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, message),
+        messages: GiftedChat.append(previousState.messages, message)
       }))
     );
   }
@@ -50,15 +51,17 @@ export default class Chat extends Component {
   checkIfExistsChat = requestID => {
     let result = false;
 
-    db.ref("chats_messages").on("value", snap => {
-      snap.forEach(child => {
-        if (child.val().request == requestID) {
-          console.log('==================================YA EXISTE UN CHAT==================================');
-          result = true;
-        }
-
+    db.ref("chats_messages/" + requestID).on("value", snap => {
+      if (snap.val() != []) {
+        console.log(
+          "==================================YA EXISTE UN CHAT=================================="
+        );
+        result = true;
+      }else {
+        console.log(
+          "================================== NO EXISTE UN CHAT =================================="
+        );
       }
-      );
     });
 
     /* db.ref("chats_messages").orderByChild("request").equalTo(requestID).on("child_added", snap => {
@@ -67,19 +70,18 @@ export default class Chat extends Component {
     }); */
 
     return result;
-
-  }
+  };
 
   // Creamos el chat
   createChat = requestID => {
     let id = db.ref("chats_messages").push().key;
     let chatData = {
-      id: id,
-      request: requestID
+      id: requestID
+      //request: requestID
     };
 
     db.ref("chats_messages/" + id).set(chatData);
-  }
+  };
 
   parse = snapshot => {
     const { timestamp: numberStamp, text, user } = snapshot.val();
@@ -89,16 +91,18 @@ export default class Chat extends Component {
       _id,
       timestamp,
       text,
-      user,
+      user
     };
     return message;
   };
 
   // Traerse los x últimos mensajes del chat
   on = callback =>
-    db.ref("chats_messages").child(this.obtenerChatID(this.state.requestID)+"/messages")
+    db
+      .ref("chats_messages")
+      .child(this.obtenerChatID(this.state.requestID) + "/messages")
       .limitToLast(30)
-      .on('child_added', snapshot => callback(this.parse(snapshot)));
+      .on("child_added", snapshot => callback(this.parse(snapshot)));
 
   // Obtener tiempo actual
   get timestamp() {
@@ -112,36 +116,24 @@ export default class Chat extends Component {
       const message = {
         text,
         user,
-        timestamp: this.timestamp,
+        timestamp: this.timestamp
       };
-      db.ref("chats_messages").child(this.obtenerChatID(this.state.requestID)+"/messages").push(message);
+      db.ref("chats_messages/" + this.state.requestID  + "/messages")
+        .push(message);
     }
   };
 
   // Obtener el ID del chat
   obtenerChatID = requestID => {
-    let chatID;
-
-    db.ref("chats_messages").on("value", snap => {
-      snap.forEach(child => {
-
-        if (child.val().request == requestID) {
-          chatID = child.val().id;
-          console.log(chatID);
-        }
-
-      }
-      );
-    });
-
-    return chatID;
-  }
+    return this.state.requestID;
+    console.log(this.state.requestID);
+  };
 }
 
 const styles = StyleSheet.create({
   chatStyle: {
-    backgroundColor: '#E8CCFF',
-    width: '100%',
-    height: '100%'
+    backgroundColor: "#E8CCFF",
+    width: "100%",
+    height: "100%"
   }
 });
