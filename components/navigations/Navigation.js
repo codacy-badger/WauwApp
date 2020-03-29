@@ -92,7 +92,8 @@ const NavigationStacks = createBottomTabNavigator(
       showLabel: false,
       showIcon: true,
       inactiveTintColor: "#6c7075",
-      activeTintColor: "#443099"
+      activeTintColor: "#443099",
+      keyboardHidesTabBar: false
     }
   }
 );
