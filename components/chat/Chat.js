@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { GiftedChat } from 'react-native-gifted-chat';
-import ChatManage from './ChatManage';
+import { GiftedChat } from "react-native-gifted-chat";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { StyleSheet, View } from "react-native";
+import { db } from "../population/config.js";
+import firebase from 'firebase';
 
 export default class Chat extends Component {
 
   state = {
     messages: [],
+    requestID: this.props.navigation.state.params.requestID
   };
 
   render() {
@@ -15,7 +17,7 @@ export default class Chat extends Component {
       <View style={styles.chatStyle}>
         <GiftedChat
           messages={this.state.messages}
-          onSend={ChatManage.shared.send}
+          onSend={this.send}
           user={this.props.navigation.state.params}
         />
         <KeyboardSpacer topSpacing={-50} />
@@ -24,24 +26,107 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
+    //this.obtenerChatID(requestID);
 
-    //console.log(ChatManage.shared.checkIfExistsChat(this.props.navigation.state.params.requestID));
-    ChatManage.shared.obtenerChatID(this.props.navigation.state.params.requestID);
-    if (ChatManage.shared.checkIfExistsChat(this.props.navigation.state.params.requestID) === false) {
+    if (this.checkIfExistsChat(this.state.requestID) === false) {
       console.log('==================================CREANDO CHAT==================================');
-      ChatManage.shared.createChat(this.props.navigation.state.params.requestID);
-
+      this.createChat(this.state.requestID);
     }
 
-    ChatManage.shared.on(message =>
+    this.on(message =>
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
       }))
     );
   }
+
   componentWillUnmount() {
     //this.state.messages = [];
-    ChatManage.shared.off();
+  }
+
+  checkIfExistsChat = requestID => {
+    let result = false;
+
+    db.ref("chats_messages").on("value", snap => {
+      snap.forEach(child => {
+        if (child.val().request == requestID) {
+          console.log('==================================YA EXISTE UN CHAT==================================');
+          result = true;
+        }
+
+      }
+      );
+    });
+
+    return result;
+
+  }
+
+  // Creamos el chat
+  createChat = requestID => {
+    let id = db.ref("chats_messages").push().key;
+    let chatData = {
+      id: id,
+      request: requestID
+    };
+
+    db.ref("chats_messages/" + id).set(chatData);
+  }
+
+  parse = snapshot => {
+    const { timestamp: numberStamp, text, user } = snapshot.val();
+    const { key: _id } = snapshot;
+    const timestamp = new Date(numberStamp);
+    const message = {
+      _id,
+      timestamp,
+      text,
+      user,
+    };
+    return message;
+  };
+
+  // Traerse los x últimos mensajes del chat
+  on = callback =>
+    db.ref("chats_messages").child(this.obtenerChatID(this.state.requestID)+"/messages")
+      .limitToLast(20)
+      .on('child_added', snapshot => callback(this.parse(snapshot)));
+
+  // Obtener tiempo actual
+  get timestamp() {
+    return firebase.database.ServerValue.TIMESTAMP;
+  }
+
+  // Crear mensaje
+  send = messages => {
+    for (let i = 0; i < messages.length; i++) {
+      const { text, user } = messages[i];
+      const message = {
+        text,
+        user,
+        timestamp: this.timestamp,
+      };
+      db.ref("chats_messages").child(this.obtenerChatID(this.state.requestID)+"/messages").push(message);
+    }
+  };
+
+  // Obtener el ID del chat
+  obtenerChatID = requestID => {
+    let chatID;
+
+    db.ref("chats_messages").on("value", snap => {
+      snap.forEach(child => {
+
+        if (child.val().request == requestID) {
+          chatID = child.val().id;
+          console.log(chatID);
+        }
+
+      }
+      );
+    });
+
+    return chatID;
   }
 }
 
