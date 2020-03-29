@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   View,
   Text,
   FlatList,
@@ -182,52 +181,3 @@ function Request(requestIn) {
 }
 
 export default withNavigation(ProfileMyRequests);
-
-const styles = StyleSheet.create({
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_left: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_right: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    padding: 20
-  },
-  tarjeta: {
-    elevation: 1,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 25,
-    borderStyle: "solid"
-  },
-  separacion: {
-    paddingTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingBottom: 5
-  },
-  loading: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  }
-});
