@@ -58,23 +58,23 @@ function ProfileAddDogForm(props) {
       description: newDescription,
       owner: newOwner
     };
-
+    var regex = /\w/;
     if (
       newName === null ||
-      newName === "" ||
+      !regex.test(newName) ||
       newBreed === null ||
-      newBreed === "" ||
+      !regex.test(newBreed)||
       newDescription === null ||
-      newDescription === ""
+      !regex.test(newDescription)
     ) {
       let errores = "";
-      if (newName === null || newName === "") {
+      if (newName === null || !regex.test(newName)) {
         errores = errores.concat("Debe escribir un nombre.\n");
       }
-      if (newBreed === null || newBreed === "") {
+      if (newBreed === null || !regex.test(newBreed)) {
         errores = errores.concat("Debe escribir una raza.\n");
       }
-      if (newDescription === null || newDescription === "") {
+      if (newDescription === null || !regex.test(newDescription)) {
         errores = errores.concat(
           "Debe dar una breve descripción de su perro.\n"
         );
