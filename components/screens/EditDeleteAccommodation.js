@@ -70,24 +70,34 @@ function EditDeleteAccomodation(props) {
   const id = navigation.state.params.accommodation.id;
 
   const cancelAccomodation = () => {
-    setNewIsCanceled(true);
+    Alert.alert("Atención", "¿Desea cancelar esta oferta de alojamiento?", [
+      {
+        text: "Sí", onPress: () => cancelationConfirmed()
+      },
+      {
+        text: "No", onPress: () => console.log("Alert closed")
+      }
+    ])
+  };
+
+  const cancelationConfirmed = () => {
     let accommodationData = {
-      isCanceled: newIsCanceled
-      };
+      isCanceled: true
+    };
     
-      db.ref("accommodation")
-      .child(id)
-      .update(accommodationData)
-      .then(() => {
-        setReloadData(true);
-        setIsVisibleModal(false);
-        setIsLoading(true);
-      }).catch(() => {
-        setError("Ha ocurrido un error");
-        setIsLoading(false);
-      });
-      Alert.alert("Éxito", "Alojamiento cancelado.");
-      navigation.navigate("MyAccomodations");
+    db.ref("accommodation")
+    .child(id)
+    .update(accommodationData)
+    .then(() => {
+      setReloadData(true);
+      setIsVisibleModal(false);
+      setIsLoading(true);
+    }).catch(() => {
+      setError("Ha ocurrido un error");
+      setIsLoading(false);
+    });
+    Alert.alert("Éxito", "Alojamiento cancelado.");
+    navigation.navigate("MyAccommodations");
   };
 
   const updateAccomodation = () => {
@@ -154,14 +164,15 @@ function EditDeleteAccomodation(props) {
           setIsLoading(false);
         });
         Alert.alert("Éxito", "Se ha editado el alojamiento correctamente.");
-        navigation.navigate("MyAccomodations");
+        navigation.navigate("MyAccommodations");
       }
     }
   };
 
   return (
     <View style={styles.view}>
-    {navigation.state.params.accommodation.pending === true ? (
+    {(navigation.state.params.accommodation.pending === true) && 
+      (navigation.state.params.accommodation.isCanceled === false) ? (
       <View>
         <Text> Edita tu alojamiento </Text>
         <View>
