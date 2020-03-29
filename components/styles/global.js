@@ -12,15 +12,48 @@ export const globalStyles = StyleSheet.create({
   btnTextStyle: {
     flex: 1
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "700"
+  /* Home */
+  homeView: {
+    padding: 20,
+    flex: 1,
+    alignContent: "center",
+    alignItems: "center"
   },
-  contentText: {
+  homeView2: {
+    flex: 1,
+    width: "95%",
+    height: 180,
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center"
+  },
+  homeTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    textAlign: "center"
+  },
+  homeContentText: {
     fontSize: 18,
     fontWeight: "100",
     marginTop: 10,
-    fontWeight: "300"
+    fontWeight: "300",
+    textAlign: "center"
+  },
+  homeImage: {
+    flex: 1,
+    width: "85%",
+    resizeMode: "stretch",
+    borderRadius: 20,
+    borderWidth: 1,
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+  safeHomeArea: {
+    flex: 1,
+    paddingBottom: 5,
+    marginBottom: 20
   },
   /* Profile */
   safeProfileArea: {
@@ -217,6 +250,24 @@ export const globalStyles = StyleSheet.create({
     width: 120,
     borderRadius: 60
   },
+  drawerMenuView: {
+    margin: 20
+  },
+  drawerTitle: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 5,
+    alignSelf: "center"
+  },
+  drawerIcon: {
+    alignSelf: "flex-end",
+    marginHorizontal: 5,
+    alignSelf: "flex-end"
+  },
+  drawerTxt: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
   /* Login Screen */
   loginImage: {
     height: "40%",
@@ -272,5 +323,57 @@ export const globalStyles = StyleSheet.create({
     fontSize: 50,
     color: "#5c54a4",
     marginTop: 40
+  },
+  /* My Requests */
+  myRequestsFeed: {
+    marginHorizontal: 16
+  },
+  safeMyRequestsArea: {
+    flex: 1,
+    paddingBottom: 5,
+    marginBottom: 20
+  },
+  myRequestsFeedItem: {
+    backgroundColor: "#FFF",
+    borderRadius: 5,
+    padding: 8,
+    flexDirection: "row",
+    marginVertical: 8
+  },
+  myRequestsView1: {
+    flex: 1
+  },
+  myRequestsColumn1: {
+    alignItems: "flex-start",
+    marginHorizontal: 5
+  },
+  myRequestsColumn2: {
+    alignItems: "flex-end",
+    marginHorizontal: 5
+  },
+  myRequestsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  myRequestsNum: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#454D65"
+  },
+  myRequestsStatus: {
+    fontSize: 13,
+    marginTop: 4
+  },
+  myRequestsPrice: {
+    fontSize: 14,
+    color: "#838899",
+    marginTop: 4,
+    marginLeft: 3
+  },
+  myRequestsType: {
+    fontSize: 14,
+    color: "#838899",
+    marginTop: 4
   }
 });

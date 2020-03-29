@@ -50,10 +50,17 @@ function ProfileMyAccommodations(props) {
   return (
     <SafeAreaView style={globalStyles.safeArea}>
       <TouchableOpacity
-        style={{ alignItems: "flex-end", margin: 16 }}
+        style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
       >
-        <FontAwesome name="bars" size={24} color="#161924" />
+        <View>
+          <View style={globalStyles.drawerTitle}>
+            <Text style={globalStyles.drawerTxt}>Mis Alojamientos</Text>
+          </View>
+          <View style={globalStyles.drawerIcon}>
+            <FontAwesome name="bars" size={24} color="#161924" />
+          </View>
+        </View>
       </TouchableOpacity>
       <ScrollView>
         {accommodationsList ? (
@@ -77,9 +84,10 @@ function ProfileMyAccommodations(props) {
   );
 }
 
-function Accommodation(props) {
-  const { accommodation, navigation } = props;
-  let status = "Alojamiento ";
+
+function Accommodation(accomodationIn) {
+  const { accommodation, navigation } = accomodationIn;
+  let status = "";
   let fondo = "white";
   let editable = false;
   var startTime = new Date(accommodation.item.startTime);
@@ -112,12 +120,11 @@ function Accommodation(props) {
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
-      onPress={() =>
-         navigation.navigate("ChangeAccommodation", {
-           accommodation: accommodation.item,
-           editable: editable,
-         })
-       }
+        onPress={() =>
+          navigation.navigate("EditDeleteAccommodation", {
+            accommodation: accommodation.item
+          })
+        }
       >
         <View style={tarjeta}>
           <View style={styles.row}>
