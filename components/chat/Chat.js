@@ -26,8 +26,6 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
-    //this.obtenerChatID(requestID);
-
     if (this.checkIfExistsChat(this.state.requestID) === false) {
       console.log('==================================CREANDO CHAT==================================');
       this.createChat(this.state.requestID);
@@ -41,7 +39,8 @@ export default class Chat extends Component {
   }
 
   componentWillUnmount() {
-    //this.state.messages = [];
+    this.state.messages = [];
+    this.state.requestID = "";
   }
 
   checkIfExistsChat = requestID => {
@@ -89,7 +88,7 @@ export default class Chat extends Component {
   // Traerse los x últimos mensajes del chat
   on = callback =>
     db.ref("chats_messages").child(this.obtenerChatID(this.state.requestID)+"/messages")
-      .limitToLast(20)
+      .limitToLast(30)
       .on('child_added', snapshot => callback(this.parse(snapshot)));
 
   // Obtener tiempo actual
