@@ -30,10 +30,17 @@ function Profile(props) {
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
       <TouchableOpacity
-        style={{ alignItems: "flex-end", margin: 16 }}
+        style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
       >
-        <FontAwesome name="bars" size={24} color="#161924" />
+        <View>
+          <View style={globalStyles.drawerTitle}>
+            <Text style={globalStyles.drawerTxt}>Mi Perfil</Text>
+          </View>
+          <View style={globalStyles.drawerIcon}>
+            <FontAwesome name="bars" size={24} color="#161924" />
+          </View>
+        </View>
       </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
         <View>

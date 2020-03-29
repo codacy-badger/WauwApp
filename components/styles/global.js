@@ -250,6 +250,24 @@ export const globalStyles = StyleSheet.create({
     width: 120,
     borderRadius: 60
   },
+  drawerMenuView: {
+    margin: 20
+  },
+  drawerTitle: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 5,
+    alignSelf: "center"
+  },
+  drawerIcon: {
+    alignSelf: "flex-end",
+    marginHorizontal: 5,
+    alignSelf: "flex-end"
+  },
+  drawerTxt: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
   /* Login Screen */
   loginImage: {
     height: "40%",

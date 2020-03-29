@@ -15,11 +15,15 @@ console.warn = message => {
   }
 };
 
-function EditDeleteAccomodation(props) {
+function EditDeleteAccommodation(props) {
   const { navigation } = props;
 
-  const [newStartTime, setStartTime] = useState(navigation.state.params.accommodation.startTime);
-  const [newEndTime, setEndTime] = useState(navigation.state.params.accommodation.endTime);
+  const [newStartTime, setStartTime] = useState(
+    navigation.state.params.accommodation.startTime
+  );
+  const [newEndTime, setEndTime] = useState(
+    navigation.state.params.accommodation.endTime
+  );
 
   const [modeS, setModeS] = useState("date");
   const [showS, setShowS] = useState(false);
@@ -29,7 +33,7 @@ function EditDeleteAccomodation(props) {
 
   const [setReloadData] = useState(false);
 
-  const onChangeS = (selectedDate) => {
+  const onChangeS = selectedDate => {
     const currentDate = selectedDate || date;
     setShowS(Platform.OS === "ios");
     setStartTime(currentDate);
@@ -44,7 +48,7 @@ function EditDeleteAccomodation(props) {
     showModeS("date");
   };
 
-  const onChangeE = (selectedDate) => {
+  const onChangeE = selectedDate => {
     const currentDate = selectedDate || date;
     setShowE(Platform.OS === "ios");
     setEndTime(currentDate);
@@ -59,8 +63,12 @@ function EditDeleteAccomodation(props) {
     showModeE("date");
   };
 
-  const [newSalary, setNewSalary] = useState(navigation.state.params.accommodation.salary);
-  const [newIsCanceled, setNewIsCanceled] = useState(navigation.state.params.accommodation.isCanceled);
+  const [newSalary, setNewSalary] = useState(
+    navigation.state.params.accommodation.salary
+  );
+  const [newIsCanceled, setNewIsCanceled] = useState(
+    navigation.state.params.accommodation.isCanceled
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const all = () => {
@@ -72,30 +80,33 @@ function EditDeleteAccomodation(props) {
   const cancelAccomodation = () => {
     Alert.alert("Atención", "¿Desea cancelar esta oferta de alojamiento?", [
       {
-        text: "Sí", onPress: () => cancelationConfirmed()
+        text: "Sí",
+        onPress: () => cancelationConfirmed()
       },
       {
-        text: "No", onPress: () => console.log("Alert closed")
+        text: "No",
+        onPress: () => console.log("Alert closed")
       }
-    ])
+    ]);
   };
 
   const cancelationConfirmed = () => {
     let accommodationData = {
       isCanceled: true
     };
-    
+
     db.ref("accommodation")
-    .child(id)
-    .update(accommodationData)
-    .then(() => {
-      setReloadData(true);
-      setIsVisibleModal(false);
-      setIsLoading(true);
-    }).catch(() => {
-      setError("Ha ocurrido un error");
-      setIsLoading(false);
-    });
+      .child(id)
+      .update(accommodationData)
+      .then(() => {
+        setReloadData(true);
+        setIsVisibleModal(false);
+        setIsLoading(true);
+      })
+      .catch(() => {
+        setError("Ha ocurrido un error");
+        setIsLoading(false);
+      });
     Alert.alert("Éxito", "Alojamiento cancelado.");
     navigation.navigate("MyAccommodations");
   };
@@ -146,23 +157,24 @@ function EditDeleteAccomodation(props) {
         Alert.alert("Advertencia", errores.toString());
       } else {
         let accommodationData = {
-        startTime: newStartTime,
-        endTime: newEndTime,
-        isCanceled: newIsCanceled,
-        salary: newSalary
+          startTime: newStartTime,
+          endTime: newEndTime,
+          isCanceled: newIsCanceled,
+          salary: newSalary
         };
-      
+
         db.ref("accommodation")
-        .child(id)
-        .update(accommodationData)
-        .then(() => {
-          setReloadData(true);
-          setIsVisibleModal(false);
-          setIsLoading(true);
-        }).catch(() => {
-          setError("Ha ocurrido un error");
-          setIsLoading(false);
-        });
+          .child(id)
+          .update(accommodationData)
+          .then(() => {
+            setReloadData(true);
+            setIsVisibleModal(false);
+            setIsLoading(true);
+          })
+          .catch(() => {
+            setError("Ha ocurrido un error");
+            setIsLoading(false);
+          });
         Alert.alert("Éxito", "Se ha editado el alojamiento correctamente.");
         navigation.navigate("MyAccommodations");
       }
@@ -171,81 +183,85 @@ function EditDeleteAccomodation(props) {
 
   return (
     <View style={styles.view}>
-    {(navigation.state.params.accommodation.pending === true) && 
-      (navigation.state.params.accommodation.isCanceled === false) ? (
-      <View>
-        <Text> Edita tu alojamiento </Text>
+      {navigation.state.params.accommodation.pending === true &&
+      navigation.state.params.accommodation.isCanceled === false ? (
         <View>
-          <Text>Fecha</Text>
+          <Text> Edita tu alojamiento </Text>
           <View>
+            <Text>Fecha</Text>
             <View>
-              <Button onPress={showDatepickerS} title="Fecha de entrada" />
+              <View>
+                <Button onPress={showDatepickerS} title="Fecha de entrada" />
+              </View>
+
+              {showS && (
+                <DateTimePicker
+                  testID="dateTimePickerS"
+                  timeZoneOffsetInMinutes={0}
+                  value={newStartTime}
+                  mode={modeS}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeS}
+                />
+              )}
+            </View>
+            <View>
+              <View>
+                <Button onPress={showDatepickerE} title="Fecha de salida" />
+              </View>
+
+              {showE && (
+                <DateTimePicker
+                  testID="dateTimePickerE"
+                  timeZoneOffsetInMinutes={0}
+                  value={newEndTime}
+                  mode={modeE}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeE}
+                />
+              )}
             </View>
 
-            {showS && (
-              <DateTimePicker
-                testID="dateTimePickerS"
-                timeZoneOffsetInMinutes={0}
-                value={newStartTime}
-                mode={modeS}
-                is24Hour={true}
-                display="default"
-                onChange={onChangeS}
-              />
-            )}
+            <Text>Precio por noche</Text>
+            <TextInput
+              placeholder="10.00"
+              keyboardType="numeric"
+              containerStyle={styles.input}
+              onChange={v => setNewSalary(v.nativeEvent.text)}
+            />
+            <Button title="Guardar" onPress={all} loading={isLoading} />
+            <Button
+              title="Cancelar alojamiento"
+              onPress={cancelAccomodation}
+              loading={isLoading}
+            />
           </View>
-          <View>
-            <View>
-              <Button onPress={showDatepickerE} title="Fecha de salida" />
-            </View>
-
-            {showE && (
-              <DateTimePicker
-                testID="dateTimePickerE"
-                timeZoneOffsetInMinutes={0}
-                value={newEndTime}
-                mode={modeE}
-                is24Hour={true}
-                display="default"
-                onChange={onChangeE}
-              />
-            )}
-          </View>
-
-          <Text>Precio por noche</Text>
-          <TextInput
-            placeholder="10.00"
-            keyboardType="numeric"
-            containerStyle={styles.input}
-            onChange={v => setNewSalary(v.nativeEvent.text)}
-          />
-          <Button title="Guardar" onPress={all} loading={isLoading} />
-          <Button title="Cancelar alojamiento" onPress={cancelAccomodation} loading={isLoading} />
         </View>
-      </View>
-    ) : ( 
-      <View>
-        <Text>
-          {"Fecha de inicio \n"}
-          <Text >{newStartTime}</Text>
-        </Text>
+      ) : (
+        <View>
+          <Text>
+            {"Fecha de inicio \n"}
+            <Text>{newStartTime}</Text>
+          </Text>
 
-        <Text>
-          {"Fecha de fin \n"}
-          <Text >{newEndTime}</Text>
-        </Text>
+          <Text>
+            {"Fecha de fin \n"}
+            <Text>{newEndTime}</Text>
+          </Text>
 
-        <Text>
-          {"Precio por noche \n"}
-          <Text >{newSalary}</Text>
-        </Text>
-      </View>
-    )}
+          <Text>
+            {"Precio por noche \n"}
+            <Text>{newSalary}</Text>
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
 
-export default withNavigation(EditDeleteAccomodation);
+export default withNavigation(EditDeleteAccommodation);
 
 const styles = StyleSheet.create({
   view: {

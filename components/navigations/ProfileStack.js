@@ -7,13 +7,13 @@ import ProfileLocationFormScreen from "../screens/Profile/ProfileLocationForm";
 import ProfileDrawerNavigator from "./ProfileDrawer";
 import ShowRequestScreen from "../screens/Profile/ShowRequest";
 import PayRequestScreen from "../screens/Profile/PayRequest";
-
+import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
 
 const ProfileScreenStacks = createStackNavigator({
   ProfileDrawer: {
     screen: ProfileDrawerNavigator,
     navigationOptions: () => ({
-      title: "Mi Perfil",
+      title: "Mis Datos",
       headerTitleAlign: "center"
     })
   },
@@ -56,6 +56,13 @@ const ProfileScreenStacks = createStackNavigator({
     screen: PayRequestScreen,
     navigationOptions: () => ({
       title: "Pago",
+      headerTitleAlign: "center"
+    })
+  },
+  EditDeleteAccommodation: {
+    screen: EditDeleteAccommodationScreen,
+    navigationOptions: () => ({
+      title: "Editar alojamiento",
       headerTitleAlign: "center"
     })
   }
