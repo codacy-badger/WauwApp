@@ -28,3 +28,9 @@ expo install expo-permissions
 expo install react-native-maps
 npm i react-native-webview
 npm install react-native-picker-select
+npm install --save-dev jest
+npm install enzyme
+npm install enzyme-adapter-react-16
+// npm i --save-dev enzyme enzyme-adapter-react-16
+expo install react-native-webview
+npm install react-test-renderer
