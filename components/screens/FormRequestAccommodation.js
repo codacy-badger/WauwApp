@@ -7,7 +7,6 @@ import { CheckBox } from "react-native-elements";
 
 
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { YellowBox } from "react-native";
 import _ from "lodash";
 
 
@@ -31,7 +30,9 @@ function FormRequestAccommodation(props) {
     const [petNumber, setPetNumber] = useState(0);
     const [petNames, setPetNames] = useState([]);
   
-  
+    const startAccommodation = new Date(navigation.state.params.accommodation.startTime);
+    const endAccommodation = new Date(navigation.state.params.accommodation.endTime);
+
     
   
     const onChangeS = (event, selectedDate) => {
@@ -94,17 +95,18 @@ function FormRequestAccommodation(props) {
           isCanceled: navigation.state.params.accommodation.isCanceled,
           startTime: newStartTime,
           endTime : newEndTime,
-          petNumber: petNumber
-         
+          petNumber: petNumber,
+        
         };
   
-
       if (
         newStartTime === null ||
           newEndTime === null ||
           newStartTime < new Date() ||
           newEndTime.getDate() - newStartTime.getDate() == 0 ||
-          petNumber === null
+          petNumber === null ||
+          newStartTime.getTime() - startAccommodation.getTime() <0 ||
+          newEndTime.getTime() - endAccommodation.getTime() > 0
         ) {
           let errores = "";
           if (newStartTime === null) {
@@ -134,7 +136,17 @@ function FormRequestAccommodation(props) {
               "Tienes que seleccionar alguna mascota para el alojamiento.\n"
             );
           }
-          
+          if (newStartTime.getTime() - startAccommodation.getTime() < 0){
+            errores = errores.concat(
+              "La fecha de inicio no puede ser anterior a la fecha de inicio del alojamieto.\n"
+            );
+          }
+          if (newEndTime.getTime() - endAccommodation.getTime() > 0){
+            errores = errores.concat(
+              "La fecha de fin no puede ser posterior a la fecha de fin del alojamieto.\n"
+            );
+          }
+
           Alert.alert("Advertencia", errores.toString());
         } else {
           let errores = "";
@@ -164,8 +176,10 @@ function FormRequestAccommodation(props) {
         <View style={styles.view}>
           <View>
         <Text style={styles.text}>
-        {"Introduzca las fechas para el alojamiento\n"}
-        </Text>
+        {"Introduzca las fechas para el alojamiento, le recuerdo que las fechas disponibles son del "}
+        {startAccommodation.toLocaleString('en-US').substring(0,10)} {" hasta "}
+         {endAccommodation.toLocaleString('en-US').substring(0,10)}</Text>
+       
         </View>
         <View>
           <View>
