@@ -14,12 +14,6 @@ export default class Chat extends Component {
       requestID: this.props.navigation.state.params.requestID
     };
 
-    if (this.checkIfExistsChat(this.state.requestID) === false) {
-      console.log(
-        "==================================CREANDO CHAT=================================="
-      );
-      this.createChat(this.state.requestID);
-    }
   }
 
   render() {
@@ -48,39 +42,31 @@ export default class Chat extends Component {
     this.state.requestID = "";
   }
 
-  checkIfExistsChat = requestID => {
-    let result = false;
+  // Traerse los x últimos mensajes del chat
+  on = callback =>
+    db
+      .ref("chats")
+      .child(this.state.requestID + "/messages")
+      .limitToLast(30)
+      .on("child_added", snapshot => callback(this.parse(snapshot)));
 
-    db.ref("chats_messages/" + requestID).on("value", snap => {
-      if (snap.val() != []) {
-        console.log(
-          "==================================YA EXISTE UN CHAT=================================="
-        );
-        result = true;
-      }else {
-        console.log(
-          "================================== NO EXISTE UN CHAT =================================="
-        );
-      }
-    });
+  // Obtener tiempo actual
+  get timestamp() {
+    return firebase.database.ServerValue.TIMESTAMP;
+  }
 
-    /* db.ref("chats_messages").orderByChild("request").equalTo(requestID).on("child_added", snap => {
-      console.log('==================================YA EXISTE UN CHAT==================================');
-      result = true;
-    }); */
-
-    return result;
-  };
-
-  // Creamos el chat
-  createChat = requestID => {
-    let id = db.ref("chats_messages").push().key;
-    let chatData = {
-      id: requestID
-      //request: requestID
-    };
-
-    db.ref("chats_messages/" + id).set(chatData);
+  // Crear mensaje y enviarlo
+  send = messages => {
+    for (let i = 0; i < messages.length; i++) {
+      const { text, user } = messages[i];
+      const message = {
+        text,
+        user,
+        timestamp: this.timestamp
+      };
+      db.ref("chats/" + this.state.requestID  + "/messages")
+        .push(message);
+    }
   };
 
   parse = snapshot => {
@@ -94,39 +80,6 @@ export default class Chat extends Component {
       user
     };
     return message;
-  };
-
-  // Traerse los x últimos mensajes del chat
-  on = callback =>
-    db
-      .ref("chats_messages")
-      .child(this.obtenerChatID(this.state.requestID) + "/messages")
-      .limitToLast(30)
-      .on("child_added", snapshot => callback(this.parse(snapshot)));
-
-  // Obtener tiempo actual
-  get timestamp() {
-    return firebase.database.ServerValue.TIMESTAMP;
-  }
-
-  // Crear mensaje
-  send = messages => {
-    for (let i = 0; i < messages.length; i++) {
-      const { text, user } = messages[i];
-      const message = {
-        text,
-        user,
-        timestamp: this.timestamp
-      };
-      db.ref("chats_messages/" + this.state.requestID  + "/messages")
-        .push(message);
-    }
-  };
-
-  // Obtener el ID del chat
-  obtenerChatID = requestID => {
-    return this.state.requestID;
-    console.log(this.state.requestID);
   };
 }
 
