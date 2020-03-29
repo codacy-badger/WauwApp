@@ -150,9 +150,9 @@ const styles = StyleSheet.create({
     padding: 20
   },
   tarjeta: {
-    borderRadius: 25,
+    borderRadius: 12,
     borderStyle: "solid",
-    backgroundColor: "#aa8caf"
+    backgroundColor: "white"
   },
   separacion: {
     paddingTop: 10,
@@ -163,12 +163,12 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   nameUser: {
-    fontSize: 17,
-    color: "white",
+    fontSize: 16,
+    color: "#443099",
     fontWeight: "bold"
   },
   typeRequest: {
-    color: "yellow"
+    color: "green"
   }
 });
 

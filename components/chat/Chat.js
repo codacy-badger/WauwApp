@@ -85,8 +85,9 @@ export default class Chat extends Component {
 
 const styles = StyleSheet.create({
   chatStyle: {
-    backgroundColor: "#E8CCFF",
+    backgroundColor: "white",
     width: "100%",
-    height: "100%"
+    height: "100%",
+    borderRadius: 50
   }
 });
