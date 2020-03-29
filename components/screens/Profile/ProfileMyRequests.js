@@ -13,6 +13,7 @@ import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
+import { Icon } from "react-native-elements";
 
 function ProfileMyRequests(props) {
   const { navigation } = props;
@@ -49,7 +50,7 @@ function ProfileMyRequests(props) {
   console.log(setRequestList);
 
   return (
-    <SafeAreaView style={globalStyles.safeArea}>
+    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
       <TouchableOpacity
         style={{ alignItems: "flex-end", margin: 16 }}
         onPress={navigation.openDrawer}
@@ -60,16 +61,18 @@ function ProfileMyRequests(props) {
         {requestsList ? (
           <FlatList
             data={requestsList}
+            style={globalStyles.myRequestsFeed}
             renderItem={request => (
               <Request request={request} navigation={navigation} />
             )}
             keyExtractor={request => request.id}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
-            <View>
-              <Text> No hay solicitudes </Text>
-            </View>
-          )}
+          <View>
+            <Text> No hay solicitudes </Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -77,23 +80,23 @@ function ProfileMyRequests(props) {
 
 function Request(requestIn) {
   const { request, navigation } = requestIn;
-
+  let icon;
   let tipo = "";
   let status = "";
-  let fondo = "white";
+  let color = "white";
 
   if (request.item.pending) {
     status = "Pendiente de aceptación";
-    fondo = "rgba(255,128,0,0.6)";
+    color = "rgba(255,128,0,0.6)";
   } else {
     switch (request.item.isCanceled) {
       case false:
         status = "Aceptada";
-        fondo = "rgba(0,128,0,0.6)";
+        color = "rgba(0,128,0,0.6)";
         break;
       case true:
         status = "Denegada";
-        fondo = "rgba(255,0,0,0.6)";
+        color = "rgba(255,0,0,0.6)";
         break;
       default:
         break;
@@ -102,15 +105,32 @@ function Request(requestIn) {
 
   if (request.item.type == "sitter") {
     tipo = "Alojamiento";
+    icon = (
+      <Icon
+        type="font-awesome"
+        name="bed"
+        size={30}
+        color="black"
+        marginLeft={20}
+      />
+    );
   } else if (request.item.type == "walk") {
     tipo = "Paseo";
+    icon = (
+      <Icon
+        type="material-community"
+        name="dog-service"
+        size={30}
+        color="black"
+        marginLeft={20}
+      />
+    );
   }
 
   const tarjeta = {
-    elevation: 1,
-    backgroundColor: fondo,
-    borderRadius: 25,
-    borderStyle: "solid"
+    fontSize: 13,
+    marginTop: 4,
+    color: color
   };
 
   // const changeBgColor = {
@@ -130,28 +150,34 @@ function Request(requestIn) {
   // };
 
   return (
-    <View style={styles.separacion}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("ShowRequest", {
-            request: request.item
-          })
-        }
-      >
-        <View style={tarjeta}>
-          <View style={styles.row}>
-            <View style={styles.column_left}>
-              <Text> Num mascotas: {request.item.petNumber} </Text>
-              <Text> {status} </Text>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("ShowRequest", {
+          request: request.item
+        })
+      }
+    >
+      <View style={globalStyles.myRequestsFeedItem}>
+        <View style={globalStyles.myRequestsView1}>
+          <View style={globalStyles.myRequestsRow}>
+            <View style={globalStyles.myRequestsColumn1}>
+              <Text style={globalStyles.myRequestsNum}>
+                {" "}
+                Número de mascotas: {request.item.petNumber}{" "}
+              </Text>
+              <Text style={tarjeta}> {status} </Text>
+              <Text style={globalStyles.myRequestsPrice}>
+                {request.item.price} €
+              </Text>
             </View>
-            <View style={styles.column_right}>
-              <Text> {request.item.price} €</Text>
-              <Text> {tipo} </Text>
+            <View style={globalStyles.myRequestsColumn2}>
+              {icon}
+              <Text style={globalStyles.myRequestsType}> {tipo} </Text>
             </View>
           </View>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 

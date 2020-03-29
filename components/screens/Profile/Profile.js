@@ -97,7 +97,7 @@ function Profile(props) {
               icon={
                 <Icon
                   type="material-community"
-                  name="walk"
+                  name="dog-service"
                   size={30}
                   color="white"
                   marginLeft={20}

@@ -305,5 +305,57 @@ export const globalStyles = StyleSheet.create({
     fontSize: 50,
     color: "#5c54a4",
     marginTop: 40
+  },
+  /* My Requests */
+  myRequestsFeed: {
+    marginHorizontal: 16
+  },
+  safeMyRequestsArea: {
+    flex: 1,
+    paddingBottom: 5,
+    marginBottom: 20
+  },
+  myRequestsFeedItem: {
+    backgroundColor: "#FFF",
+    borderRadius: 5,
+    padding: 8,
+    flexDirection: "row",
+    marginVertical: 8
+  },
+  myRequestsView1: {
+    flex: 1
+  },
+  myRequestsColumn1: {
+    alignItems: "flex-start",
+    marginHorizontal: 5
+  },
+  myRequestsColumn2: {
+    alignItems: "flex-end",
+    marginHorizontal: 5
+  },
+  myRequestsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  myRequestsNum: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#454D65"
+  },
+  myRequestsStatus: {
+    fontSize: 13,
+    marginTop: 4
+  },
+  myRequestsPrice: {
+    fontSize: 14,
+    color: "#838899",
+    marginTop: 4,
+    marginLeft: 3
+  },
+  myRequestsType: {
+    fontSize: 14,
+    color: "#838899",
+    marginTop: 4
   }
 });
