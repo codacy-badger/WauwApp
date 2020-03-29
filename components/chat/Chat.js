@@ -25,8 +25,12 @@ export default class Chat extends Component {
 
   componentDidMount() {
 
-    if (ChatManage.shared.checkIfExistsChat(this.props.navigation.state.params.requestID) == false && this.props.navigation.state.params.count!=0) {
-      console.log('No hay chat creado para esta request!');
+    //console.log(ChatManage.shared.checkIfExistsChat(this.props.navigation.state.params.requestID));
+    ChatManage.shared.obtenerChatID(this.props.navigation.state.params.requestID);
+    if (ChatManage.shared.checkIfExistsChat(this.props.navigation.state.params.requestID) === false) {
+      console.log('==================================CREANDO CHAT==================================');
+      ChatManage.shared.createChat(this.props.navigation.state.params.requestID);
+
     }
 
     ChatManage.shared.on(message =>

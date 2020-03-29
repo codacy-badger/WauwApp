@@ -1,20 +1,21 @@
 import firebase from 'firebase';
+import { db } from "../population/config.js";
 
 export default class ChatManage {
 
   // Referenciar la tabla chats
   get ref() {
-    return firebase.database().ref('chats');
+    return firebase.database().ref('chats_messages');
   }
 
   checkIfExistsChat = requestID => {
     let result = false;
 
-    this.ref.on("value", snap => {
+    db.ref("chats_messages").on("value", snap => {
       snap.forEach(child =>{
 
-        if (child.val().id == requestID){
-          console.log('Sí hay chat creado para esta request!');
+        if (child.val().request == requestID){
+          console.log('==================================YA EXISTE UN CHAT==================================');
           result = true;
         }
 
@@ -23,6 +24,18 @@ export default class ChatManage {
     });
 
     return result;
+
+  }
+
+  // Creamos el chat
+  createChat = requestID => {
+    let id = db.ref("chats_messages").push().key;
+    let chatData = {
+      id: id,
+      request: requestID
+    };
+
+    db.ref("chats_messages/" + id).set(chatData);
   }
 
   parse = snapshot => {
@@ -40,7 +53,7 @@ export default class ChatManage {
 
   // Traerse los x últimos mensajes del chat
   on = callback =>
-    this.ref
+    this.ref.child("-M2xGgaH_81bw4opSX3V/messages")
       .limitToLast(20)
       .on('child_added', snapshot => callback(this.parse(snapshot)));
 
@@ -62,8 +75,27 @@ export default class ChatManage {
     }
   };
 
+  // Obtener el ID del chat
+  obtenerChatID = requestID => {
+    let chatID;
+
+    db.ref("chats_messages").on("value", snap => {
+      snap.forEach(child =>{
+
+        if (child.val().request == requestID){
+          chatID = child.val().id;
+          console.log(chatID);
+        }
+
+      }
+      );
+    });
+
+    return chatID;
+  }
+
   // Meter mensaje en la tabla
-  append = message => this.ref.push(message);
+  append = message => this.ref.child("-M2xGgaH_81bw4opSX3V/messages").push(message);
 
   //Eliminar referencia
   off() {

@@ -96,7 +96,6 @@ export default function Chats(props) {
 
 function RequestChat(props) {
   const { requestsData, navigation, currentUser} = props;
-  let count = 0;
 
   return (
     <View style={styles.separacion}>
@@ -106,8 +105,7 @@ function RequestChat(props) {
             name: currentUser.name,
             _id: currentUser.id,
             avatar: currentUser.photo,
-            requestID: requestsData.item[3],
-            count: count
+            requestID: requestsData.item[3]
           })
         }
       >
