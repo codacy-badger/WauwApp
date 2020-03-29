@@ -18,9 +18,8 @@ console.warn = message => {
 function EditDeleteAccomodation(props) {
   const { navigation } = props;
 
-  const [newStartTime, setStartTime] = useState(navigation.state.params.accommodation.startTime);
-  const [newEndTime, setEndTime] = useState(navigation.state.params.accommodation.endTime);
-
+  const [newStartTime, setStartTime] = useState(new Date(navigation.state.params.accommodation.startTime));
+  const [newEndTime, setEndTime] = useState(new Date(navigation.state.params.accommodation.endTime));
   const [modeS, setModeS] = useState("date");
   const [showS, setShowS] = useState(false);
 
@@ -29,7 +28,7 @@ function EditDeleteAccomodation(props) {
 
   const [setReloadData] = useState(false);
 
-  const onChangeS = (selectedDate) => {
+  const onChangeS = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowS(Platform.OS === "ios");
     setStartTime(currentDate);
@@ -44,7 +43,7 @@ function EditDeleteAccomodation(props) {
     showModeS("date");
   };
 
-  const onChangeE = (selectedDate) => {
+  const onChangeE = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowE(Platform.OS === "ios");
     setEndTime(currentDate);
@@ -60,17 +59,21 @@ function EditDeleteAccomodation(props) {
   };
 
   const [newSalary, setNewSalary] = useState(navigation.state.params.accommodation.salary);
-  const [newIsCanceled, setNewIsCanceled] = useState(navigation.state.params.accommodation.isCanceled);
   const [isLoading, setIsLoading] = useState(false);
 
   const all = () => {
     updateAccomodation();
   };
 
+  const addCommissions = (props) => {
+    let price = (props * 1.25 )
+    setNewSalary(price);
+  };
+
   const id = navigation.state.params.accommodation.id;
 
   const cancelAccomodation = () => {
-    Alert.alert("Atención", "¿Desea cancelar esta oferta de alojamiento?", [
+    Alert.alert("Atención", "Si cancela el alojamiento se dejarán de recibir solicitudes ¿Desea continuar?", [
       {
         text: "Sí", onPress: () => cancelationConfirmed()
       },
@@ -146,9 +149,8 @@ function EditDeleteAccomodation(props) {
         Alert.alert("Advertencia", errores.toString());
       } else {
         let accommodationData = {
-        startTime: newStartTime,
-        endTime: newEndTime,
-        isCanceled: newIsCanceled,
+        startTime: newStartTime.toISOString(),
+        endTime: newEndTime.toISOString(),
         salary: newSalary
         };
       
@@ -171,8 +173,7 @@ function EditDeleteAccomodation(props) {
 
   return (
     <View style={styles.view}>
-    {(navigation.state.params.accommodation.pending === true) && 
-      (navigation.state.params.accommodation.isCanceled === false) ? (
+    {navigation.state.params.editable ? (
       <View>
         <Text> Edita tu alojamiento </Text>
         <View>
@@ -214,10 +215,11 @@ function EditDeleteAccomodation(props) {
 
           <Text>Precio por noche</Text>
           <TextInput
-            placeholder="10.00"
+            value = {navigation.state.params.accommodation.salary}
+            placeholder={((navigation.state.params.accommodation.salary*0.8).toFixed(2)).toString()}
             keyboardType="numeric"
             containerStyle={styles.input}
-            onChange={v => setNewSalary(v.nativeEvent.text)}
+            onChange={v => addCommissions(v.nativeEvent.text)}
           />
           <Button title="Guardar" onPress={all} loading={isLoading} />
           <Button title="Cancelar alojamiento" onPress={cancelAccomodation} loading={isLoading} />
@@ -227,17 +229,17 @@ function EditDeleteAccomodation(props) {
       <View>
         <Text>
           {"Fecha de inicio \n"}
-          <Text >{newStartTime}</Text>
+          <Text >{newStartTime.toISOString}</Text>
         </Text>
 
         <Text>
           {"Fecha de fin \n"}
-          <Text >{newEndTime}</Text>
+          <Text >{newEndTime.toISOString}</Text>
         </Text>
 
         <Text>
           {"Precio por noche \n"}
-          <Text >{newSalary}</Text>
+          <Text >{newSalary} €</Text>
         </Text>
       </View>
     )}
