@@ -107,11 +107,11 @@ function Accommodation(props) {
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
-      // onPress={() =>
-      //   navigation.navigate("ShowRequest", {
-      //     request: accommodation.item
-      //   })
-      // }
+      onPress={() =>
+         navigation.navigate("ChangeAccommodation", {
+           accommodation: accommodation.item
+         })
+       }
       >
         <View style={tarjeta}>
           <View style={styles.row}>
