@@ -22,10 +22,11 @@ function createRequestAccommodation(props) {
   const startTime = navigation.state.params.formData.startTime;
   const endTime= navigation.state.params.formData.endTime;
   const newPetNumber = navigation.state.params.formData.petNumber ;
+ 
   
   //Poner fechas medianamente bonitas
-  const newStartTime = startTime.toLocaleString('en-US');
-  const newEndTime = endTime.toLocaleString('en-US');
+  const newStartTime = startTime.toLocaleString('en-US').substring(0,10);
+  const newEndTime = endTime.toLocaleString('en-US').substring(0,10);
 
 
   //Atributos definidos

@@ -34,9 +34,12 @@ function ProfileMyAccommodations(props) {
       .orderByChild("worker")
       .equalTo(wauwerId)
       .on("value", snap => {
-        const accommodations = [];
+        const accommodations = []; 
         snap.forEach(child => {
-          accommodations.push(child.val());
+          var endTime = new Date(child.val().endTime);
+          if(endTime > new Date()){
+            accommodations.push(child.val());
+          }
         });
         setAccommodationsList(accommodations);
       });
@@ -81,24 +84,27 @@ function ProfileMyAccommodations(props) {
   );
 }
 
+
 function Accommodation(accomodationIn) {
   const { accommodation, navigation } = accomodationIn;
   let status = "";
   let fondo = "white";
+  let editable = false;
+  var startTime = new Date(accommodation.item.startTime);
 
-  if (accommodation.item.pending) {
-    status = "esperando solicitudes";
-    fondo = "rgba(255,128,0,0.6)";
+  if (startTime < new Date()) {
+    status = "en curso";
   } else {
     switch (accommodation.item.isCanceled) {
-      case false:
+      case true:
         status = "ocupado para la fecha establecida";
         fondo = "rgba(0,128,0,0.6)";
         break;
-      // case true:
-      //   status = "Denegada";
-      //   fondo = "rgba(255,0,0,0.6)";
-      //   break;
+      case false:
+        status = "esperando solicitudes";
+        fondo = "rgba(255,128,0,0.6)";
+        editable = true;
+        break;
       default:
         break;
     }
@@ -126,7 +132,7 @@ function Accommodation(accomodationIn) {
               <Text>Alojamiento {status}</Text>
             </View>
             <View style={styles.column_right}>
-              <Text>{accommodation.item.salary} €</Text>
+              <Text>{(accommodation.item.salary*0.8).toFixed(2)} €</Text>
             </View>
           </View>
         </View>
