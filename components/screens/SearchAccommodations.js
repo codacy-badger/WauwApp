@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import { Image } from "react-native-elements";
 import { db } from "../population/config.js";
+import { withNavigation } from "react-navigation";
 
-export default function ListAccommodations(props) {
+
+  function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -51,7 +53,7 @@ export default function ListAccommodations(props) {
 }
 
 function Accommodation(props) {
-  const { accommodation } = props;
+  const { accommodation, navigation } = props;
   let worker;
   db.ref("wauwers")
     .child(accommodation.item.worker)
@@ -87,6 +89,8 @@ function Accommodation(props) {
     </View>
   );
 }
+
+export default withNavigation(ListAccommodations);
 
 const styles = StyleSheet.create({
   row: {

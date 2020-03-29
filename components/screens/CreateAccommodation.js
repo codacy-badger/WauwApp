@@ -94,8 +94,8 @@ function CreateAccommodation(props) {
     
     let accommodationData = {
       id: id,
-      startTime: newStartTime,
-      endTime: newEndTime,
+      startTime: newStartTime.toISOString(),
+      endTime: newEndTime.toISOString(),
       pending: newPending,
       isCanceled: newIsCanceled,
       salary: newSalary,
