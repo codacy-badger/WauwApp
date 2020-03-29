@@ -11,8 +11,9 @@ import {
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { Icon } from "react-native-elements";
 import MyRequestsScreen from "../screens/Profile/ProfileMyRequests";
-import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
 import MyDogsScreen from "../screens//Profile/ProfileMyDogs";
+import MyAccomodationsNavigator from "./MyAccomodationsStack";
+
 import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
 
@@ -62,7 +63,7 @@ export default createDrawerNavigator(
     },
 
     MyAccommodations: {
-      screen: MyAccommodationsScreen,
+      screen: MyAccomodationsNavigator,
       navigationOptions: {
         drawerLabel: "Mis Alojamientos",
         drawerIcon: ({ tintColor }) => (

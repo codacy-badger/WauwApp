@@ -31,7 +31,7 @@ function ProfileMyAccommodations(props) {
 
   useEffect(() => {
     db.ref("accommodation")
-      .orderByChild("workerId")
+      .orderByChild("worker")
       .equalTo(wauwerId)
       .on("value", snap => {
         const accommodations = [];
@@ -107,11 +107,11 @@ function Accommodation(props) {
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
-      // onPress={() =>
-      //   navigation.navigate("ShowRequest", {
-      //     request: accommodation.item
-      //   })
-      // }
+      onPress={() =>
+         navigation.navigate("ChangeAccommodation", {
+           accommodation: accommodation.item
+         })
+       }
       >
         <View style={tarjeta}>
           <View style={styles.row}>

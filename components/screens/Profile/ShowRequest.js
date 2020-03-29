@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, TextInput, Button, View, Image, SafeAreaView, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  Button,
+  View,
+  Image,
+  SafeAreaView,
+  Alert
+} from "react-native";
 import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
 
@@ -14,17 +23,16 @@ function showRequest(props) {
   var worker = [];
   var pago = "";
 
-  console.log("id:"+ id);
+  console.log("id:" + id);
 
-    db.ref("wauwers")
-      .orderByChild("id")
-      .equalTo(id)
-      .on("child_added", snap => {
-        worker = snap.val();
-      });
+  db.ref("wauwers")
+    .orderByChild("id")
+    .equalTo(id)
+    .on("child_added", snap => {
+      worker = snap.val();
+    });
 
   const cancel = () => {
-
     var idRequest = request.id;
     console.log(" request", request.id);
     var query = db.ref().child("requests/" + idRequest);
@@ -35,14 +43,18 @@ function showRequest(props) {
     })
 
     alert("Se ha cancelado la solicitud correctamente");
-
     navigation.navigate("Home");
   }
 
   if (request.type == "sitter") {
     tipo = "Alojamiento";
-  } else {
+    fecha = "Del "
+      .concat(request.startTime)
+      .concat(" al ")
+      .concat(request.endTime);
+  } else if (request.type == "walk") {
     tipo = "Paseo";
+    fecha = "Día y hora: ".concat(request.interval);
   }
 
   if (request.pending && !request.isCanceled) {
@@ -77,6 +89,7 @@ function showRequest(props) {
         <Text> {pago} </Text>
 
 
+
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.btnStyle2}
@@ -99,12 +112,14 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
+
         <Text> Estado de la solicitud:  {status} </Text>
         <Text> Fecha: {request.interval} </Text>
 
       </SafeAreaView>
     );
   } else if (!request.pending && !request.isCanceled && request.isPayed && request.type == "walk") {
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -118,7 +133,6 @@ function showRequest(props) {
         <Text> Estado de la solicitud:  {status} </Text>
         <Text> Fecha: {request.interval} </Text>
         <Text> {pago} </Text>
-
 
         <View style={styles.buttonContainer}>
           <Button
@@ -163,7 +177,6 @@ function showRequest(props) {
     );
 
   } else if (request.pending && request.type == "sitter") {
-
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -174,7 +187,7 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Estado de la solicitud: {status} </Text>
         <Text> Fecha de inicio: {request.startTime} </Text>
         <Text> Fecha de fin: {request.endTime} </Text>
         <Text> {pago} </Text>
@@ -218,7 +231,7 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Estado de la solicitud: {status} </Text>
         <Text> Fecha de inicio: {request.startTime} </Text>
         <Text> Fecha de fin: {request.endTime} </Text>
 
@@ -249,7 +262,7 @@ function showRequest(props) {
         <Text> {worker.name} </Text>
         <Text> {request.price} €</Text>
         <Text> Tipo de servicio: {tipo}</Text>
-        <Text> Estado de la solicitud:  {status} </Text>
+        <Text> Estado de la solicitud: {status} </Text>
         <Text> Fecha de inicio: {request.startTime} </Text>
         <Text> Fecha de fin: {request.endTime} </Text>
         <Text> {pago} </Text>
@@ -263,29 +276,26 @@ function showRequest(props) {
         </View>
       </SafeAreaView>
     );
-
   }
+}
 
+export default withNavigation(showRequest);
+
+const styles = StyleSheet.create({
+  btnStyle2: {
+    backgroundColor: "#443099",
+    borderRadius: 30,
+    marginTop: 5,
+    marginBottom: 5
+  },
+  btnContainer2: {
+    alignItems: "center",
+    alignSelf: "center",
+    width: "75%",
+    backgroundColor: "#443099",
+    marginTop: 5,
+    marginRight: 20,
+    marginLeft: 20,
+    marginBottom: 10
   }
-
-  export default withNavigation(showRequest);
-
-  const styles = StyleSheet.create({
-
-    btnStyle2: {
-      backgroundColor: "#443099",
-      borderRadius: 30,
-      marginTop: 5,
-      marginBottom: 5
-    },
-    btnContainer2: {
-      alignItems: "center",
-      alignSelf: "center",
-      width: "75%",
-      backgroundColor: "#443099",
-      marginTop: 5,
-      marginRight: 20,
-      marginLeft: 20,
-      marginBottom: 10
-    }
-  });
+});

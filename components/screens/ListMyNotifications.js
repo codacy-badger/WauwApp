@@ -8,7 +8,7 @@ import {
   Alert,
   SafeAreaView
 } from "react-native";
-import { Image } from "react-native-elements";
+import { Image, Avatar } from "react-native-elements";
 import { db } from "../population/config";
 import Loading from "../Loading";
 import { YellowBox } from "react-native";
@@ -37,8 +37,8 @@ export default function ListWalkRequests(props) {
     });
 
   useEffect(() => {
-    db.ref("request")
-      .orderByChild("workerId")
+    db.ref("requests")
+      .orderByChild("worker")
       .equalTo(id)
       .on("value", snap => {
         const requests = [];
@@ -78,14 +78,15 @@ export default function ListWalkRequests(props) {
 
 function Request(props) {
   const { req, setReloadRequests, setIsVisibleLoading, toastRef } = props;
+  let fecha = "";
   let estado = "";
   let tipo = "";
   let fondo = "white";
-  let owner;
+  let ownerInfo;
   db.ref("wauwers")
-    .child(req.item.ownerId)
+    .child(req.item.owner)
     .on("value", snap => {
-      owner = snap.val();
+      ownerInfo = snap.val();
     });
 
   if (req.item.pending) {
@@ -106,10 +107,15 @@ function Request(props) {
     }
   }
 
-  if (req.item.type == "WALK") {
+  if (req.item.type == "walk") {
     tipo = "paseo";
-  } else if (req.item.type == "SITTER") {
+    fecha = "Día y hora: ".concat(req.item.interval);
+  } else if (req.item.type == "sitter") {
     tipo = "alojamiento";
+    fecha = "Del "
+      .concat(req.item.startTime)
+      .concat(" al ")
+      .concat(req.item.endTime);
   }
 
   const checkRequestsState = () => {
@@ -174,7 +180,7 @@ function Request(props) {
       pending: false,
       isCanceled: false
     };
-    db.ref("request")
+    db.ref("requests")
       .child(req.item.id)
       .update(requestData)
       .then(() => {
@@ -210,7 +216,7 @@ function Request(props) {
       pending: false,
       isCanceled: true
     };
-    db.ref("request")
+    db.ref("requests")
       .child(req.item.id)
       .update(requestData)
       .then(() => {
@@ -223,7 +229,7 @@ function Request(props) {
   };
 
   const changeBgColor = {
-    borderRadius: 6,
+    borderRadius: 10,
     elevation: 3,
     backgroundColor: fondo,
     shadowOffset: { width: 1, height: 1 },
@@ -236,17 +242,26 @@ function Request(props) {
     flexDirection: "row",
     alignItems: "center",
     padding: 10
+    
   };
 
   return (
     <TouchableOpacity onPress={checkRequestsState}>
       <View style={changeBgColor}>
-        <Image style={styles.image} source={{ uri: owner.photo }} />
+        <Avatar
+          rounded
+          size="large"
+          containerStyle={styles.userInfoAvatar}
+          source={{
+            uri: ownerInfo.photo
+          }}
+        />
         <View style={styles.requestContent}>
           <Text>
-            Solicitud de {tipo} de: {owner.name}
+            Solicitud de {tipo} de: {ownerInfo.name}
           </Text>
           <Text>Servicio para {req.item.petNumber} mascotas.</Text>
+          <Text>{fecha}</Text>
           <Text>Estado de la solicitud: {estado}</Text>
         </View>
       </View>
@@ -255,9 +270,15 @@ function Request(props) {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: 60,
-    height: 60
+  viewUserInfo: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    paddingTop: 15,
+    paddingBottom: 15,
+    backgroundColor: "white",
+    borderRadius: 20,
+    backgroundColor: "#00a680"
   },
   request: {
     borderRadius: 6,
@@ -272,7 +293,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    //justifyContent: "space-between",
     padding: 10
   },
   requestContent: {

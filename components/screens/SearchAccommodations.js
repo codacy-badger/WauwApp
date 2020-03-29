@@ -7,14 +7,12 @@ import {
   SafeAreaView,
   StyleSheet
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { Card, Image } from "react-native-elements";
+import { Image } from "react-native-elements";
 import { db } from "../population/config.js";
 
 export default function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
-  const [wauwersList, setWauwersList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -50,38 +48,10 @@ export default function ListAccommodations(props) {
       )}
     </SafeAreaView>
   );
-
-  if (loading) {
-    return (
-      <View>
-        <Text> Cargando... </Text>
-      </View>
-    );
-  } else {
-    return (
-      <SafeAreaView>
-        <ScrollView>
-          {requestList ? (
-            <FlatList
-              data={requestList}
-              renderItem={request => <Request request={request.item} />}
-              keyExtractor={request => {
-                request.id;
-              }}
-            />
-          ) : (
-            <View>
-              <Text> No hay usuarios </Text>
-            </View>
-          )}
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
 }
 
 function Accommodation(props) {
-  const { accommodation, navigation } = props;
+  const { accommodation } = props;
   let worker;
   db.ref("wauwers")
     .child(accommodation.item.worker)
