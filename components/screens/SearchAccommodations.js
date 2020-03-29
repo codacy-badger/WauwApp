@@ -7,14 +7,14 @@ import {
   SafeAreaView,
   StyleSheet
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { Card, Image } from "react-native-elements";
+import { Image } from "react-native-elements";
 import { db } from "../population/config.js";
+import { withNavigation } from "react-navigation";
 
-export default function ListAccommodations(props) {
+
+  function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
-  const [wauwersList, setWauwersList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -50,34 +50,6 @@ export default function ListAccommodations(props) {
       )}
     </SafeAreaView>
   );
-
-  if (loading) {
-    return (
-      <View>
-        <Text> Cargando... </Text>
-      </View>
-    );
-  } else {
-    return (
-      <SafeAreaView>
-        <ScrollView>
-          {requestList ? (
-            <FlatList
-              data={requestList}
-              renderItem={request => <Request request={request.item} />}
-              keyExtractor={request => {
-                request.id;
-              }}
-            />
-          ) : (
-            <View>
-              <Text> No hay usuarios </Text>
-            </View>
-          )}
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
 }
 
 function Accommodation(props) {
@@ -92,12 +64,11 @@ function Accommodation(props) {
   return (
     <View style={styles.separacion}>
       <TouchableOpacity
-      //TODO: reparar esto para que navegue a la página adecuada
-       /* onPress={() =>
-         navigation.navigate("CreateAccommodation", {
+      onPress={() =>
+         navigation.navigate("FormRequestAccommodation", {
            accommodation: accommodation.item
        })
-      } */
+      } 
       >
         <View style={styles.tarjeta}>
           <View style={styles.row}>
@@ -118,6 +89,8 @@ function Accommodation(props) {
     </View>
   );
 }
+
+export default withNavigation(ListAccommodations);
 
 const styles = StyleSheet.create({
   row: {
