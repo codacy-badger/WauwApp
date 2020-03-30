@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text,StyleSheet,SafeAreaView,ScrollView , ImageBackground} from "react-native";
 import _ from 'lodash';
 import { globalStyles } from "../styles/global";
-import protectora1 from '../../assets/images/protectora1.jpg';
-import protectora2 from '../../assets/images/protectora2.jpg';
-import protectora3 from '../../assets/images/protectora3.jpg';
+import protectora1 from "../../assets/images/protectora1.jpg";
+import protectora2 from "../../assets/images/protectora2.jpg";
+import protectora3 from "../../assets/images/protectora3.jpg";
 
 
 
