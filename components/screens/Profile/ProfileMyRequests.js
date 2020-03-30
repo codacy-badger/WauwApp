@@ -168,17 +168,16 @@ function Request(requestIn) {
           <View style={globalStyles.myRequestsRow}>
             <View style={globalStyles.myRequestsColumn1}>
               <Text style={globalStyles.myRequestsNum}>
-                {" "}
-                Número de mascotas: {request.item.petNumber}{" "}
+                Número de mascotas: {request.item.petNumber}
               </Text>
-              <Text style={tarjeta}> {status} </Text>
+              <Text style={tarjeta}>{status} </Text>
               <Text style={globalStyles.myRequestsPrice}>
                 {request.item.price} €
               </Text>
             </View>
             <View style={globalStyles.myRequestsColumn2}>
               {icon}
-              <Text style={globalStyles.myRequestsType}> {tipo} </Text>
+              <Text style={globalStyles.myRequestsType}>{tipo}</Text>
             </View>
           </View>
         </View>

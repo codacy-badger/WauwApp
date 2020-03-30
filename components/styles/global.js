@@ -554,5 +554,146 @@ export const globalStyles = StyleSheet.create({
     marginLeft: 20,
     marginBottom: 10,
     justifyContent: "center"
+  },
+  /* Edit Accommodation */
+  editAccommodationDate1: {
+    marginTop: 5,
+    alignSelf: "flex-start",
+    fontSize: 17
+  },
+  editAccommodationDate2: {
+    marginBottom: 10,
+    alignSelf: "flex-start",
+    color: "#838899",
+    marginLeft: 22
+  },
+  editAccommodationPrice1: {
+    marginTop: 32,
+    alignSelf: "center",
+    fontSize: 17,
+    marginBottom: 5
+  },
+  editAccommodationPrice2: {
+    alignSelf: "center",
+    color: "rgba(0,128,0,0.6)",
+    fontSize: 16
+  },
+  editAccommodationColumn1: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 5
+  },
+  editAccommodationColumn2: {
+    flex: 1.8,
+    alignItems: "center",
+    marginHorizontal: 5,
+    justifyContent: "space-between"
+  },
+  editAccommodationColumn3: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 5
+  },
+  editAccommodationEditDate: {
+    alignSelf: "center",
+    fontSize: 19
+  },
+  editAccommodationEditPrize: {
+    alignSelf: "center",
+    fontSize: 19,
+    marginTop: 65
+  },
+  editAccommodationEditPrize2: {
+    alignSelf: "center",
+    fontSize: 17
+  },
+  editAccommodationEditDateBtn: {
+    backgroundColor: "#443099",
+    borderRadius: 30,
+    justifyContent: "flex-start",
+    width: "80%",
+    height: "80%",
+    alignSelf: "center"
+  },
+  editAccommodationEditDateBtnContainer: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignSelf: "center",
+    backgroundColor: "#443099",
+    marginTop: 35,
+    marginLeft: 20,
+    marginBottom: 10,
+    justifyContent: "center",
+    width: 150,
+    height: 45,
+    marginRight: -60
+  },
+  editAccommodationEditDateTittle: {
+    flex: 4,
+    fontSize: 15,
+    alignSelf: "center",
+    marginLeft: 5
+  },
+  editAccommodationEditDateBtnContainer2: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignSelf: "center",
+    backgroundColor: "#443099",
+    marginTop: 35,
+    marginLeft: -60,
+    marginBottom: 10,
+    justifyContent: "center",
+    width: 150,
+    height: 45,
+    marginRight: 20
+  },
+  editAccommodationEditDateBtnContainer3: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignSelf: "center",
+    backgroundColor: "rgba(0,128,0,0.6)",
+    marginTop: 60,
+    marginLeft: 20,
+    marginBottom: 10,
+    justifyContent: "center",
+    width: 150,
+    height: 45,
+    marginRight: -60
+  },
+  editAccommodationEditDateBtn3: {
+    backgroundColor: "rgba(0,128,0,0.6)",
+    borderRadius: 30,
+    justifyContent: "flex-start",
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+    marginVertical: 10
+  },
+  editAccommodationEditDateBtnContainer4: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignSelf: "center",
+    backgroundColor: "rgba(255,0,0,0.6)",
+    marginTop: 60,
+    marginLeft: -60,
+    marginBottom: 10,
+    justifyContent: "center",
+    width: 150,
+    height: 45,
+    marginRight: 20
+  },
+  editAccommodationEditDateBtn4: {
+    backgroundColor: "rgba(255,0,0,0.6)",
+    borderRadius: 30,
+    justifyContent: "flex-start",
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+    marginVertical: 10
+  },
+  editAccommodationEditDateTittle2: {
+    flex: 4,
+    fontSize: 15,
+    alignSelf: "center"
   }
 });
