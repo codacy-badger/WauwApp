@@ -761,5 +761,32 @@ export const globalStyles = StyleSheet.create({
   },
   locationInput: {
     marginBottom: 10
+  },
+  /* Create Accommodation*/
+  createAccommodationBtnContainer: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignSelf: "center",
+    backgroundColor: "rgba(0,128,0,0.6)",
+    marginTop: 25,
+    marginBottom: 10,
+    justifyContent: "center",
+    width: "100%",
+    height: 45
+  },
+  createAccommodationBtn: {
+    backgroundColor: "rgba(0,128,0,0.6)",
+    borderRadius: 30,
+    justifyContent: "flex-start",
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+    marginVertical: 10
+  },
+  createAccommodationBtnTxt: {
+    flex: 1,
+    fontSize: 18,
+    alignSelf: "center",
+    marginRight: 10
   }
 });
