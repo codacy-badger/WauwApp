@@ -70,7 +70,6 @@ function CreateAccommodation(props) {
     setReloadData(false);
   }, [reloadData]);
 
-  const newPending = true;
   const newIsCanceled = false;
   const [newWorker, setNewWorker] = useState([]);
   const [newSalary, setNewSalary] = useState(null);
@@ -96,7 +95,6 @@ function CreateAccommodation(props) {
       id: id,
       startTime: newStartTime.toISOString(),
       endTime: newEndTime.toISOString(),
-      pending: newPending,
       isCanceled: newIsCanceled,
       salary: newSalary,
       worker: newWorker

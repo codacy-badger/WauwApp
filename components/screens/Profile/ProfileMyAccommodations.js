@@ -49,6 +49,7 @@ function ProfileMyAccommodations(props) {
 
   return (
     <SafeAreaView style={globalStyles.safeArea}>
+      <ScrollView>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -62,7 +63,7 @@ function ProfileMyAccommodations(props) {
           </View>
         </View>
       </TouchableOpacity>
-      <ScrollView>
+     
         {accommodationsList ? (
           <FlatList
             data={accommodationsList}
@@ -122,7 +123,7 @@ function Accommodation(accomodationIn) {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("EditDeleteAccommodation", {
-            accommodation: accommodation.item
+            accommodation: accommodation.item, editable: editable
           })
         }
       >

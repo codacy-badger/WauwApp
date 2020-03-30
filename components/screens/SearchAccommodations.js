@@ -24,7 +24,10 @@ import { withNavigation } from "react-navigation";
       .on("value", snap => {
         const accommodations = [];
         snap.forEach(child => {
-          accommodations.push(child.val());
+          var endTime = new Date(child.val().endTime);
+          if(endTime > new Date()){
+            accommodations.push(child.val());
+          }
         });
         setAccommodationList(accommodations);
       });
@@ -78,11 +81,17 @@ function Accommodation(props) {
             />
 
             <View style={styles.column_left}>
-              <Text> {worker.description} </Text>
+              <Text> {worker.description}  </Text>
+              
+            </View>
+            <View style={styles.column_date}>
+            <Text>Fechas disponibles para el alojamiento 
+                {accommodation.item.startTime.toLocaleString('en-US').substring(0,10)} - {accommodation.item.endTime.toLocaleString('en-US').substring(0,10)}</Text>
             </View>
             <View style={styles.column_right}>
               <Text> {accommodation.item.salary} €</Text>
             </View>
+           
           </View>
         </View>
       </TouchableOpacity>
@@ -132,5 +141,13 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     paddingBottom: 5
-  }
+  },
+  column_date: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    padding: 20
+
+  },
 });
