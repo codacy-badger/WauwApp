@@ -815,5 +815,22 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "500",
     color: "#454D65",
     alignSelf: "center"
+  },
+  /* Search Accomodations */
+  searchAccommodationsColumn1: {
+    alignItems: "center",
+    marginRight: 20,
+    flex: 2,
+    justifyContent: "center"
+  },
+  searchAccommodationsColumn2: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 5
+  },
+  notificationsDescription: {
+    fontSize: 13,
+    marginTop: 4,
+    textAlign: "center"
   }
 });
