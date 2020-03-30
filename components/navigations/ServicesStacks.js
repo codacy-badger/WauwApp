@@ -10,8 +10,6 @@ import CreateRequestWalkScreen from "../screens/CreateRequestWalk";
 import CreateRequestAccommodationScreen from "../screens/CreateRequestAccommodation";
 import FormRequestAccommodationScreen from "../screens/FormRequestAccommodation";
 
-
-
 const ServicesScreenStacks = createStackNavigator({
   Services: {
     screen: ServicesScreen,
@@ -65,11 +63,10 @@ const ServicesScreenStacks = createStackNavigator({
   FormRequestAccommodation: {
     screen: FormRequestAccommodationScreen,
     navigationOptions: () => ({
-      title: "Formulario Solicitud Alojamiento",
+      title: "Solicitud de Alojamiento",
       headerTitleAlign: "center"
     })
   }
-
 });
 
 export default ServicesScreenStacks;

@@ -832,5 +832,48 @@ export const globalStyles = StyleSheet.create({
     fontSize: 13,
     marginTop: 4,
     textAlign: "center"
+  },
+  /* Accommodation Request */
+  accommodationDate: {
+    alignSelf: "center",
+    fontSize: 18,
+    marginHorizontal: -60
+  },
+  accommodationDate2: {
+    alignSelf: "center",
+    fontSize: 16,
+    marginTop: 60
+  },
+  accommodationDate3: {
+    alignSelf: "center",
+    color: "#838899",
+    marginHorizontal: -60
+  },
+  accommodationPets: {
+    alignSelf: "center",
+    fontSize: 18,
+    marginHorizontal: -70,
+    marginTop: 10,
+    marginBottom: 5
+  },
+  accommodationBtn: {
+    backgroundColor: "rgba(0,128,0,0.6)",
+    borderRadius: 30,
+    justifyContent: "flex-start",
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+    marginVertical: 10
+  },
+  accommodationBtnCnt: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignSelf: "center",
+    backgroundColor: "rgba(0,128,0,0.6)",
+    marginTop: 30,
+    marginBottom: 10,
+    justifyContent: "center",
+    width: 150,
+    height: 45
   }
 });
