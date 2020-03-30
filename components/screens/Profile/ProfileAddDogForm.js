@@ -5,7 +5,6 @@ import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 
 function ProfileAddDogForm(props) {
-  
   const {
     id,
     name,
@@ -28,22 +27,18 @@ function ProfileAddDogForm(props) {
       .orderByChild("email")
       .equalTo(email)
       .on("child_added", snap => {
+        //console.log("snap.val()", snap.val());
         const newNewOwner = {
           avgScore: snap.val().avgScore,
           description: snap.val().description,
-          dni: snap.val().dni,
           email: snap.val().email,
           id: snap.val().id,
           name: snap.val().name,
-          paypalURL: snap.val().paypalURL,
-          petNumber: snap.val().petNumber + 1,
           photo: snap.val().photo,
-          price: snap.val().price,
           surname: snap.val().surname,
-          user_accountId: snap.val().user_accountId,
           wauwPoints: snap.val().wauwPoints
         };
-        setnewOwner(newNewOwner);
+        setnewOwner(snap.val());
       });
     setReloadData(false);
   }, [reloadData]);
@@ -63,7 +58,7 @@ function ProfileAddDogForm(props) {
       newName === null ||
       !regex.test(newName) ||
       newBreed === null ||
-      !regex.test(newBreed)||
+      !regex.test(newBreed) ||
       newDescription === null ||
       !regex.test(newDescription)
     ) {
@@ -85,21 +80,11 @@ function ProfileAddDogForm(props) {
       db.ref("pet/" + id)
         .set(petData)
         .then(() => {
-          db.ref("wauwers/" + newOwner.id)
-            .update({
-              petNumber: newOwner.petNumber
-            })
-            .then(() => {
-              Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
-              navigation.navigate("ProfileDrawer");
-              setIsLoading(false);
-              setReloadData(true);
-              setIsVisibleModal(false);
-            })
-            .catch(() => {
-              setError("Ha ocurrido un error");
-              setIsLoading(false);
-            });
+          Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
+          navigation.navigate("ProfileDrawer");
+          setIsLoading(false);
+          setReloadData(true);
+          setIsVisibleModal(false);
         })
         .catch(() => {
           setError("Ha ocurrido un error");
