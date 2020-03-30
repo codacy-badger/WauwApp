@@ -3,7 +3,6 @@ import { StyleSheet, Text, Button, View, Alert ,ScrollView} from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
-import _ from 'lodash';
 
 
 
@@ -25,8 +24,8 @@ function createRequestAccommodation(props) {
  
   
   //Poner fechas medianamente bonitas
-  const newStartTime = startTime.toLocaleString('en-US').substring(0,10);
-  const newEndTime = endTime.toLocaleString('en-US').substring(0,10);
+  const newStartTime = startTime.toLocaleString("en-US").substring(0,10);
+  const newEndTime = endTime.toLocaleString("en-US").substring(0,10);
 
 
   //Atributos definidos
@@ -57,7 +56,6 @@ function createRequestAccommodation(props) {
           setNewOwner(child.val());
         });
       });
-    
   }, [reloadData]);
 
 
@@ -71,7 +69,6 @@ function createRequestAccommodation(props) {
           setNewWorker(child.val());
         });
       });
-    ;
   }, [reloadData]);
     
     
@@ -189,11 +186,11 @@ function Precio (props) {
     //   console.log("Entra else");
 
     // }
-    console.log(days);
+    // console.log(days);
     let precio = newPrice * days ;
     let withPets = precio * petNumber;
     setNewPrice(withPets);
-    console.log(withPets);
+   //  console.log(withPets);
   }, []);
   
 

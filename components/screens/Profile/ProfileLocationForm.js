@@ -3,8 +3,8 @@ import { Text, View, StyleSheet, Alert} from "react-native";
 import {Input, Button } from "react-native-elements";
 import { email } from "../../account/QueriesProfile"
 import {db} from "../../population/config";
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
 import MapView from "react-native-maps";
 import Modal from "../../account/Modal";
 import { withNavigation } from "react-navigation";
@@ -75,10 +75,10 @@ import { withNavigation } from "react-navigation";
       db.ref("wauwers/" + wauwer.id).update(location);
       db.ref("wauwers/" + wauwer.id).update(add);
       Alert.alert(
-        'Editado',
-        'Editado correctamente',
+        "Editado",
+        "Editado correctamente",
         [
-          {text: 'Vale', onPress: () => navigation.navigate("ProfileDrawer")},
+          {text: "Vale", onPress: () => navigation.navigate("ProfileDrawer")},
         ],
         { cancelable: false }
       )
@@ -126,7 +126,7 @@ import { withNavigation } from "react-navigation";
   
         if (statusPermissions !== "granted") {
           
-          setError('No tienes activado el permiso de localización.')
+          setError("No tienes activado el permiso de localización.")
         } else {
           const loc = await Location.getCurrentPositionAsync({});
           setLocation({
@@ -189,14 +189,11 @@ const styles = StyleSheet.create({
   paragraph: {
     margin: 24,
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
   },
   btnContainer: {
     marginTop: 20,
     width: "95%"
-  },
-  input: {
-    marginBottom: 10
   },
   btn: {
     backgroundColor: "#00a680"
