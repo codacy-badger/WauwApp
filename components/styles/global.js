@@ -736,5 +736,30 @@ export const globalStyles = StyleSheet.create({
     fontSize: 18,
     alignSelf: "center",
     marginRight: 10
+  },
+  /* Location */
+  locationMapBtnContainerSave: {
+    paddingRight: 5
+  },
+  locationMapBtnSave: {
+    backgroundColor: "#00a680"
+  },
+  locationMapBtnContainerCancel: {
+    paddingLeft: 5
+  },
+  locationMapBtnCancel: {
+    backgroundColor: "#a60d0d"
+  },
+  locationViewMapBtn: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10
+  },
+  locationMapStyle: {
+    width: "100%",
+    height: 550
+  },
+  locationInput: {
+    marginBottom: 10
   }
 });
