@@ -5,7 +5,6 @@ import {
   Text,
   TextInput,
   SafeAreaView,
-  StyleSheet,
   Alert
 } from "react-native";
 import { db } from "../population/config.js";
@@ -244,7 +243,7 @@ function EditDeleteAccommodation(props) {
                   icon={
                     <Icon
                       type="material-community"
-                      name="calendar-import"
+                      name="content-save"
                       size={20}
                       color="white"
                       marginLeft={10}
@@ -312,7 +311,7 @@ function EditDeleteAccommodation(props) {
                   icon={
                     <Icon
                       type="material-community"
-                      name="calendar-import"
+                      name="cancel"
                       size={20}
                       color="white"
                       marginLeft={10}
@@ -371,5 +370,3 @@ function EditDeleteAccommodation(props) {
 }
 
 export default withNavigation(EditDeleteAccommodation);
-
-const styles = StyleSheet.create({});
