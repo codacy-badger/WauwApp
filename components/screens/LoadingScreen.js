@@ -23,7 +23,7 @@ class LoginScreen extends Component {
   checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged(
       function(user) {
-        console.log("AUTH STATE CHANGE CALLED");
+        //console.log("AUTH STATE CHANGE CALLED");
         if (user) {
           this.props.navigation.navigate("DashboardScreen");
         } else {
