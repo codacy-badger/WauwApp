@@ -788,5 +788,32 @@ export const globalStyles = StyleSheet.create({
     fontSize: 18,
     alignSelf: "center",
     marginRight: 10
+  },
+  /* Notifications */
+  notificationsFeed: {
+    marginHorizontal: 16
+  },
+  safeNotificationsArea: {
+    flex: 1,
+    paddingTop: 10,
+    paddingBottom: 5,
+    marginBottom: 20
+  },
+  notificationsColumn1: {
+    alignItems: "center",
+    marginLeft: 20,
+    flex: 1,
+    justifyContent: "center"
+  },
+  notificationsColumn2: {
+    flex: 2,
+    alignItems: "flex-end",
+    marginHorizontal: 5
+  },
+  notificationsNum: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#454D65",
+    alignSelf: "center"
   }
 });
