@@ -56,7 +56,7 @@ const ServicesScreenStacks = createStackNavigator({
   CreateRequestAccommodation: {
     screen: CreateRequestAccommodationScreen,
     navigationOptions: () => ({
-      title: "Crear Solicitud Alojamiento",
+      title: "Solicitud de Alojamiento",
       headerTitleAlign: "center"
     })
   },

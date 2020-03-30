@@ -875,5 +875,24 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     width: 150,
     height: 45
+  },
+  accommodationSitter: {
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 5
+  },
+  accommodationSitter2: {
+    color: "grey",
+    textAlign: "center",
+    fontSize: 16
+  },
+  accommodationSitter3: {
+    color: "grey",
+    textAlign: "center",
+    fontSize: 15,
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    paddingTop: 5,
+    marginBottom: 10
   }
 });

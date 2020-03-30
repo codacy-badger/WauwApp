@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-  SafeAreaView,
-  ScrollView
-} from "react-native";
+import { Text, View, Alert, SafeAreaView, ScrollView } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
@@ -118,33 +111,61 @@ function createRequestAccommodation(props) {
 
   return (
     <SafeAreaView style={globalStyles.safeShowRequestArea}>
-      <Text style={styles.text}>
-        {"Nombre Cuidador\n"}
-        <Text style={styles.data}>{newWorker.name}</Text>
-      </Text>
-      <Text style={styles.text}>
-        {"Descripcion Cuidador \n"}
-        <Text style={styles.data}>{newWorker.description}</Text>
-      </Text>
-      <Text style={styles.text}>
-        {"Fecha de inicio\n"}
-        <Text style={styles.data}>{newStartTime}</Text>{" "}
-      </Text>
-      <Text style={styles.text}>
-        {"Fecha de inicio\n"}
-        <Text style={styles.data}>{newEndTime}</Text>{" "}
-      </Text>
+      <View style={globalStyles.showRequestFeed}>
+        <View style={globalStyles.viewFlex1}>
+          <View style={globalStyles.showRequestRow}>
+            <View style={globalStyles.editAccommodationColumn2}>
+              <Text style={globalStyles.accommodationSitter}>
+                {"Nombre del Cuidador\n"}
 
-      <Precio
-        startTime={startTime}
-        endTime={endTime}
-        petNumber={newPetNumber}
-        newPrice={newPrice}
-        setNewPrice={setNewPrice}
-      />
+                <Text style={globalStyles.accommodationSitter2}>
+                  {newWorker.name}
+                </Text>
+              </Text>
+              <Text style={globalStyles.accommodationSitter3}>
+                {newWorker.description}
+              </Text>
 
-      <View style={styles.buttonContainer}>
-        <Button title="Crear Solicitud" onPress={all} color="#0de" />
+              <Text style={globalStyles.accommodationSitter}>
+                {"Fecha de inicio\n"}
+                <Text style={globalStyles.accommodationSitter2}>
+                  {newStartTime}
+                </Text>{" "}
+              </Text>
+              <Text style={globalStyles.accommodationSitter}>
+                {"Fecha de finalización\n"}
+                <Text style={globalStyles.accommodationSitter2}>
+                  {newEndTime}
+                </Text>{" "}
+              </Text>
+
+              <Precio
+                startTime={startTime}
+                endTime={endTime}
+                petNumber={newPetNumber}
+                newPrice={newPrice}
+                setNewPrice={setNewPrice}
+              />
+
+              <Button
+                buttonStyle={globalStyles.accommodationBtn}
+                containerStyle={globalStyles.accommodationBtnCnt}
+                title="Enviar Solicitud"
+                onPress={all}
+                icon={
+                  <Icon
+                    type="material-community"
+                    name="send"
+                    size={20}
+                    color="white"
+                    marginLeft={10}
+                  />
+                }
+                titleStyle={globalStyles.editAccommodationEditDateTittle}
+              />
+            </View>
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -183,42 +204,10 @@ function Precio(props) {
 
   return (
     <View>
-      <Text style={styles.text}>
-        {"Precio Total Alojamiento\n"}
-        <Text style={styles.data}>{newPrice}</Text>
+      <Text style={globalStyles.accommodationSitter}>
+        {"Precio Total del Alojamiento\n"}
+        <Text style={globalStyles.accommodationSitter2}>{newPrice} €</Text>
       </Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderTopWidth: 1,
-    borderTopColor: "#ddd"
-  },
-  data: {
-    paddingHorizontal: 8,
-    paddingVertical: 9,
-    color: "grey"
-  },
-  buttonContainer: {
-    marginTop: 40
-  },
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  input: {
-    marginBottom: 10
-  },
-  btnContainer: {
-    marginTop: 20,
-    width: "95%"
-  },
-  btn: {
-    backgroundColor: "#00a680"
-  }
-});
