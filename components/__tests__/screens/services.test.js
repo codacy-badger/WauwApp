@@ -1,15 +1,15 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import SearchWalks from '../../screens/SearchWalks';
+import Services from '../../screens/Services';
 import mockStore from 'redux-mock-store';
 
-describe('<SearchWalks />', () => {
-  it('testing the search walks screen', async () => {
+describe('<Services />', () => {
+  it('testing the services screen', async () => {
     const store = mockStore({
         rehydrated: false,
         navigation: {navigate: jest.fn()},
     });
-    const tree = renderer.create(<SearchWalks navigation={store}/>).toJSON();
+    const tree = renderer.create(<Services navigation={store}/>).toJSON();
     expect(tree.children.length).toBe(2);
   });
 });
