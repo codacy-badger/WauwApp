@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  TextInput,
-  Alert,
-  SafeAreaView,
-  StyleSheet
-} from "react-native";
+import { Text, View, TextInput, Alert, SafeAreaView } from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
@@ -165,23 +158,3 @@ function ProfileAddDogForm(props) {
 }
 
 export default withNavigation(ProfileAddDogForm);
-
-const styles = StyleSheet.create({
-  txt: {
-    marginBottom: 3
-  },
-  btn: {
-    marginTop: 25
-  },
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  input: {
-    marginBottom: 10,
-    borderRadius: 5,
-    borderColor: "black",
-    borderWidth: 1
-  }
-});
