@@ -164,7 +164,7 @@ function Request(requestIn) {
       }
     >
       <View style={globalStyles.myRequestsFeedItem}>
-        <View style={globalStyles.myRequestsView1}>
+        <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
             <View style={globalStyles.myRequestsColumn1}>
               <Text style={globalStyles.myRequestsNum}>

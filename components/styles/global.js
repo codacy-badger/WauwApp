@@ -13,6 +13,9 @@ export const globalStyles = StyleSheet.create({
     flex: 1
   },
   /* Home */
+  viewFlex1: {
+    flex: 1
+  },
   homeView: {
     padding: 20,
     flex: 1,
@@ -340,9 +343,6 @@ export const globalStyles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 8
   },
-  myRequestsView1: {
-    flex: 1
-  },
   myRequestsColumn1: {
     alignItems: "flex-start",
     marginHorizontal: 5
@@ -375,5 +375,184 @@ export const globalStyles = StyleSheet.create({
     fontSize: 14,
     color: "#838899",
     marginTop: 4
+  },
+  /* Show Request */
+  safeShowRequestArea: {
+    flex: 1,
+    paddingBottom: 5,
+    marginBottom: 20,
+    justifyContent: "center"
+  },
+  showRequestFeed: {
+    backgroundColor: "#FFF",
+    borderRadius: 5,
+    padding: 8,
+    flexDirection: "row",
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 20
+  },
+  showRequestRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginVertical: 10
+  },
+  showRequestRow2: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginTop: 10
+  },
+  showRequestColumn1: {
+    flex: 1,
+    alignItems: "flex-start",
+    marginHorizontal: 5
+  },
+  showRequestColumn2: {
+    flex: 1.3,
+    alignItems: "center",
+    marginHorizontal: 5,
+    justifyContent: "space-between"
+  },
+  showRequestColumn22: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 5,
+    justifyContent: "center"
+  },
+  showRequestColumn3: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 5
+  },
+  showRequestImage: {
+    width: 80,
+    height: 80,
+    resizeMode: "stretch",
+    borderRadius: 50,
+    marginTop: 5,
+    marginBottom: 18
+  },
+  showRequestImage2: {
+    width: 100,
+    height: 100,
+    resizeMode: "stretch",
+    borderRadius: 50,
+    marginTop: 20,
+    marginBottom: 18,
+    alignSelf: "center"
+  },
+  showRequestName: {
+    marginTop: 15,
+    marginBottom: 10
+  },
+  showRequestType: {
+    marginTop: 5,
+    marginBottom: 10,
+    color: "#443099"
+  },
+  showRequestType2: {
+    marginTop: 15,
+    marginBottom: 15,
+    color: "#443099"
+  },
+  showRequestDate1: {
+    marginTop: 5,
+    alignSelf: "flex-start"
+  },
+  showRequestDate2: {
+    marginBottom: 10,
+    alignSelf: "flex-start",
+    color: "#838899"
+  },
+  showRequestDate3: {
+    marginLeft: 10,
+    marginTop: 2,
+    alignSelf: "flex-start"
+  },
+  showRequestDate4: {
+    marginBottom: 10,
+    marginLeft: 10,
+    alignSelf: "flex-start",
+    color: "#838899"
+  },
+  showRequestPrice: {
+    marginTop: 10,
+    marginBottom: 10,
+    alignSelf: "center",
+    marginLeft: 25,
+    fontSize: 17
+  },
+  showRequestStatus: {
+    marginBottom: 4,
+    alignSelf: "center",
+    marginLeft: 20,
+    color: "rgba(255,128,0,0.6)"
+  },
+  showRequestStatus2: {
+    marginBottom: 4,
+    alignSelf: "center",
+    marginLeft: 20,
+    color: "rgba(255,0,0,0.6)"
+  },
+  showRequestStatus3: {
+    marginBottom: 4,
+    alignSelf: "center",
+    marginLeft: 20,
+    color: "rgba(0,128,0,0.6)"
+  },
+  showRequestStatus4: {
+    marginBottom: 10,
+    alignSelf: "center",
+    marginLeft: 30,
+    color: "rgba(0,128,0,0.6)",
+    marginTop: 5
+  },
+  showRequestStatus5: {
+    marginBottom: 10,
+    alignSelf: "center",
+    marginLeft: 30,
+    color: "rgba(255,0,0,0.6)",
+    marginTop: 5
+  },
+
+  showRequestPay: {
+    color: "rgba(255,0,0,0.6)"
+  },
+  showRequestPay2: {
+    color: "rgba(0,128,0,0.6)"
+  },
+  showRequestPay3: {
+    color: "rgba(0,128,0,0.6)",
+    marginTop: 15
+  },
+  showRequestPay4: {
+    color: "rgba(255,0,0,0.6)",
+    marginTop: 15
+  },
+
+  showRequestBtnTittle: {
+    flex: 4,
+    fontSize: 16,
+    alignSelf: "center"
+  },
+  showRequestBtn: {
+    backgroundColor: "#443099",
+    borderRadius: 30,
+    width: "90%",
+    justifyContent: "flex-start",
+    marginLeft: 20
+  },
+  showRequestBtnContainer: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignItems: "center",
+    alignSelf: "center",
+    width: "85%",
+    backgroundColor: "#443099",
+    marginTop: 5,
+    marginRight: 20,
+    marginLeft: 20,
+    marginBottom: 10,
+    justifyContent: "center"
   }
 });
