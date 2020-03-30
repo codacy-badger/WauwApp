@@ -20,9 +20,13 @@ function EditDeleteAccommodation(props) {
 
   const [newStartTime, setStartTime] = useState(new Date(navigation.state.params.accommodation.startTime));
   const [newEndTime, setEndTime] = useState(new Date(navigation.state.params.accommodation.endTime));
-
   const [modeS, setModeS] = useState("date");
   const [showS, setShowS] = useState(false);
+
+  if(!navigation.state.params.editable){
+    var x = new Date(navigation.state.params.accommodation.startTime);
+    var y = new Date(navigation.state.params.accommodation.endTime);
+  }
 
   const [modeE, setModeE] = useState("date");
   const [showE, setShowE] = useState(false);
@@ -30,7 +34,6 @@ function EditDeleteAccommodation(props) {
   const [setReloadData] = useState(false);
 
   const onChangeS = (event, selectedDate) => {
-
     const currentDate = selectedDate || date;
     setShowS(Platform.OS === "ios");
     setStartTime(currentDate);
@@ -46,7 +49,6 @@ function EditDeleteAccommodation(props) {
   };
 
   const onChangeE = (event, selectedDate) => {
-
     const currentDate = selectedDate || date;
     setShowE(Platform.OS === "ios");
     setEndTime(currentDate);
@@ -78,12 +80,10 @@ function EditDeleteAccommodation(props) {
   const cancelAccomodation = () => {
     Alert.alert("Atención", "Si cancela el alojamiento se dejarán de recibir solicitudes ¿Desea continuar?", [
       {
-        text: "Sí",
-        onPress: () => cancelationConfirmed()
+        text: "Sí", onPress: () => cancelationConfirmed()
       },
       {
-        text: "No",
-        onPress: () => console.log("Alert closed")
+        text: "No", onPress: () => console.log("Alert closed")
       }
     ]);
   };
@@ -94,17 +94,16 @@ function EditDeleteAccommodation(props) {
     };
 
     db.ref("accommodation")
-      .child(id)
-      .update(accommodationData)
-      .then(() => {
-        setReloadData(true);
-        setIsVisibleModal(false);
-        setIsLoading(true);
-      })
-      .catch(() => {
-        setError("Ha ocurrido un error");
-        setIsLoading(false);
-      });
+    .child(id)
+    .update(accommodationData)
+    .then(() => {
+      setReloadData(true);
+      setIsVisibleModal(false);
+      setIsLoading(true);
+    }).catch(() => {
+      setError("Ha ocurrido un error");
+      setIsLoading(false);
+    });
     Alert.alert("Éxito", "Alojamiento cancelado.");
     navigation.navigate("MyAccommodations");
   };
@@ -161,17 +160,16 @@ function EditDeleteAccommodation(props) {
         };
 
         db.ref("accommodation")
-          .child(id)
-          .update(accommodationData)
-          .then(() => {
-            setReloadData(true);
-            setIsVisibleModal(false);
-            setIsLoading(true);
-          })
-          .catch(() => {
-            setError("Ha ocurrido un error");
-            setIsLoading(false);
-          });
+        .child(id)
+        .update(accommodationData)
+        .then(() => {
+          setReloadData(true);
+          setIsVisibleModal(false);
+          setIsLoading(true);
+        }).catch(() => {
+          setError("Ha ocurrido un error");
+          setIsLoading(false);
+        });
         Alert.alert("Éxito", "Se ha editado el alojamiento correctamente.");
         navigation.navigate("MyAccommodations");
       }
@@ -182,8 +180,6 @@ function EditDeleteAccommodation(props) {
     <View style={styles.view}>
     {navigation.state.params.editable ? (
       <View>
-        <Text> Edita tu alojamiento </Text>
-        <View>
           <Text> Edita tu alojamiento </Text>
           <View>
             <Text>Fecha</Text>
@@ -220,21 +216,6 @@ function EditDeleteAccommodation(props) {
                   onChange={onChangeE}
                 />
               )}
-            </View>
-
-            <Text>Precio por noche</Text>
-            <TextInput
-              placeholder="10.00"
-              keyboardType="numeric"
-              containerStyle={styles.input}
-              onChange={v => setNewSalary(v.nativeEvent.text)}
-            />
-            <Button title="Guardar" onPress={all} loading={isLoading} />
-            <Button
-              title="Cancelar alojamiento"
-              onPress={cancelAccomodation}
-              loading={isLoading}
-            />
           </View>
 
           <Text>Precio por noche</Text>
@@ -253,17 +234,17 @@ function EditDeleteAccommodation(props) {
       <View>
         <Text>
           {"Fecha de inicio \n"}
-          <Text >{newStartTime.toISOString}</Text>
+          <Text >{x.getDate() + "/" + parseInt(x.getMonth()+1) + "/" + x.getFullYear()}</Text>
         </Text>
 
         <Text>
           {"Fecha de fin \n"}
-          <Text >{newEndTime.toISOString}</Text>
+          <Text >{y.getDate() + "/" + parseInt(y.getMonth()+1) + "/" + y.getFullYear()}</Text>
         </Text>
 
         <Text>
           {"Precio por noche \n"}
-          <Text >{newSalary} €</Text>
+          <Text >{((navigation.state.params.accommodation.salary*0.8).toFixed(2)).toString()} €</Text>
         </Text>
       </View>
     )}
